@@ -8,4 +8,5 @@ public interface Builder {
     void setAttack(int attack);
     void setDefense(int defense);
     void setHitPoints(int hitPoints);
+    void setArtefact(Artefact artefact);
 }

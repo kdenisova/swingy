@@ -1,16 +1,26 @@
-import com.kdenisov.swingy.model.Director;
-import com.kdenisov.swingy.model.Elf;
-import com.kdenisov.swingy.model.ElfBuilder;
+import com.kdenisov.swingy.model.*;
 
 public class Swingy {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SwingyException {
         Director director = new Director();
 
+        String heroClass = "DWARF";
+
         ElfBuilder builder = new ElfBuilder();
-        director.constructElf(builder);
 
-        Elf elf = builder.getResult();
+        if (heroClass.equals(HeroClass.ELF.toString())) {
+            director.constructElf(builder, "Legolas");
+        } else if (heroClass.equals((HeroClass.DWARF.toString()))) {
+            director.constructDwarf(builder, "Gimli");
+        } else if (heroClass.equals(HeroClass.HOBBIT.toString())) {
+            director.constructHobbit(builder, "Frodo");
+        }
+       else {
+           throw new SwingyException("Unknown hero class");
+        }
 
-        System.out.println("Elf " + elf.getName() + " created");
+        Hero hero = builder.getResult();
+
+        System.out.println("Hero " + hero.getName() + " created");
     }
 }

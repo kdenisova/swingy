@@ -10,7 +10,7 @@ public class DwarfBuilder implements Builder {
     private int attack;
     private int defense;
     private int hitPoints;
-    private ArrayList<Artefact> artefacts;
+    private ArrayList<Artefact> artefacts = new ArrayList<Artefact>();
 
     @Override
     public void setName(String name) {
@@ -47,7 +47,12 @@ public class DwarfBuilder implements Builder {
         this.hitPoints = hitPoints;
     }
 
+    @Override
+    public void setArtefact(Artefact artefact) {
+        this.artefacts.add(artefact);
+    }
+
     public Dwarf getResult() {
-        return new Dwarf(name, heroClass, level, experience, attack, defense, hitPoints);
+        return new Dwarf(name, heroClass, level, experience, attack, defense, hitPoints, artefacts);
     }
 }
