@@ -6,6 +6,7 @@ public class Swingy {
 
         HeroClass heroClass;
         String rawHeroClass = "Elf";
+        String name;
 
         try {
             heroClass = HeroClass.valueOf(rawHeroClass.toUpperCase());
