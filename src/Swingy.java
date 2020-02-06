@@ -4,23 +4,46 @@ public class Swingy {
     public static void main(String[] args) throws SwingyException {
         Director director = new Director();
 
-        String heroClass = "DWARF";
+        HeroClass heroClass;
+        String rawHeroClass = "Elf";
 
-        ElfBuilder builder = new ElfBuilder();
+        try {
+            heroClass = HeroClass.valueOf(rawHeroClass.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new SwingyException("Unknown hero class: " + rawHeroClass);
+        }
 
-        if (heroClass.equals(HeroClass.ELF.toString())) {
-            director.constructElf(builder, "Legolas");
-        } else if (heroClass.equals((HeroClass.DWARF.toString()))) {
-            director.constructDwarf(builder, "Gimli");
-        } else if (heroClass.equals(HeroClass.HOBBIT.toString())) {
-            director.constructHobbit(builder, "Frodo");
+        ElfBuilder builder = new ElfBuilder(); //always used ElfBuilder
+
+        switch (heroClass) {
+            case ELF:
+                director.constructElf(builder, "Legolas");
+                break;
+            case DWARF:
+                director.constructDwarf(builder, "Gimli");
+                break;
+            case HOBBIT:
+                director.constructHobbit(builder, "Frodo");
+                break;
         }
-       else {
-           throw new SwingyException("Unknown hero class");
-        }
+
+//        switch (heroClass) {
+//            case ELF: {
+//                ElfBuilder builder = new ElfBuilder();
+//                director.constructElf(builder, "Legolas");
+//            }
+//            case DWARF: {
+//                DwarfBuilder builder = new DwarfBuilder();
+//                director.constructDwarf(builder, "Gimli");
+//            }
+//            case HOBBIT: {
+//                HobbitBuilder builder = new HobbitBuilder();
+//                director.constructHobbit(builder, "Frodo");
+//            }
+//        }
 
         Hero hero = builder.getResult();
 
-        System.out.println("Hero " + hero.getName() + " created");
+        System.out.println("Hero " + hero.getHeroClass() + " " + hero.getName() + " created");
     }
 }
