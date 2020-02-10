@@ -1,0 +1,8 @@
+docker pull mysql
+docker run --name mysql -e MYSQL_ROOT_PASSWORD=nimfa MYSQL_DATABASE=swingy -d -p 3306:3306 mysq
+docker pull phpmyadmin/phpmyadmin
+docker run --name myadmin -d --link swingy:db -p 8080:80 phpmyadmin/phpmyadmin
+
+
+open:
+http://localhost:8080

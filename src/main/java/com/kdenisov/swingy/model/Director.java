@@ -1,7 +1,22 @@
 package com.kdenisov.swingy.model;
 
 public class Director {
-    public void constructElf(Builder builder, String name) {
+
+    private static Director director;
+
+    private Director() {
+
+    }
+
+    public static Director getDirector() {
+        if (director == null) {
+            director = new Director();
+        }
+
+        return director;
+    }
+
+    public static void constructElf(Builder builder, String name) {
         builder.setName(name);
         builder.setHeroClass(HeroClass.ELF);
         builder.setLevel(0);
@@ -12,7 +27,7 @@ public class Director {
         builder.setArtefact(Artefact.WEAPON);
     }
 
-    public void constructDwarf(Builder builder, String name) {
+    public static void constructDwarf(Builder builder, String name) {
         builder.setName(name);
         builder.setHeroClass(HeroClass.DWARF);
         builder.setLevel(0);
@@ -23,7 +38,7 @@ public class Director {
         builder.setArtefact(Artefact.HELM);
     }
 
-    public void constructHobbit(Builder builder, String name) {
+    public static void constructHobbit(Builder builder, String name) {
         builder.setName(name);
         builder.setHeroClass(HeroClass.HOBBIT);
         builder.setLevel(0);
