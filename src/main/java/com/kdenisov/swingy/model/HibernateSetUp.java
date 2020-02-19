@@ -43,6 +43,20 @@ public class HibernateSetUp {
 
         /*
         Transaction transaction = session.beginTransaction();
+        Hero hero = new Hero();
+        hero.setId(1);
+        hero.setName("Legolas");
+        hero.setHeroClass(HeroClass.ELF);
+        hero.setLevel(1);
+        hero.setExperience(0);
+        hero.setAttack(100);
+        hero.setDefense(50);
+        hero.setHitPoints(10);
+        session.save(hero);
+        transaction.commit();
+        */
+        /*
+        Transaction transaction = session.beginTransaction();
         TestEntity testEntity = new TestEntity();
         testEntity.setId(1);
         testEntity.setName("First");

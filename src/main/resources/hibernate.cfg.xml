@@ -10,7 +10,7 @@
     <property name="connection.password">nimfa</property>
     <property name="show_sql">true</property>
     <property name="format_sql">false</property>
-    <!-- <mapping class="com.kdenisov.swingy.model.Hero"/> -->
+    <mapping class="com.kdenisov.swingy.model.Hero"/>
     <mapping class="com.kdenisov.swingy.model.TestEntity"/>
 
 

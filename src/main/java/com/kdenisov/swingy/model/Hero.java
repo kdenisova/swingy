@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 @Entity
+@Table(name = "HERO", schema = "swingy")
 public class Hero {
 
     private int id;
@@ -94,7 +95,7 @@ public class Hero {
     }
 
     @Id
-    @GeneratedValue
+   // @GeneratedValue
     @Column(name = "ID")
     public int getId() {
         return id;

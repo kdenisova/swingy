@@ -1,4 +1,5 @@
 import com.kdenisov.swingy.model.*;
+import com.kdenisov.swingy.view.GUIRenderer;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
@@ -13,6 +14,16 @@ public class Swingy {
         HeroClass heroClass;
         String rawHeroClass = "Elf";
         String name;
+
+        if (args.length == 0) {
+            System.out.println("usage: java -jar swingy.jar [console/gui]");
+            System.exit(1);
+        }
+
+        if (args[0].equals("gui")) {
+            GUIRenderer gui = new GUIRenderer();
+            gui.renderMap();
+        }
 
         try {
             heroClass = HeroClass.valueOf(rawHeroClass.toUpperCase());
@@ -42,11 +53,11 @@ public class Swingy {
 
         System.out.println("Hero " + hero.getHeroClass() + " " + hero.getName() + " created");
 
-        HibernateSetUp hibernateSetUp = new HibernateSetUp();
-
-        hibernateSetUp.setUp();
-        hibernateSetUp.testSession();
-        hibernateSetUp.tearDown();
+//        HibernateSetUp hibernateSetUp = new HibernateSetUp();
+//
+//        hibernateSetUp.setUp();
+//        hibernateSetUp.testSession();
+//        hibernateSetUp.tearDown();
     }
 
     public void connectToMySQL() {
