@@ -1,15 +1,20 @@
 package com.kdenisov.swingy.model;
 
+import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Objects;
 
+@Entity
 public class Hero {
-    private final String name;
-    private final HeroClass heroClass;
-    private final int level;
-    private final int experience;
-    private final int attack;
-    private final int defense;
-    private final int hitPoints;
+
+    private int id;
+    private String name;
+    private HeroClass heroClass;
+    private int level;
+    private int experience;
+    private int attack;
+    private int defense;
+    private int hitPoints;
     private ArrayList<Artefact> artefacts;
 
     public Hero(String name, HeroClass heroClass, int level, int experience, int attack, int defense, int hitPoints, ArrayList<Artefact> artefacts) {
@@ -24,32 +29,108 @@ public class Hero {
         this.artefacts = artefacts;
     }
 
+    public Hero() {
+
+    }
+
+    @Basic
+    @Column(name = "Name")
     public String getName() {
         return name;
     }
 
-    public HeroClass getHeroClass() {
-        return heroClass;
+    public void setName(String name) {
+        this.name = name;
     }
 
+    @Basic
+    @Column(name = "Level")
     public int getLevel() {
         return level;
     }
 
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
+
+    @Basic
+    @Column(name = "Experience")
     public int getExperience() {
         return experience;
     }
 
+    public void setExperience(Integer experience) {
+        this.experience = experience;
+    }
+
+    @Basic
+    @Column(name = "Attack")
     public int getAttack() {
         return attack;
     }
 
+    public void setAttack(Integer attack) {
+        this.attack = attack;
+    }
+
+    @Basic
+    @Column(name = "Defense")
     public int getDefense() {
         return defense;
     }
 
+    public void setDefense(Integer defense) {
+        this.defense = defense;
+    }
+
+    @Basic
+    @Column(name = "HitPoints")
     public int getHitPoints() {
         return hitPoints;
     }
 
+    public void setHitPoints(Integer hitPoints) {
+        this.hitPoints = hitPoints;
+    }
+
+    @Id
+    @GeneratedValue
+    @Column(name = "ID")
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Basic
+    @Column(name = "Class")
+    public HeroClass getHeroClass() {
+        return heroClass;
+    }
+
+    public void setHeroClass(HeroClass heroClass) {
+        this.heroClass = heroClass;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Hero hero = (Hero) o;
+        return level == hero.level &&
+                experience == hero.experience &&
+                attack == hero.attack &&
+                defense == hero.defense &&
+                hitPoints == hero.hitPoints &&
+                id == hero.id &&
+                Objects.equals(name, hero.name) &&
+                Objects.equals(heroClass, hero.heroClass);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, heroClass, level, experience, attack, defense, hitPoints);
+    }
 }

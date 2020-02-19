@@ -1,4 +1,6 @@
 import com.kdenisov.swingy.model.*;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Swingy {
+
     public static void main(String[] args) throws SwingyException {
         HeroClass heroClass;
         String rawHeroClass = "Elf";
@@ -39,14 +42,18 @@ public class Swingy {
 
         System.out.println("Hero " + hero.getHeroClass() + " " + hero.getName() + " created");
 
-        Swingy s = new Swingy();
-        s.connectToMySQL();
+        HibernateSetUp hibernateSetUp = new HibernateSetUp();
+
+        hibernateSetUp.setUp();
+        hibernateSetUp.testSession();
+        hibernateSetUp.tearDown();
     }
 
     public void connectToMySQL() {
         System.out.println("Trying to connect...");
-        try (Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/swingy",
-                "root", "nimfa")) {
+        try {
+            Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/swingy",
+                    "root", "nimfa");
             if (connection != null) {
                 System.out.println("Connection Successful");
             }
