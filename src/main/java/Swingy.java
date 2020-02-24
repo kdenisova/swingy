@@ -1,7 +1,5 @@
 import com.kdenisov.swingy.model.*;
 import com.kdenisov.swingy.view.GUIRenderer;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -22,7 +20,7 @@ public class Swingy {
 
         if (args[0].equals("gui")) {
             GUIRenderer gui = new GUIRenderer();
-            gui.renderMap();
+            gui.renderMenu();
         }
 
         try {
@@ -53,8 +51,8 @@ public class Swingy {
 
         System.out.println("Hero " + hero.getHeroClass() + " " + hero.getName() + " created");
 
-//        HibernateSetUp hibernateSetUp = new HibernateSetUp();
-//
+        HibernateSetUp hibernateSetUp = new HibernateSetUp();
+
 //        hibernateSetUp.setUp();
 //        hibernateSetUp.testSession();
 //        hibernateSetUp.tearDown();

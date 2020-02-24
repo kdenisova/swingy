@@ -1,7 +1,7 @@
 package com.kdenisov.swingy.view;
 
 public interface Renderer {
-    void renderMap();
+    void renderMenu();
     void renderHero();
     void renderVillain();
 }

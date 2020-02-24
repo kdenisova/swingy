@@ -2,14 +2,17 @@ package com.kdenisov.swingy.view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class GUIRenderer implements Renderer {
     JFrame frame;
 
     @Override
-    public void renderMap() {
+    public void renderMenu() {
         frame = new JFrame("Swingy");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setResizable(false);
 
         JPanel panel = new JPanel(new GridBagLayout());
        // panel.setLayout(new GridBagLayout());
@@ -18,15 +21,22 @@ public class GUIRenderer implements Renderer {
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
 
-        JButton newGame = new JButton("New Game");
-        JButton savedGame = new JButton("Continue");
-        JButton about = new JButton("About");
-        JButton exit = new JButton("Exit");
+        JButton newGameButton = new JButton("New Game");
+        newGameButton.addActionListener(new NewGameButtonListener());
 
-        panel.add(newGame, gbc);
-        panel.add(savedGame, gbc);
-        panel.add(about, gbc);
-        panel.add(exit, gbc);
+        JButton continueButton = new JButton("Continue");
+        continueButton.addActionListener(new ContinueButtonListener());
+
+        JButton aboutButton = new JButton("About");
+        aboutButton.addActionListener(new AboutButtonListener());
+
+        JButton exitButton = new JButton("Exit");
+        exitButton.addActionListener(new ExitButtonListener());
+
+        panel.add(newGameButton, gbc);
+        panel.add(continueButton, gbc);
+        panel.add(aboutButton, gbc);
+        panel.add(exitButton, gbc);
 
         frame.add(panel);
         frame.setBounds(50, 50,300, 300);
@@ -36,6 +46,39 @@ public class GUIRenderer implements Renderer {
         int y = (int) ((dimension.getHeight() - frame.getHeight()) / 2);
         frame.setLocation(x, y);
         frame.setVisible(true);
+    }
+
+    class NewGameButtonListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            CreateHeroFrame createHeroFrame = new CreateHeroFrame();
+            createHeroFrame.createHero();
+        }
+    }
+
+    class ContinueButtonListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+        }
+    }
+
+    class AboutButtonListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+        }
+    }
+
+    class ExitButtonListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            frame.dispose();
+        }
     }
 
     @Override

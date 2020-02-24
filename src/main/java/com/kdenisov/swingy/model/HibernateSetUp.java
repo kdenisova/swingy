@@ -41,7 +41,7 @@ public class HibernateSetUp {
     public void testSession() {
         Session session = sessionFactory.openSession();
 
-        /*
+
         Transaction transaction = session.beginTransaction();
         Hero hero = new Hero();
         hero.setId(1);
@@ -54,7 +54,7 @@ public class HibernateSetUp {
         hero.setHitPoints(10);
         session.save(hero);
         transaction.commit();
-        */
+
         /*
         Transaction transaction = session.beginTransaction();
         TestEntity testEntity = new TestEntity();
@@ -64,13 +64,13 @@ public class HibernateSetUp {
         transaction.commit();
          */
 
-        Criteria c = session.createCriteria(TestEntity.class);
-        c.add(Restrictions.like("name", "%irs%"));
-
-        List list = c.list();
-        if (list.size() > 0) {
-            System.out.println("list.get(0).toString() = " + list.get(0).toString());
-        }
+//        Criteria c = session.createCriteria(TestEntity.class);
+//        c.add(Restrictions.like("name", "%irs%"));
+//
+//        List list = c.list();
+//        if (list.size() > 0) {
+//            System.out.println("list.get(0).toString() = " + list.get(0).toString());
+//        }
 
 
 //        Hero hero = new Hero();
