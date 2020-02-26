@@ -34,6 +34,17 @@ public class Hero {
 
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID", updatable = false, nullable = false, columnDefinition = "int default 1")
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     @Basic
     @Column(name = "Name")
     public String getName() {
@@ -92,17 +103,6 @@ public class Hero {
 
     public void setHitPoints(Integer hitPoints) {
         this.hitPoints = hitPoints;
-    }
-
-    @Id
-   // @GeneratedValue
-    @Column(name = "ID")
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     @Basic

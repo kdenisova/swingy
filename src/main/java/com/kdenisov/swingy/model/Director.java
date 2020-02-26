@@ -40,7 +40,7 @@ public class Director {
 
     public static void constructHobbit(Builder builder, String name) {
         builder.setName(name);
-        builder.setHeroClass(HeroClass.HOBBIT);
+        builder.setHeroClass(HeroClass.WIZARD);
         builder.setLevel(0);
         builder.setExperience(0);
         builder.setAttack(50);

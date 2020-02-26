@@ -42,8 +42,8 @@ public class Swingy {
                 Director.constructDwarf(db, "Gimli");
                 hero = db.getResult();
                 break;
-            case HOBBIT:
-                HobbitBuilder hb = new HobbitBuilder();
+            case WIZARD:
+                WizardBuilder hb = new WizardBuilder();
                 Director.constructHobbit(hb, "Frodo");
                 hero = hb.getResult();
                 break;

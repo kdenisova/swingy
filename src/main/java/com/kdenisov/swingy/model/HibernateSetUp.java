@@ -6,6 +6,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.query.Query;
 
 import java.util.List;
 
@@ -38,31 +39,34 @@ public class HibernateSetUp {
         }
     }
 
-    public void testSession() {
-        Session session = sessionFactory.openSession();
+    public void saveHero(String name, HeroClass heroClass, Artefact artefact, int attack, int defense, int hitPoints) {
+        setUp();
 
+        Session session = sessionFactory.openSession();
 
         Transaction transaction = session.beginTransaction();
         Hero hero = new Hero();
-        hero.setId(1);
-        hero.setName("Legolas");
-        hero.setHeroClass(HeroClass.ELF);
+        hero.setName(name);
+        hero.setHeroClass(heroClass);
         hero.setLevel(1);
         hero.setExperience(0);
-        hero.setAttack(100);
-        hero.setDefense(50);
-        hero.setHitPoints(10);
+        hero.setAttack(attack);
+        hero.setDefense(defense);
+        hero.setHitPoints(hitPoints);
         session.save(hero);
+
+        String hql = "FROM Hero order by id DESC";
+        Query query = session.createQuery(hql);
+        query.setMaxResults(1);
+        Hero last = (Hero)query.uniqueResult();
+
+        ArtefactsEntity artefactsEntity = new ArtefactsEntity();
+        artefactsEntity.setHeroId(last.getId());
+        artefactsEntity.setArtefact(artefact);
+        session.save(artefactsEntity);
         transaction.commit();
 
-        /*
-        Transaction transaction = session.beginTransaction();
-        TestEntity testEntity = new TestEntity();
-        testEntity.setId(1);
-        testEntity.setName("First");
-        session.save(testEntity);
-        transaction.commit();
-         */
+        tearDown();
 
 //        Criteria c = session.createCriteria(TestEntity.class);
 //        c.add(Restrictions.like("name", "%irs%"));
@@ -73,8 +77,5 @@ public class HibernateSetUp {
 //        }
 
 
-//        Hero hero = new Hero();
-//        hero.setName("Legolas");
-      //  session.save(hero);
     }
 }

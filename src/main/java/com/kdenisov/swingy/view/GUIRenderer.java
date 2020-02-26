@@ -52,8 +52,8 @@ public class GUIRenderer implements Renderer {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            CreateHeroFrame createHeroFrame = new CreateHeroFrame();
-            createHeroFrame.createHero();
+            CreateHeroForm createHeroForm = new CreateHeroForm();
+            createHeroForm.createHero();
         }
     }
 

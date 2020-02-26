@@ -2,7 +2,7 @@ package com.kdenisov.swingy.model;
 
 import java.util.ArrayList;
 
-public class HobbitBuilder implements Builder {
+public class WizardBuilder implements Builder {
     private String name;
     private HeroClass heroClass;
     private int level;
@@ -52,7 +52,7 @@ public class HobbitBuilder implements Builder {
         this.artefacts.add(artefact);
     }
 
-    public Hobbit getResult() {
-        return new Hobbit(name, heroClass, level, experience, attack, defense, hitPoints, artefacts);
+    public Wizard getResult() {
+        return new Wizard(name, heroClass, level, experience, attack, defense, hitPoints, artefacts);
     }
 }
