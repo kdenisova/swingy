@@ -95,16 +95,20 @@ public class CreateHeroForm {
         hitField.setEnabled(false);
         frame.add(hitField);
 
+        //JPanel buttonPanel = new JPanel();
+
         JButton saveButton = new JButton("Save");
         saveButton.setBounds(100, 250, 100, 30);
         saveButton.addActionListener(new SaveButtonListener());
         frame.add(saveButton);
+        //buttonPanel.add(saveButton);
 
         JButton cancelButton = new JButton("Cancel");
         cancelButton.setBounds(250, 250, 100, 30);
         cancelButton.addActionListener(new CancelButtonListener());
         frame.add(cancelButton);
-
+        //buttonPanel.add(cancelButton);
+        //frame.add(BorderLayout.SOUTH, buttonPanel);
 //        JPanel panel = new JPanel();
 //        //panel.setLayout(new GridBagLayout());
 //        GridBagConstraints gbc = new GridBagConstraints();
@@ -134,6 +138,7 @@ public class CreateHeroForm {
                         "Error", JOptionPane.ERROR_MESSAGE);
             else {
                 HibernateSetUp hibernateSetUp = new HibernateSetUp();
+                hibernateSetUp.setUp();
                 HeroClass heroClass = HeroClass.valueOf(heroClassBox.getSelectedItem().toString());
                 Artefact artefact = Artefact.valueOf(artefactBox.getSelectedItem().toString());
                 hibernateSetUp.saveHero(nameField.getText(), heroClass, artefact, Integer.parseInt(attackField.getText()),

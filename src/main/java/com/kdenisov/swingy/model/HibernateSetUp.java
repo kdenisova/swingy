@@ -1,13 +1,10 @@
 package com.kdenisov.swingy.model;
 
-import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
-
 import java.util.List;
 
 public class HibernateSetUp {
@@ -40,11 +37,9 @@ public class HibernateSetUp {
     }
 
     public void saveHero(String name, HeroClass heroClass, Artefact artefact, int attack, int defense, int hitPoints) {
-        setUp();
-
         Session session = sessionFactory.openSession();
-
         Transaction transaction = session.beginTransaction();
+
         Hero hero = new Hero();
         hero.setName(name);
         hero.setHeroClass(heroClass);
@@ -75,7 +70,21 @@ public class HibernateSetUp {
 //        if (list.size() > 0) {
 //            System.out.println("list.get(0).toString() = " + list.get(0).toString());
 //        }
+    }
 
+    public List<Hero> uploadHeroes() {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+        String hql = "FROM Hero";//"SELECT name, heroClass, level, experience, attack, defense, hitPoints FROM Hero";
+        Query query = session.createQuery(hql);
+        List<Hero> heroes = query.list();
 
+//        for (Hero hero : heroes) {
+//            System.out.println(hero.getName() + " " + hero.getHeroClass());
+//        }
+
+        transaction.commit();
+        tearDown();
+        return heroes;
     }
 }

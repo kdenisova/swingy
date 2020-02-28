@@ -6,7 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GUIRenderer implements Renderer {
-    JFrame frame;
+    private JFrame frame;
 
     @Override
     public void renderMenu() {
@@ -48,6 +48,20 @@ public class GUIRenderer implements Renderer {
         frame.setVisible(true);
     }
 
+//    private void setDimension() {
+//        Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize(); //Set a window on center of screen
+//        x = (int) ((dimension.getWidth() - frame.getWidth()) / 2);
+//        y = (int) ((dimension.getHeight() - frame.getHeight()) / 2);
+//    }
+//
+//    public int getX() {
+//        return x;
+//    }
+//
+//    public int getY() {
+//        return y;
+//    }
+//
     class NewGameButtonListener implements ActionListener {
 
         @Override
@@ -61,7 +75,8 @@ public class GUIRenderer implements Renderer {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-
+            LoadGameForm loadGameForm = new LoadGameForm();
+            loadGameForm.UploadHeroList();;
         }
     }
 
