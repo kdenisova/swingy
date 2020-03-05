@@ -30,95 +30,81 @@ public class CreateHeroForm {
         frame = new JFrame("Create a new Hero");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
-        frame.setLayout(null);
+
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(null);
 
         JLabel nameLabel = new JLabel("Name");
         nameLabel.setBounds(50, 50, 100, 30);
-        frame.add(nameLabel);
+        mainPanel.add(nameLabel);
 
         nameField = new JTextField();
         nameField.setBounds(150, 50, 190, 30);
-        frame.add(nameField);
+        mainPanel.add(nameField);
 
         JLabel heroClassLabel = new JLabel("Hero Class");
         heroClassLabel.setBounds(50, 100, 100, 30);
-        frame.add(heroClassLabel);
+        mainPanel.add(heroClassLabel);
 
         heroClassBox = new JComboBox(HeroClass.values());
         heroClassBox.setBounds(150, 100, 190, 30);
         heroClassBox.setSelectedIndex(-1);
         heroClassBox.addActionListener(new HeroClassBoxListener());
-        frame.add(heroClassBox);
+        mainPanel.add(heroClassBox);
 
         JLabel artifactLabel = new JLabel("Artefact");
         artifactLabel.setBounds(50, 150, 100, 30);
-        frame.add(artifactLabel);
+        mainPanel.add(artifactLabel);
 
         artefactBox = new JComboBox(Artefact.values());
         artefactBox.setBounds(150, 150, 190, 30);
         artefactBox.setSelectedIndex(-1);
         artefactBox.addActionListener(new ArtefactBoxListener());
-        frame.add(artefactBox);
+        mainPanel.add(artefactBox);
 
         iconLabel = new JLabel();
-        frame.add(iconLabel);
-
-//        ImageIcon heroIcon = new ImageIcon("/Users/angrynimfa/projects/swingy/src/main/resources/dwarf.png");//"/Users/angrynimfa/Downloads/elf11.jpg");
-//        JLabel iconLabel = new JLabel(heroIcon);
-//        iconLabel.setBounds(400, 45, 150, 150);
-//        frame.add(iconLabel);
+        mainPanel.add(iconLabel);
 
         JLabel attackLabel = new JLabel("Attack");
         attackLabel.setBounds(50, 200, 100, 30);
-        frame.add(attackLabel);
+        mainPanel.add(attackLabel);
 
         attackField = new JTextField("0");
         attackField.setBounds(100, 200, 50, 30);
         attackField.setEnabled(false);
-        frame.add(attackField);
+        mainPanel.add(attackField);
 
         JLabel defenseLabel = new JLabel("Defense");
         defenseLabel.setBounds(170, 200, 100, 30);
-        frame.add(defenseLabel);
+        mainPanel.add(defenseLabel);
 
         defenseField = new JTextField("0");
         defenseField.setBounds(230, 200, 50, 30);
         defenseField.setEnabled(false);
-        frame.add(defenseField);
+        mainPanel.add(defenseField);
 
         JLabel hitLabel = new JLabel("Hit Points");
         hitLabel.setBounds(300, 200, 100, 30);
-        frame.add(hitLabel);
+        mainPanel.add(hitLabel);
 
         hitField = new JTextField("0");
         hitField.setBounds(370, 200, 50, 30);
         hitField.setEnabled(false);
-        frame.add(hitField);
+        mainPanel.add(hitField);
 
-        //JPanel buttonPanel = new JPanel();
-
+        JPanel buttonPanel = new JPanel();
         JButton saveButton = new JButton("Save");
         saveButton.setBounds(100, 250, 100, 30);
         saveButton.addActionListener(new SaveButtonListener());
-        frame.add(saveButton);
-        //buttonPanel.add(saveButton);
+        buttonPanel.add(saveButton);
 
         JButton cancelButton = new JButton("Cancel");
         cancelButton.setBounds(250, 250, 100, 30);
         cancelButton.addActionListener(new CancelButtonListener());
-        frame.add(cancelButton);
-        //buttonPanel.add(cancelButton);
-        //frame.add(BorderLayout.SOUTH, buttonPanel);
-//        JPanel panel = new JPanel();
-//        //panel.setLayout(new GridBagLayout());
-//        GridBagConstraints gbc = new GridBagConstraints();
-//       // gbc.gridwidth = GridBagConstraints.BOTH;
-//        //gbc.fill = GridBagConstraints.SOUTH;
-//       // gbc.anchor = GridBagConstraints.PAGE_END;
-//        panel.add(saveButton);
-//        panel.add(cancelButton);
-//
-//        frame.add(panel, BorderLayout.SOUTH);
+        buttonPanel.add(cancelButton);
+
+        frame.add(BorderLayout.CENTER, mainPanel);
+        frame.add(BorderLayout.SOUTH, buttonPanel);
         frame.setBounds(50, 50,600, 400);
 
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize(); //Set a window on center of screen
