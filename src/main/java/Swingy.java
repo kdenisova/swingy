@@ -28,34 +28,6 @@ public class Swingy {
         } catch (IllegalArgumentException e) {
             throw new SwingyException("Unknown hero class: " + rawHeroClass);
         }
-
-        Hero hero = null;
-
-        switch (heroClass) {
-            case ELF:
-                ElfBuilder eb = new ElfBuilder();
-                Director.constructElf(eb, "Legolas");
-                hero = eb.getResult();
-                break;
-            case DWARF:
-                DwarfBuilder db = new DwarfBuilder();
-                Director.constructDwarf(db, "Gimli");
-                hero = db.getResult();
-                break;
-            case WIZARD:
-                WizardBuilder hb = new WizardBuilder();
-                Director.constructHobbit(hb, "Frodo");
-                hero = hb.getResult();
-                break;
-        }
-
-        System.out.println("Hero " + hero.getHeroClass() + " " + hero.getName() + " created");
-
-        HibernateSetUp hibernateSetUp = new HibernateSetUp();
-
-//        hibernateSetUp.setUp();
-//        hibernateSetUp.testSession();
-//        hibernateSetUp.tearDown();
     }
 
     public void connectToMySQL() {

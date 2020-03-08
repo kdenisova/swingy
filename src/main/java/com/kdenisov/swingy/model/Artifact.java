@@ -1,6 +1,6 @@
 package com.kdenisov.swingy.model;
 
-public enum Artefact {
+public enum Artifact {
     WEAPON,
     ARMOR,
     HELM

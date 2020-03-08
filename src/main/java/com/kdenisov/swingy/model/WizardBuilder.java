@@ -10,7 +10,7 @@ public class WizardBuilder implements Builder {
     private int attack;
     private int defense;
     private int hitPoints;
-    private ArrayList<Artefact> artefacts = new ArrayList<Artefact>();
+    private ArrayList<Artifact> artifacts = new ArrayList<Artifact>();
 
     @Override
     public void setName(String name) {
@@ -48,11 +48,11 @@ public class WizardBuilder implements Builder {
     }
 
     @Override
-    public void setArtefact(Artefact artefact) {
-        this.artefacts.add(artefact);
+    public void setArtefact(Artifact artifact) {
+        this.artifacts.add(artifact);
     }
 
     public Wizard getResult() {
-        return new Wizard(name, heroClass, level, experience, attack, defense, hitPoints, artefacts);
+        return new Wizard(name, heroClass, level, experience, attack, defense, hitPoints, artifacts);
     }
 }

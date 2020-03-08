@@ -1,6 +1,8 @@
 package com.kdenisov.swingy.view;
 
 import com.kdenisov.swingy.model.Hero;
+import com.kdenisov.swingy.model.HeroEntity;
+import com.kdenisov.swingy.model.HeroFactory;
 import com.kdenisov.swingy.model.HibernateSetUp;
 
 import javax.swing.*;
@@ -11,11 +13,13 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LoadGameForm {
+public class LoadGameForm implements ActionListener {
     private JFrame frame;
     private String[] columnName = {"Name", "Hero Class", "Level", "Experience"};
     private JTable table;
-    private List<Hero> heroes;
+    private JButton continueButton;
+    private JButton cancelButton;
+    List<HeroEntity> heroEntities;
 
     public void UploadHeroList () {
         frame = new JFrame("Load the Game");
@@ -24,7 +28,7 @@ public class LoadGameForm {
 
         HibernateSetUp hibernateSetUp = new HibernateSetUp();
         hibernateSetUp.setUp();
-        heroes = hibernateSetUp.uploadHeroes();
+        heroEntities = hibernateSetUp.getHeroes();
 
         DefaultTableModel model = new DefaultTableModel();
         model.setColumnIdentifiers(columnName);
@@ -32,21 +36,21 @@ public class LoadGameForm {
         table.setModel(model);
         JScrollPane scrollPane = new JScrollPane(table);
         //table.setBounds(50, 50, 200, 300);
-        for (int i = 0; i < heroes.size(); i++) {
-            model.addRow(new Object[]{heroes.get(i).getName(), heroes.get(i).getHeroClass(),
-            heroes.get(i).getLevel(), heroes.get(i).getExperience()});
+        for (int i = 0; i < heroEntities.size(); i++) {
+            model.addRow(new Object[]{heroEntities.get(i).getName(), heroEntities.get(i).getHeroClass(),
+                    heroEntities.get(i).getLevel(), heroEntities.get(i).getExperience()});
         }
 
         frame.add(BorderLayout.CENTER, scrollPane);
 
         JPanel buttonPanel = new JPanel();
 
-        JButton continueButton = new JButton("Continue");
-        continueButton.addActionListener(new ContinueButtonListener());
+        continueButton = new JButton("Continue");
+        continueButton.addActionListener(this);
         buttonPanel.add(continueButton);
 
-        JButton cancelButton = new JButton("Cancel");
-        cancelButton.addActionListener(new CancelButtonListener());
+        cancelButton = new JButton("Cancel");
+        cancelButton.addActionListener(this);
         buttonPanel.add(cancelButton);
 
         frame.add(BorderLayout.SOUTH, buttonPanel);
@@ -60,19 +64,30 @@ public class LoadGameForm {
 
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == continueButton) {
+            if (table.getSelectedRow() >= 0) {
+                MainGameForm mainGameForm = new MainGameForm();
+                Hero hero = HeroFactory.getInstance().buildHero(heroEntities.get(table.getSelectedRow()));
+                System.out.println(hero.getName() + " " + hero.getHeroClass());
+                mainGameForm.Start(hero);
+                frame.dispose();
+            } else {
+                JOptionPane.showMessageDialog(null, "Please choose a hero",
+                        "Choose a hero", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } else if (e.getSource() == cancelButton) {
+            frame.dispose();
+        }
+    }
+
+    /*
     class ContinueButtonListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (table.getSelectedRow() >= 0) {
-                MainGameForm mainGameForm = new MainGameForm();
-                mainGameForm.Start(heroes.get(table.getSelectedRow()));
-                frame.dispose();
-            }
-            else {
-                JOptionPane.showMessageDialog(null, "Please choose a hero",
-                        "Choose a hero", JOptionPane.INFORMATION_MESSAGE);
-            }
+
         }
     }
 
@@ -83,4 +98,5 @@ public class LoadGameForm {
             frame.dispose();
         }
     }
+     */
 }

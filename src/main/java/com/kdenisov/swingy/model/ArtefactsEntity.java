@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class ArtefactsEntity {
     private int id;
     private int heroId;
-    private Artefact artefact;
+    private Artifact artifact;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,12 +32,12 @@ public class ArtefactsEntity {
 
     @Basic
     @Column(name = "TYPE")
-    public Artefact getArtefact() {
-        return artefact;
+    public Artifact getArtifact() {
+        return artifact;
     }
 
-    public void setArtefact(Artefact artefact) {
-        this.artefact = artefact;
+    public void setArtifact(Artifact artifact) {
+        this.artifact = artifact;
     }
 
     @Override

@@ -5,6 +5,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
+
 import java.util.List;
 
 public class HibernateSetUp {
@@ -13,21 +14,6 @@ public class HibernateSetUp {
     public void setUp() {
         Configuration configuration = new Configuration();
         sessionFactory =  configuration.configure().buildSessionFactory();
-
-        /*
-        // A SessionFactory is set up once for an application
-        final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
-                .configure() // configures settings from hibernate.cfg.xml
-                .build();
-        try {
-            sessionFactory = new MetadataSources(registry)
-                    .buildMetadata()
-                    .buildSessionFactory();
-
-        } catch (Exception e) {
-            StandardServiceRegistryBuilder.destroy(registry);
-        }
-        */
     }
 
     public void tearDown() {
@@ -36,11 +22,11 @@ public class HibernateSetUp {
         }
     }
 
-    public void saveHero(String name, HeroClass heroClass, Artefact artefact, int attack, int defense, int hitPoints) {
+    public void saveHero(String name, HeroClass heroClass, Artifact artifact, int attack, int defense, int hitPoints) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
 
-        Hero hero = new Hero();
+        HeroEntity hero = new HeroEntity();
         hero.setName(name);
         hero.setHeroClass(heroClass);
         hero.setLevel(1);
@@ -53,38 +39,40 @@ public class HibernateSetUp {
         String hql = "FROM Hero order by id DESC";
         Query query = session.createQuery(hql);
         query.setMaxResults(1);
-        Hero last = (Hero)query.uniqueResult();
+        HeroEntity last = (HeroEntity)query.uniqueResult();
 
         ArtefactsEntity artefactsEntity = new ArtefactsEntity();
         artefactsEntity.setHeroId(last.getId());
-        artefactsEntity.setArtefact(artefact);
+        artefactsEntity.setArtifact(artifact);
         session.save(artefactsEntity);
         transaction.commit();
 
         tearDown();
-
-//        Criteria c = session.createCriteria(TestEntity.class);
-//        c.add(Restrictions.like("name", "%irs%"));
-//
-//        List list = c.list();
-//        if (list.size() > 0) {
-//            System.out.println("list.get(0).toString() = " + list.get(0).toString());
-//        }
     }
 
-    public List<Hero> uploadHeroes() {
-        Session session = sessionFactory.openSession();
-        Transaction transaction = session.beginTransaction();
-        String hql = "FROM Hero";//"SELECT name, heroClass, level, experience, attack, defense, hitPoints FROM Hero";
-        Query query = session.createQuery(hql);
-        List<Hero> heroes = query.list();
+    @SuppressWarnings({"rawtypes", "TryFinallyCanBeTryWithResources"})
+    public List<HeroEntity> getHeroes() {
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
+            // Transaction transaction = session.beginTransaction();
+            String hql = "FROM HeroEntity";
+            Query query = session.createQuery(hql);
+            List<HeroEntity> heroEntities = query.list();
 
-//        for (Hero hero : heroes) {
-//            System.out.println(hero.getName() + " " + hero.getHeroClass());
-//        }
+            // transaction.commit();
+            tearDown();
 
-        transaction.commit();
-        tearDown();
-        return heroes;
+//            List<Hero> heroes = new ArrayList<>();
+//            for (HeroEntity heroEntity : heroEntities) {
+//                Hero hero = HeroFactory.getInstance().buildHero(heroEntity);
+//                heroes.add(hero);
+//            }
+
+            return heroEntities;
+        } finally {
+            session.close();
+        }
+
     }
 }

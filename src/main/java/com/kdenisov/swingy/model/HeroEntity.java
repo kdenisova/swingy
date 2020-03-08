@@ -6,7 +6,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "HERO", schema = "swingy")
-public class Hero {
+public class HeroEntity {
 
     private int id;
     private String name;
@@ -16,9 +16,9 @@ public class Hero {
     private int attack;
     private int defense;
     private int hitPoints;
-    private ArrayList<Artefact> artefacts;
+    private ArrayList<Artifact> artifacts;
 
-    public Hero(String name, HeroClass heroClass, int level, int experience, int attack, int defense, int hitPoints, ArrayList<Artefact> artefacts) {
+    public HeroEntity(String name, HeroClass heroClass, int level, int experience, int attack, int defense, int hitPoints, ArrayList<Artifact> artifacts) {
 
         this.name = name;
         this.heroClass = heroClass;
@@ -27,10 +27,10 @@ public class Hero {
         this.attack = attack;
         this.defense = defense;
         this.hitPoints = hitPoints;
-        this.artefacts = artefacts;
+        this.artifacts = artifacts;
     }
 
-    public Hero() {
+    public HeroEntity() {
 
     }
 
@@ -119,7 +119,7 @@ public class Hero {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Hero hero = (Hero) o;
+        HeroEntity hero = (HeroEntity) o;
         return level == hero.level &&
                 experience == hero.experience &&
                 attack == hero.attack &&

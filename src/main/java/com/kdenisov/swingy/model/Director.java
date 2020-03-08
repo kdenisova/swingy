@@ -16,36 +16,36 @@ public class Director {
         return director;
     }
 
-    public static void constructElf(Builder builder, String name) {
-        builder.setName(name);
+    public static void constructElf(Builder builder, HeroEntity heroEntity) {
+        builder.setName(heroEntity.getName());
         builder.setHeroClass(HeroClass.ELF);
-        builder.setLevel(0);
-        builder.setExperience(0);
-        builder.setAttack(100);
-        builder.setDefense(10);
-        builder.setHitPoints(5);
-        builder.setArtefact(Artefact.WEAPON);
+        builder.setLevel(heroEntity.getLevel());
+        builder.setExperience(heroEntity.getExperience());
+        builder.setAttack(heroEntity.getAttack());
+        builder.setDefense(heroEntity.getDefense());
+        builder.setHitPoints(heroEntity.getHitPoints());
+        builder.setArtefact(Artifact.WEAPON);
     }
 
-    public static void constructDwarf(Builder builder, String name) {
-        builder.setName(name);
+    public static void constructDwarf(Builder builder, HeroEntity heroEntity) {
+        builder.setName(heroEntity.getName());
         builder.setHeroClass(HeroClass.DWARF);
-        builder.setLevel(0);
-        builder.setExperience(0);
-        builder.setAttack(110);
-        builder.setDefense(30);
-        builder.setHitPoints(10);
-        builder.setArtefact(Artefact.HELM);
+        builder.setLevel(heroEntity.getLevel());
+        builder.setExperience(heroEntity.getExperience());
+        builder.setAttack(heroEntity.getAttack());
+        builder.setDefense(heroEntity.getDefense());
+        builder.setHitPoints(heroEntity.getHitPoints());
+        builder.setArtefact(Artifact.HELM);
     }
 
-    public static void constructHobbit(Builder builder, String name) {
-        builder.setName(name);
+    public static void constructWizard(Builder builder, HeroEntity heroEntity) {
+        builder.setName(heroEntity.getName());
         builder.setHeroClass(HeroClass.WIZARD);
-        builder.setLevel(0);
-        builder.setExperience(0);
-        builder.setAttack(50);
-        builder.setDefense(20);
-        builder.setHitPoints(10);
-        builder.setArtefact(Artefact.ARMOR);
+        builder.setLevel(heroEntity.getLevel());
+        builder.setExperience(heroEntity.getExperience());
+        builder.setAttack(heroEntity.getAttack());
+        builder.setDefense(heroEntity.getDefense());
+        builder.setHitPoints(heroEntity.getHitPoints());
+        builder.setArtefact(Artifact.ARMOR);
     }
 }

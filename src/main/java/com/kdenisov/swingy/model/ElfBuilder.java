@@ -10,7 +10,7 @@ public class ElfBuilder implements Builder {
     private int attack;
     private int defense;
     private int hitPoints;
-    private ArrayList<Artefact> artefacts = new ArrayList<Artefact>();
+    private ArrayList<Artifact> artifacts = new ArrayList<Artifact>();
 
     @Override
     public void setName(String name) {
@@ -48,15 +48,15 @@ public class ElfBuilder implements Builder {
     }
 
     @Override
-    public void setArtefact(Artefact artefact) {
+    public void setArtefact(Artifact artifact) {
 //        if (this.artefacts == null) {
 //            this.artefacts = new ArrayList<Artefact>();
 //        }
 
-        this.artefacts.add(artefact);
+        this.artifacts.add(artifact);
     }
 
     public Elf getResult() {
-        return new Elf(name, heroClass, level, experience, attack, defense, hitPoints, artefacts);
+        return new Elf(name, heroClass, level, experience, attack, defense, hitPoints, artifacts);
     }
 }
