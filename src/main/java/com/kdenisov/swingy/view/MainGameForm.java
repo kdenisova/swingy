@@ -3,57 +3,72 @@ package com.kdenisov.swingy.view;
 import com.kdenisov.swingy.model.Hero;
 import com.kdenisov.swingy.model.HeroEntity;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class MainGameForm {
+    private int iconSize;
     private int mapSize;
     private JFrame frame;
-    private String[] columnName = {"    ", "    ", "    ", "    ", "    "};
+
+    public int getIconSize() {
+        return iconSize;
+    }
+
+    public void setIconSize(int iconSize) {
+        this.iconSize = iconSize;
+    }
+
     public void Start(Hero hero) {
+        setIconSize(40);
         frame = new JFrame("Swingy");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
 
-        mapSize = 5;//(hero.getLevel() - 1) * 5 + 10 - (hero.getLevel() % 2);
-
-        DefaultTableModel model = new DefaultTableModel(mapSize, mapSize);
-        model.setColumnIdentifiers(columnName);
-        JTable map = new JTable(mapSize, mapSize);
-        map.setModel(model);
-        map.setOpaque(false);
-        map.setBorder(BorderFactory.createCompoundBorder());
-        map.setForeground(Color.BLACK);
-        //map.getColumnModel().getColumn(0).setCellRenderer(new ImageRenderer());
-        map.setGridColor(Color.BLACK);
-        map.setShowGrid(true);
-        map.setRowHeight(50);
-        JScrollPane scrollPane = new JScrollPane(map);
-
-        scrollPane.setOpaque(false);
-        scrollPane.getViewport().setOpaque(false);
-        //scrollPane.getColumnHeader().setVisible(false);
-        final ImageIcon icon = new ImageIcon("/Users/angrynimfa/projects/swingy/src/main/resources/grass1.jpg");
-        JPanel background = new JPanel(new BorderLayout()) {
-          @Override
-          protected void paintComponent(Graphics g) {
-              super.paintComponent(g);
-              g.drawImage(icon.getImage(), 0, 0, getWidth(), getHeight(), this);
-          }
-        };
+        mapSize = (hero.getLevel() - 1) * 5 + 10 - (hero.getLevel() % 2);
 
 
-        ImageIcon heroImage = new ImageIcon("/Users/angrynimfa/projects/swingy/src/main/resources/elf.png");
-        map.getColumnModel().getColumn(3).setCellRenderer(new ImageRenderer());
-        map.setValueAt(heroImage, 3, 3);
-        background.add(scrollPane);
-        //scrollPane.getViewport().setBackground(Color.getHSBColor(107, 142, 35));
-        //scrollPane.setBackground(Color.BLACK);
-        frame.add(BorderLayout.WEST, background);
+        GridLayout grid = new GridLayout(mapSize, mapSize);
 
-        frame.setBounds(50, 50, mapSize * 50 * 2, mapSize * 50 + 100);
+        JPanel mapPanel = new JPanel(grid);
+
+        JLabel[][] iconLabels = new JLabel[mapSize][mapSize];
+        BufferedImage img = null;
+        BufferedImage heroImg = null;
+
+        try {
+            img = ImageIO.read(new File("/Users/angrynimfa/projects/swingy/src/main/resources/grass.png"));
+            heroImg = ImageIO.read(new File("/Users/angrynimfa/projects/swingy/src/main/resources/elf.png"));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        Image dimg = img.getScaledInstance(getIconSize(), getIconSize() + 10, Image.SCALE_SMOOTH);
+        ImageIcon imageIcon = new ImageIcon(dimg);
+
+        Image dimgH = heroImg.getScaledInstance(getIconSize(), getIconSize() + 10, Image.SCALE_SMOOTH);
+        ImageIcon imageIconH = new ImageIcon(dimgH);
+
+        for (int y = 0; y < mapSize; y++) {
+            for (int x = 0; x < mapSize; x++) {
+                iconLabels[y][x] = new JLabel();
+                iconLabels[y][x].setSize(getIconSize(),getIconSize());
+                iconLabels[y][x].setIcon(imageIcon);
+                mapPanel.add(iconLabels[y][x]);
+            }
+        }
+
+        iconLabels[mapSize / 2][mapSize / 2].setIcon(imageIconH);
+        mapPanel.add(iconLabels[mapSize / 2][mapSize / 2]);
+
+        frame.add(BorderLayout.WEST, mapPanel);
+
+        frame.setBounds(50, 50, mapSize * getIconSize() * 2, mapSize * getIconSize() + 50);
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize(); //Set a window on center of screen
         int x = (int) ((dimension.getWidth() - frame.getWidth()) / 2);
         int y = (int) ((dimension.getHeight() - frame.getHeight()) / 2);

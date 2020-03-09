@@ -12,7 +12,7 @@
     <property name="format_sql">false</property>
     <mapping class="com.kdenisov.swingy.model.HeroEntity"/>
     <mapping class="com.kdenisov.swingy.model.TestEntity"/>
-    <mapping class="com.kdenisov.swingy.model.ArtefactsEntity"/>
+    <mapping class="com.kdenisov.swingy.model.ArtifactsEntity"/>
 
 
     <!-- <property name="connection.password"/> -->

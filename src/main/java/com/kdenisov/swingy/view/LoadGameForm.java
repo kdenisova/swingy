@@ -30,11 +30,17 @@ public class LoadGameForm implements ActionListener {
         hibernateSetUp.setUp();
         heroEntities = hibernateSetUp.getHeroes();
 
-        DefaultTableModel model = new DefaultTableModel();
+        DefaultTableModel model = new DefaultTableModel() {
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         model.setColumnIdentifiers(columnName);
         table = new JTable();
         table.setModel(model);
         JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         //table.setBounds(50, 50, 200, 300);
         for (int i = 0; i < heroEntities.size(); i++) {
             model.addRow(new Object[]{heroEntities.get(i).getName(), heroEntities.get(i).getHeroClass(),

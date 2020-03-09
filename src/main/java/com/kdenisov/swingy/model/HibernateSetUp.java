@@ -41,10 +41,10 @@ public class HibernateSetUp {
         query.setMaxResults(1);
         HeroEntity last = (HeroEntity)query.uniqueResult();
 
-        ArtefactsEntity artefactsEntity = new ArtefactsEntity();
-        artefactsEntity.setHeroId(last.getId());
-        artefactsEntity.setArtifact(artifact);
-        session.save(artefactsEntity);
+        ArtifactsEntity artifactsEntity = new ArtifactsEntity();
+        artifactsEntity.setHeroId(last.getId());
+        artifactsEntity.setArtifact(artifact);
+        session.save(artifactsEntity);
         transaction.commit();
 
         tearDown();

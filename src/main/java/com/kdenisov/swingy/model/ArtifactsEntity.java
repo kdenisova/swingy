@@ -3,8 +3,8 @@ package com.kdenisov.swingy.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "ARTEFACTS", schema = "swingy")
-public class ArtefactsEntity {
+@Table(name = "ARTIFACTS", schema = "swingy")
+public class ArtifactsEntity {
     private int id;
     private int heroId;
     private Artifact artifact;
@@ -45,7 +45,7 @@ public class ArtefactsEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ArtefactsEntity that = (ArtefactsEntity) o;
+        ArtifactsEntity that = (ArtifactsEntity) o;
 
         if (id != that.id) return false;
 
