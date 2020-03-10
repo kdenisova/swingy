@@ -12,8 +12,9 @@ public class Hero {
     private int defense;
     private int hitPoints;
     private ArrayList<Artifact> artifacts;
+    private String heroImage;
 
-    public Hero(String name, HeroClass heroClass, int level, int experience, int attack, int defense, int hitPoints, ArrayList<Artifact> artifacts) {
+    public Hero(String name, HeroClass heroClass, int level, int experience, int attack, int defense, int hitPoints, ArrayList<Artifact> artifacts, String heroImage) {
 
         this.name = name;
         this.heroClass = heroClass;
@@ -23,6 +24,7 @@ public class Hero {
         this.defense = defense;
         this.hitPoints = hitPoints;
         this.artifacts = artifacts;
+        this.heroImage = heroImage;
     }
 
     public Hero() {
@@ -93,4 +95,11 @@ public class Hero {
         this.heroClass = heroClass;
     }
 
+    public String getHeroImage() {
+        return heroImage;
+    }
+
+    public void setHeroImage(String heroImage) {
+        this.heroImage = heroImage;
+    }
 }

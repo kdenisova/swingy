@@ -25,6 +25,7 @@ public class Director {
         builder.setDefense(heroEntity.getDefense());
         builder.setHitPoints(heroEntity.getHitPoints());
         builder.setArtefact(Artifact.WEAPON);
+        builder.setHeroImage("/Users/angrynimfa/projects/swingy/src/main/resources/elf.png");
     }
 
     public static void constructDwarf(Builder builder, HeroEntity heroEntity) {
@@ -36,6 +37,7 @@ public class Director {
         builder.setDefense(heroEntity.getDefense());
         builder.setHitPoints(heroEntity.getHitPoints());
         builder.setArtefact(Artifact.HELM);
+        builder.setHeroImage("/Users/angrynimfa/projects/swingy/src/main/resources/dwarf.png");
     }
 
     public static void constructWizard(Builder builder, HeroEntity heroEntity) {
@@ -47,5 +49,6 @@ public class Director {
         builder.setDefense(heroEntity.getDefense());
         builder.setHitPoints(heroEntity.getHitPoints());
         builder.setArtefact(Artifact.ARMOR);
+        builder.setHeroImage("/Users/angrynimfa/projects/swingy/src/main/resources/wizard.png");
     }
 }

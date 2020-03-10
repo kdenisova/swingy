@@ -16,6 +16,7 @@ public class MainGameForm {
     private int iconSize;
     private int mapSize;
     private JFrame frame;
+    private JLabel[][] iconLabels;
 
     public int getIconSize() {
         return iconSize;
@@ -38,34 +39,31 @@ public class MainGameForm {
 
         JPanel mapPanel = new JPanel(grid);
 
-        JLabel[][] iconLabels = new JLabel[mapSize][mapSize];
-        BufferedImage img = null;
-        BufferedImage heroImg = null;
+        iconLabels = new JLabel[mapSize][mapSize];
+        BufferedImage bufferedImage = null;
 
         try {
-            img = ImageIO.read(new File("/Users/angrynimfa/projects/swingy/src/main/resources/grass.png"));
-            heroImg = ImageIO.read(new File("/Users/angrynimfa/projects/swingy/src/main/resources/elf.png"));
+            bufferedImage = ImageIO.read(new File("/Users/angrynimfa/projects/swingy/src/main/resources/grass.png"));
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        Image dimg = img.getScaledInstance(getIconSize(), getIconSize() + 10, Image.SCALE_SMOOTH);
-        ImageIcon imageIcon = new ImageIcon(dimg);
-
-        Image dimgH = heroImg.getScaledInstance(getIconSize(), getIconSize() + 10, Image.SCALE_SMOOTH);
-        ImageIcon imageIconH = new ImageIcon(dimgH);
+        Image image = bufferedImage.getScaledInstance(getIconSize(), getIconSize() + 10, Image.SCALE_SMOOTH);
+        ImageIcon imageIcon = new ImageIcon(image);
 
         for (int y = 0; y < mapSize; y++) {
             for (int x = 0; x < mapSize; x++) {
                 iconLabels[y][x] = new JLabel();
                 iconLabels[y][x].setSize(getIconSize(),getIconSize());
+                iconLabels[y][x].setLayout(new BorderLayout());
                 iconLabels[y][x].setIcon(imageIcon);
                 mapPanel.add(iconLabels[y][x]);
             }
         }
-
-        iconLabels[mapSize / 2][mapSize / 2].setIcon(imageIconH);
-        mapPanel.add(iconLabels[mapSize / 2][mapSize / 2]);
-
+        //JLabel heroLabel = new JLabel(imageIconH);
+        //iconLabels[mapSize / 2][mapSize / 2].setLayout(new BorderLayout());
+        //iconLabels[mapSize / 2][mapSize / 2].add(heroLabel);//.setIcon(imageIconH);
+        //mapPanel.add(iconLabels[mapSize / 2][mapSize / 2]);
+        placeHero(hero);
         frame.add(BorderLayout.WEST, mapPanel);
 
         frame.setBounds(50, 50, mapSize * getIconSize() * 2, mapSize * getIconSize() + 50);
@@ -79,14 +77,18 @@ public class MainGameForm {
         System.out.println("Map size = " + mapSize);
     }
 
-    class ImageRenderer extends DefaultTableCellRenderer {
-        JLabel label = new JLabel();
+    public void placeHero(Hero hero) {
+        BufferedImage bufferedImage = null;
 
-        //ImageIcon icon = new ImageIcon("/Users/angrynimfa/projects/swingy/src/main/resources/elf.jpg");
-
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            label.setIcon((ImageIcon)value);
-            return label;
+        try {
+            bufferedImage = ImageIO.read(new File(hero.getHeroImage()));
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
+
+        Image image = bufferedImage.getScaledInstance(getIconSize(), getIconSize() + 10, Image.SCALE_SMOOTH);
+        JLabel heroLabel = new JLabel(new ImageIcon(image));
+        iconLabels[mapSize / 2][mapSize / 2].add(heroLabel);
     }
+
 }

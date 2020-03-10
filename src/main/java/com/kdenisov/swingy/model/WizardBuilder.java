@@ -11,6 +11,7 @@ public class WizardBuilder implements Builder {
     private int defense;
     private int hitPoints;
     private ArrayList<Artifact> artifacts = new ArrayList<Artifact>();
+    private String heroImage;
 
     @Override
     public void setName(String name) {
@@ -52,7 +53,12 @@ public class WizardBuilder implements Builder {
         this.artifacts.add(artifact);
     }
 
+    @Override
+    public void setHeroImage(String heroImage) {
+        this.heroImage = heroImage;
+    }
+
     public Wizard getResult() {
-        return new Wizard(name, heroClass, level, experience, attack, defense, hitPoints, artifacts);
+        return new Wizard(name, heroClass, level, experience, attack, defense, hitPoints, artifacts, heroImage);
     }
 }
