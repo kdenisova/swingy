@@ -3,6 +3,7 @@ package com.kdenisov.swingy.model;
 import java.util.ArrayList;
 
 public class WizardBuilder implements Builder {
+    private int id;
     private String name;
     private HeroClass heroClass;
     private int level;
@@ -10,8 +11,15 @@ public class WizardBuilder implements Builder {
     private int attack;
     private int defense;
     private int hitPoints;
-    private ArrayList<Artifact> artifacts = new ArrayList<Artifact>();
+    private int x;
+    private int y;
+    private ArrayList<Artifact> artifacts;
     private String heroImage;
+
+    @Override
+    public void setId(int id) {
+        this.id = id;
+    }
 
     @Override
     public void setName(String name) {
@@ -50,6 +58,10 @@ public class WizardBuilder implements Builder {
 
     @Override
     public void setArtefact(Artifact artifact) {
+        if (this.artifacts == null) {
+            this.artifacts = new ArrayList<>();
+        }
+
         this.artifacts.add(artifact);
     }
 
@@ -58,7 +70,18 @@ public class WizardBuilder implements Builder {
         this.heroImage = heroImage;
     }
 
-    public Wizard getResult() {
-        return new Wizard(name, heroClass, level, experience, attack, defense, hitPoints, artifacts, heroImage);
+    @Override
+    public void setX(int x) {
+        this.x = x;
     }
+
+    @Override
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public Wizard getResult() {
+        return new Wizard(id, name, heroClass, level, experience, attack, defense, hitPoints, artifacts, heroImage, x, y);
+    }
+
 }

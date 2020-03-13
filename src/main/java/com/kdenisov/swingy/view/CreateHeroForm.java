@@ -1,14 +1,14 @@
 package com.kdenisov.swingy.view;
 
-import com.kdenisov.swingy.model.Artifact;
-import com.kdenisov.swingy.model.HeroClass;
-import com.kdenisov.swingy.model.HibernateSetUp;
+import com.kdenisov.swingy.model.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -23,11 +23,22 @@ public class CreateHeroForm {
     private JTextField defenseField;
     private JTextField hitField;
     private JLabel iconLabel;
+    private HibernateManager hibernateManager;
 
-    public void createHero() {
+    public void createHero(final HibernateManager hibernateManager) {
+        this.hibernateManager = hibernateManager;
+
         frame = new JFrame("Create a new Hero");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                hibernateManager.tearDown();
+                frame.dispose();
+                System.exit(0);
+            }
+        });
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(null);
@@ -121,14 +132,20 @@ public class CreateHeroForm {
                 JOptionPane.showMessageDialog(null, "Please complete all required fields",
                         "Error", JOptionPane.ERROR_MESSAGE);
             else {
-                HibernateSetUp hibernateSetUp = new HibernateSetUp();
-                hibernateSetUp.setUp();
+                //HibernateManager hibernateManager = new HibernateManager();
+                //hibernateManager.setUp();
                 HeroClass heroClass = HeroClass.valueOf(heroClassBox.getSelectedItem().toString());
                 Artifact artifact = Artifact.valueOf(artefactBox.getSelectedItem().toString());
-                hibernateSetUp.saveHero(nameField.getText(), heroClass, artifact, Integer.parseInt(attackField.getText()),
+
+                hibernateManager.saveHero(nameField.getText(), heroClass, artifact, Integer.parseInt(attackField.getText()),
                         Integer.parseInt(defenseField.getText()), Integer.parseInt(hitField.getText()));
+
+                Hero hero = HeroFactory.getInstance().buildHero(hibernateManager.getNewHero());
+
+                MainGameForm mainGameForm = new MainGameForm();
+                mainGameForm.Start(hibernateManager, hero);
+
                 frame.dispose();
-                //open playground
             }
 
         }
@@ -152,7 +169,7 @@ public class CreateHeroForm {
             if (artefactBox.getSelectedIndex() >= 0)
                 artefactBox.setSelectedIndex(-1);
             if (heroClassBox.getSelectedItem().equals(HeroClass.ELF)) {
-                imageName = "/Users/angrynimfa/projects/swingy/src/main/resources/elf.png";
+                imageName = "/Users/angrynimfa/projects/swingy/src/main/resources/heroes/elf.png";
                 attack = 100;
                 defense = 50;
                 hitPoints = 15;
@@ -160,7 +177,7 @@ public class CreateHeroForm {
                 defenseField.setText(String.valueOf(defense));
                 hitField.setText(String.valueOf(hitPoints));
             } else if (heroClassBox.getSelectedItem().equals(HeroClass.DWARF)) {
-                imageName = "/Users/angrynimfa/projects/swingy/src/main/resources/dwarf.png";
+                imageName = "/Users/angrynimfa/projects/swingy/src/main/resources/heroes/dwarf.png";
                 attack = 110;
                 defense = 60;
                 hitPoints = 12;
@@ -169,7 +186,7 @@ public class CreateHeroForm {
                 hitField.setText(String.valueOf(hitPoints));
             }
             else {
-                imageName = "/Users/angrynimfa/projects/swingy/src/main/resources/wizard.png";
+                imageName = "/Users/angrynimfa/projects/swingy/src/main/resources/heroes/wizard.png";
                 attack = 90;
                 defense = 30;
                 hitPoints = 10;

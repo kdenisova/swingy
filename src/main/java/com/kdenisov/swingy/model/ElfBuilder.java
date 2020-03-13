@@ -3,6 +3,7 @@ package com.kdenisov.swingy.model;
 import java.util.ArrayList;
 
 public class ElfBuilder implements Builder {
+    private int id;
     private String name;
     private HeroClass heroClass;
     private int level;
@@ -10,8 +11,15 @@ public class ElfBuilder implements Builder {
     private int attack;
     private int defense;
     private int hitPoints;
-    private ArrayList<Artifact> artifacts = new ArrayList<Artifact>();
+    private int x;
+    private int y;
+    private ArrayList<Artifact> artifacts;
     private String heroImage;
+
+    @Override
+    public void setId(int id) {
+        this.id = id;
+    }
 
     @Override
     public void setName(String name) {
@@ -50,9 +58,9 @@ public class ElfBuilder implements Builder {
 
     @Override
     public void setArtefact(Artifact artifact) {
-//        if (this.artefacts == null) {
-//            this.artefacts = new ArrayList<Artefact>();
-//        }
+        if (this.artifacts == null) {
+            this.artifacts = new ArrayList<Artifact>();
+        }
 
         this.artifacts.add(artifact);
     }
@@ -62,7 +70,17 @@ public class ElfBuilder implements Builder {
         this.heroImage = heroImage;
     }
 
+    @Override
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    @Override
+    public void setY(int y) {
+        this.y = y;
+    }
+
     public Elf getResult() {
-        return new Elf(name, heroClass, level, experience, attack, defense, hitPoints, artifacts, heroImage);
+        return new Elf(id, name, heroClass, level, experience, attack, defense, hitPoints, artifacts, heroImage, x, y);
     }
 }

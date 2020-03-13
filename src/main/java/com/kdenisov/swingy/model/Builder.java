@@ -1,6 +1,7 @@
 package com.kdenisov.swingy.model;
 
 public interface Builder {
+    void setId(int id);
     void setName(String name);
     void setHeroClass(HeroClass heroClass);
     void setLevel(int level);
@@ -10,4 +11,6 @@ public interface Builder {
     void setHitPoints(int hitPoints);
     void setArtefact(Artifact artifact);
     void setHeroImage(String heroImage);
+    void setX(int x);
+    void setY(int y);
 }

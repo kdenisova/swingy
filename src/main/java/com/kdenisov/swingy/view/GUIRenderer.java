@@ -1,18 +1,33 @@
 package com.kdenisov.swingy.view;
 
+import com.kdenisov.swingy.model.HibernateManager;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class GUIRenderer implements Renderer {
     private JFrame frame;
+    private HibernateManager hibernateManager;
 
     @Override
-    public void renderMenu() {
+    public void renderMenu(final HibernateManager hibernateManager) {
+        this.hibernateManager = hibernateManager;
         frame = new JFrame("Swingy");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                hibernateManager.tearDown();
+                frame.dispose();
+                System.exit(0);
+            }
+        });
+
 
         JPanel panel = new JPanel(new GridBagLayout());
        // panel.setLayout(new GridBagLayout());
@@ -67,7 +82,7 @@ public class GUIRenderer implements Renderer {
         @Override
         public void actionPerformed(ActionEvent e) {
             CreateHeroForm createHeroForm = new CreateHeroForm();
-            createHeroForm.createHero();
+            createHeroForm.createHero(hibernateManager);
         }
     }
 
@@ -76,7 +91,7 @@ public class GUIRenderer implements Renderer {
         @Override
         public void actionPerformed(ActionEvent e) {
             LoadGameForm loadGameForm = new LoadGameForm();
-            loadGameForm.UploadHeroList();;
+            loadGameForm.UploadHeroList(hibernateManager);;
         }
     }
 
@@ -93,6 +108,7 @@ public class GUIRenderer implements Renderer {
         @Override
         public void actionPerformed(ActionEvent e) {
             frame.dispose();
+            hibernateManager.tearDown();
         }
     }
 

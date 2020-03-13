@@ -3,14 +3,15 @@ package com.kdenisov.swingy.view;
 import com.kdenisov.swingy.model.Hero;
 import com.kdenisov.swingy.model.HeroEntity;
 import com.kdenisov.swingy.model.HeroFactory;
-import com.kdenisov.swingy.model.HibernateSetUp;
+import com.kdenisov.swingy.model.HibernateManager;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 
 public class LoadGameForm implements ActionListener {
@@ -19,16 +20,24 @@ public class LoadGameForm implements ActionListener {
     private JTable table;
     private JButton continueButton;
     private JButton cancelButton;
-    List<HeroEntity> heroEntities;
+    private List<HeroEntity> heroEntities;
+    private HibernateManager hibernateManager;
 
-    public void UploadHeroList () {
+    public void UploadHeroList(final HibernateManager hibernateManager) {
+        this.hibernateManager = hibernateManager;
         frame = new JFrame("Load the Game");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                hibernateManager.tearDown();
+                frame.dispose();
+                System.exit(0);
+            }
+        });
 
-        HibernateSetUp hibernateSetUp = new HibernateSetUp();
-        hibernateSetUp.setUp();
-        heroEntities = hibernateSetUp.getHeroes();
+        heroEntities = hibernateManager.getListHeroes();
 
         DefaultTableModel model = new DefaultTableModel() {
             public boolean isCellEditable(int row, int column) {
@@ -77,8 +86,8 @@ public class LoadGameForm implements ActionListener {
                 MainGameForm mainGameForm = new MainGameForm();
                 Hero hero = HeroFactory.getInstance().buildHero(heroEntities.get(table.getSelectedRow()));
                 System.out.println(hero.getName() + " " + hero.getHeroClass());
-                mainGameForm.Start(hero);
-                frame.dispose();
+                mainGameForm.Start(hibernateManager, hero);
+                //frame.dispose();
             } else {
                 JOptionPane.showMessageDialog(null, "Please choose a hero",
                         "Choose a hero", JOptionPane.INFORMATION_MESSAGE);

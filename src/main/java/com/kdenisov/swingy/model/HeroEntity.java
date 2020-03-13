@@ -17,6 +17,8 @@ public class HeroEntity {
     private int defense;
     private int hitPoints;
     private ArrayList<Artifact> artifacts;
+    private int x;
+    private int y;
 
     public HeroEntity(String name, HeroClass heroClass, int level, int experience, int attack, int defense, int hitPoints, ArrayList<Artifact> artifacts) {
 
@@ -103,6 +105,26 @@ public class HeroEntity {
 
     public void setHitPoints(Integer hitPoints) {
         this.hitPoints = hitPoints;
+    }
+
+    @Basic
+    @Column(name = "X")
+    public int getX() {
+        return x;
+    }
+
+    public void setX(Integer x) {
+        this.x = x;
+    }
+
+    @Basic
+    @Column(name = "Y")
+    public int getY() {
+        return y;
+    }
+
+    public void setY(Integer y) {
+        this.y = y;
     }
 
     @Basic

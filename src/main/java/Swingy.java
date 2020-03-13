@@ -13,14 +13,16 @@ public class Swingy {
         String rawHeroClass = "Elf";
         String name;
 
+
         if (args.length == 0) {
             System.out.println("usage: java -jar swingy.jar [console/gui]");
             System.exit(1);
         }
+        HibernateManager hibernateManager = HibernateManager.getHibernateManager();
 
         if (args[0].equals("gui")) {
             GUIRenderer gui = new GUIRenderer();
-            gui.renderMenu();
+            gui.renderMenu(hibernateManager);
         }
 
         try {
