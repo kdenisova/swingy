@@ -10,7 +10,7 @@ public interface Builder {
     void setDefense(int defense);
     void setHitPoints(int hitPoints);
     void setArtefact(Artifact artifact);
-    void setHeroImage(String heroImage);
+    void setImage(String heroImage);
     void setX(int x);
     void setY(int y);
 }

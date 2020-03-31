@@ -1,5 +1,6 @@
 package com.kdenisov.swingy.view;
 
+import com.kdenisov.swingy.controller.GameEngine;
 import com.kdenisov.swingy.model.Hero;
 import com.kdenisov.swingy.model.HeroEntity;
 import com.kdenisov.swingy.model.HeroFactory;
@@ -8,13 +9,10 @@ import com.kdenisov.swingy.model.HibernateManager;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.util.List;
 
-public class LoadGameForm implements ActionListener {
+public class Continue implements ActionListener {
     private JFrame frame;
     private String[] columnName = {"Name", "Hero Class", "Level", "Experience"};
     private JTable table;
@@ -47,10 +45,22 @@ public class LoadGameForm implements ActionListener {
         model.setColumnIdentifiers(columnName);
         table = new JTable();
         table.setModel(model);
+        table.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                super.mousePressed(e);
+                if (e.getClickCount() == 2 && table.getSelectedRow() >= 0) {
+                    Hero hero = HeroFactory.getInstance().buildHero(heroEntities.get(table.getSelectedRow()));
+                    System.out.println(hero.getName() + " " + hero.getHeroClass());
+                    GameEngine gameEngine = new GameEngine(hibernateManager, hero);
+                    gameEngine.play();
+                    //frame.dispose();
+                }
+            }
+        });
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        //table.setBounds(50, 50, 200, 300);
         for (int i = 0; i < heroEntities.size(); i++) {
             model.addRow(new Object[]{heroEntities.get(i).getName(), heroEntities.get(i).getHeroClass(),
                     heroEntities.get(i).getLevel(), heroEntities.get(i).getExperience()});
@@ -83,10 +93,10 @@ public class LoadGameForm implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == continueButton) {
             if (table.getSelectedRow() >= 0) {
-                MainGameForm mainGameForm = new MainGameForm();
                 Hero hero = HeroFactory.getInstance().buildHero(heroEntities.get(table.getSelectedRow()));
                 System.out.println(hero.getName() + " " + hero.getHeroClass());
-                mainGameForm.Start(hibernateManager, hero);
+                GameEngine gameEngine = new GameEngine(hibernateManager, hero);
+                gameEngine.play();
                 //frame.dispose();
             } else {
                 JOptionPane.showMessageDialog(null, "Please choose a hero",

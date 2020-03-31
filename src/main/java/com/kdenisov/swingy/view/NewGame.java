@@ -1,5 +1,6 @@
 package com.kdenisov.swingy.view;
 
+import com.kdenisov.swingy.controller.GameEngine;
 import com.kdenisov.swingy.model.*;
 
 import javax.imageio.ImageIO;
@@ -13,7 +14,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class CreateHeroForm {
+public class NewGame {
     private int attack, defense, hitPoints;
     private JFrame frame;
     private JComboBox heroClassBox;
@@ -132,18 +133,17 @@ public class CreateHeroForm {
                 JOptionPane.showMessageDialog(null, "Please complete all required fields",
                         "Error", JOptionPane.ERROR_MESSAGE);
             else {
-                //HibernateManager hibernateManager = new HibernateManager();
-                //hibernateManager.setUp();
+                //int mapSize = (hero.getLevel() - 1) * 5 + 10 - (hero.getLevel() % 2);
+                //default size of map for a new hero is 9
                 HeroClass heroClass = HeroClass.valueOf(heroClassBox.getSelectedItem().toString());
                 Artifact artifact = Artifact.valueOf(artefactBox.getSelectedItem().toString());
 
                 hibernateManager.saveHero(nameField.getText(), heroClass, artifact, Integer.parseInt(attackField.getText()),
-                        Integer.parseInt(defenseField.getText()), Integer.parseInt(hitField.getText()));
+                        Integer.parseInt(defenseField.getText()), Integer.parseInt(hitField.getText()), 9 / 2, 9 / 2);
 
                 Hero hero = HeroFactory.getInstance().buildHero(hibernateManager.getNewHero());
-
-                MainGameForm mainGameForm = new MainGameForm();
-                mainGameForm.Start(hibernateManager, hero);
+                GameEngine gameEngine = new GameEngine(hibernateManager, hero);
+                gameEngine.play();
 
                 frame.dispose();
             }
@@ -168,16 +168,16 @@ public class CreateHeroForm {
 
             if (artefactBox.getSelectedIndex() >= 0)
                 artefactBox.setSelectedIndex(-1);
-            if (heroClassBox.getSelectedItem().equals(HeroClass.ELF)) {
-                imageName = "/Users/angrynimfa/projects/swingy/src/main/resources/heroes/elf.png";
+            if (heroClassBox.getSelectedItem().equals(HeroClass.Elf)) {
+                imageName = "/Users/angrynimfa/projects/swingy/src/main/resources/heroes/Elf.png";
                 attack = 100;
                 defense = 50;
                 hitPoints = 15;
                 attackField.setText(String.valueOf(attack));
                 defenseField.setText(String.valueOf(defense));
                 hitField.setText(String.valueOf(hitPoints));
-            } else if (heroClassBox.getSelectedItem().equals(HeroClass.DWARF)) {
-                imageName = "/Users/angrynimfa/projects/swingy/src/main/resources/heroes/dwarf.png";
+            } else if (heroClassBox.getSelectedItem().equals(HeroClass.Dwarf)) {
+                imageName = "/Users/angrynimfa/projects/swingy/src/main/resources/heroes/Dwarf.png";
                 attack = 110;
                 defense = 60;
                 hitPoints = 12;
@@ -186,7 +186,7 @@ public class CreateHeroForm {
                 hitField.setText(String.valueOf(hitPoints));
             }
             else {
-                imageName = "/Users/angrynimfa/projects/swingy/src/main/resources/heroes/wizard.png";
+                imageName = "/Users/angrynimfa/projects/swingy/src/main/resources/heroes/Wizard.png";
                 attack = 90;
                 defense = 30;
                 hitPoints = 10;
@@ -215,12 +215,12 @@ public class CreateHeroForm {
             int value;
 
             if (artefactBox.getSelectedIndex() >= 0 && heroClassBox.getSelectedIndex() >= 0) {
-                if (artefactBox.getSelectedItem().equals(Artifact.WEAPON)) {
+                if (artefactBox.getSelectedItem().equals(Artifact.Weapon)) {
                     value = attack + 10;
                     attackField.setText(String.valueOf(value));
                     defenseField.setText(String.valueOf(defense));
                     hitField.setText(String.valueOf(hitPoints));
-                } else if (artefactBox.getSelectedItem().equals(Artifact.ARMOR)) {
+                } else if (artefactBox.getSelectedItem().equals(Artifact.Armor)) {
                     value = defense + 10;
                     attackField.setText(String.valueOf(attack));
                     defenseField.setText(String.valueOf(value));

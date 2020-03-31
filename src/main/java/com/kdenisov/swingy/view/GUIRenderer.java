@@ -81,8 +81,8 @@ public class GUIRenderer implements Renderer {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            CreateHeroForm createHeroForm = new CreateHeroForm();
-            createHeroForm.createHero(hibernateManager);
+            NewGame newGame = new NewGame();
+            newGame.createHero(hibernateManager);
         }
     }
 
@@ -90,8 +90,8 @@ public class GUIRenderer implements Renderer {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            LoadGameForm loadGameForm = new LoadGameForm();
-            loadGameForm.UploadHeroList(hibernateManager);;
+            Continue aContinue = new Continue();
+            aContinue.UploadHeroList(hibernateManager);;
         }
     }
 

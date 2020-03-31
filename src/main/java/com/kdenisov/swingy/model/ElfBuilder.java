@@ -66,7 +66,7 @@ public class ElfBuilder implements Builder {
     }
 
     @Override
-    public void setHeroImage(String heroImage) {
+    public void setImage(String heroImage) {
         this.heroImage = heroImage;
     }
 

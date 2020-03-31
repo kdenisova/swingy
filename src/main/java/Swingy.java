@@ -8,28 +8,22 @@ import java.sql.Statement;
 
 public class Swingy {
 
-    public static void main(String[] args) throws SwingyException {
-        HeroClass heroClass;
-        String rawHeroClass = "Elf";
-        String name;
-
+    public static void main(String[] args) {
 
         if (args.length == 0) {
             System.out.println("usage: java -jar swingy.jar [console/gui]");
             System.exit(1);
         }
-        HibernateManager hibernateManager = HibernateManager.getHibernateManager();
 
+//        Swingy s = new Swingy();
+//        s.connectToMySQL();
+        HibernateManager hibernateManager = HibernateManager.getHibernateManager();
+        //hibernateManager.createVillains();
         if (args[0].equals("gui")) {
             GUIRenderer gui = new GUIRenderer();
             gui.renderMenu(hibernateManager);
         }
 
-        try {
-            heroClass = HeroClass.valueOf(rawHeroClass.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            throw new SwingyException("Unknown hero class: " + rawHeroClass);
-        }
     }
 
     public void connectToMySQL() {
@@ -47,15 +41,14 @@ public class Swingy {
             Statement statement = null;
             statement = connection.createStatement();
 
-            String sql = "CREATE TABLE HERO " +
+            String sql = "CREATE TABLE VILLAIN " +
                     "(ID INTEGER not NULL, " +
                     " Name VARCHAR(255), " +
-                    " Class VARCHAR(255), " +
                     " Level INTEGER, " +
-                    " Experience INTEGER, " +
                     " Attack INTEGER, " +
                     " Defense INTEGER, " +
                     " HitPoints INTEGER, " +
+                    " Picture VARCHAR(255), " +
                     " PRIMARY KEY ( ID ))";
 
             statement.executeUpdate(sql);
