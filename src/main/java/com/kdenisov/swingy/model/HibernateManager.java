@@ -34,7 +34,7 @@ public class HibernateManager {
         }
     }
 
-    public void saveHero(String name, HeroClass heroClass, Artifact artifact, int attack, int defense, int hitPoints, int x, int y) {
+    public void saveHero(String name, HeroClass heroClass, Artifact artifact, int attack, int defense, int hitPoints, int y, int x) {
         Session session = null;
 
         try {
@@ -49,8 +49,8 @@ public class HibernateManager {
             hero.setAttack(attack);
             hero.setDefense(defense);
             hero.setHitPoints(hitPoints);
-            hero.setX(x);
             hero.setY(y);
+            hero.setX(x);
             session.save(hero);
 
             String hql = "FROM HeroEntity order by id DESC";
@@ -118,7 +118,7 @@ public class HibernateManager {
         try {
             session = sessionFactory.openSession();
             Transaction transaction = session.beginTransaction();
-            String hql = "UPDATE HeroEntity SET x =" + hero.getX() + ", y = " + hero.getY() + " WHERE id =" + hero.getId();
+            String hql = "UPDATE HeroEntity SET y =" + hero.getY() + ", x = " + hero.getX() + " WHERE id =" + hero.getId();
             Query query = session.createQuery(hql);
             query.executeUpdate();
             transaction.commit();

@@ -9,7 +9,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +25,7 @@ public class Playground implements KeyListener {
     private JFrame frame;
     private JLabel[][] iconLabels;
     private JLabel experienceLabel;
+    private JLabel hitLabel;
     private Image heroImage;
     private HibernateManager hibernateManager;
     private List<RenderedEntity> renderedEntities;
@@ -107,23 +107,36 @@ public class Playground implements KeyListener {
 
         JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
+        infoPanel.setBorder(BorderFactory.createTitledBorder("Hero Info"));
+
+        Font font = new Font("Verdana", Font.PLAIN, 12);
+
+        JLabel pictureLabel = new JLabel(new ImageIcon(heroImage));
+        pictureLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel nameLabel = new JLabel("Name: " + game.getHero().getName());
         nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        nameLabel.setFont(font);
         JLabel classLabel = new JLabel("Hero Class: " + game.getHero().getHeroClass());
         classLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        classLabel.setFont(font);
         JLabel levelLabel = new JLabel("Level: " + game.getHero().getLevel());
         levelLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        levelLabel.setFont(font);
         experienceLabel = new JLabel("Experience: " + game.getHero().getExperience());
         experienceLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        experienceLabel.setFont(font);
         JLabel attackLabel = new JLabel("Attack: " + game.getHero().getAttack());
         attackLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        attackLabel.setFont(font);
         JLabel defenseLabel = new JLabel("Defense: " + game.getHero().getDefense());
         defenseLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        JLabel hitLabel = new JLabel("Hit Points: " + game.getHero().getHitPoints());
+        defenseLabel.setFont(font);
+        hitLabel = new JLabel("Hit Points: " + game.getHero().getHitPoints());
         hitLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        hitLabel.setFont(font);
 
-        //nameLabel.setFont(new Font("Serif", Font.BOLD, 22));
+        infoPanel.add(pictureLabel);
         infoPanel.add(nameLabel);
         infoPanel.add(classLabel);
         infoPanel.add(experienceLabel);
@@ -156,6 +169,14 @@ public class Playground implements KeyListener {
         System.out.println("Map size = " + mapSize);
     }
 
+    public void updateHitPoints(int hitPoints) {
+        hitLabel.setText("Hit Points: " + hitPoints);
+    }
+
+    public void updateExperience(int experience) {
+        experienceLabel.setText("Experience: " + experience);
+    }
+
     public int chooseAction(int y, int x) {
         RenderedEntity entity = null;
 
@@ -169,7 +190,7 @@ public class Playground implements KeyListener {
 
         Object[] options = {"Run", "Fight"};
         int result = JOptionPane.showOptionDialog(null,
-                entity.getVillain().getName() + "\n" + "Level " + entity.getVillain().getLevel(),
+                entity.getVillain().getName() + "\n" + "Attack: " + entity.getVillain().getAttack(),
                 "Fight or run?",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
@@ -179,18 +200,35 @@ public class Playground implements KeyListener {
         return result;
     }
 
-    public void showMessageDialog() {
-        System.out.println("Showing combat dialog");
-        String[] buttons = {"Fight", "Run"};
-        JOptionPane.showMessageDialog(
-                null,
-                "Villain are here", "Fight or run?"
-                ,
-                JOptionPane.INFORMATION_MESSAGE);
+    public void showMessageDialog(int flag, int val) {
+        ImageIcon icon1 = new ImageIcon(getClass().getResource("/message/battle.png"));
+        ImageIcon icon2 = new ImageIcon(getClass().getResource("/message/battle.png"));
+        ImageIcon icon3 = new ImageIcon(getClass().getResource("/message/award.png"));
+        ImageIcon icon4 = new ImageIcon(getClass().getResource("/message/swords.png"));
+
+        if (flag == 1) {
+            JOptionPane.showInternalMessageDialog(null, "Level " + (game.getHero().getLevel() + 1),
+                    "Level Up", PLAIN_MESSAGE, icon2);
+            renderedEntities.clear();
+            frame.dispose();
+        } else if (flag == 2) {
+            JOptionPane.showMessageDialog(null, "You are lucky!\n+" + val + " experience.",
+                    "Win a fight", JOptionPane.PLAIN_MESSAGE, icon3);
+        } else if (flag == 3) {
+            JOptionPane.showMessageDialog(null, "Not so fast", "Fight anyway",
+                    INFORMATION_MESSAGE, icon1);
+        } else if (flag == 4) {
+            JOptionPane.showMessageDialog(null, "You lose!\nYour score: " + val,
+                    "GAME OVER", JOptionPane.PLAIN_MESSAGE, icon4);
+        }
+        else if (flag == 5) {
+            JOptionPane.showMessageDialog(null, "Villain wins this fight!\nDamage: " + val,
+                    "Lose a fight", JOptionPane.PLAIN_MESSAGE, icon2);
+        }
 
     }
 
-    public void renderHero(int oldX, int oldY, int newX, int newY) {
+    public void renderHero(int oldY, int oldX, int newY, int newX) {
         iconLabels[oldY][oldX].remove(heroLabel);
 
         frame.revalidate();
@@ -225,6 +263,22 @@ public class Playground implements KeyListener {
 
             renderedEntities.add(new RenderedEntity(game.getVillains().get(i), villainLabel, villainImage));
         }
+    }
+
+    public void removeVillain(int y, int x) {
+        for (int i = 0; i < renderedEntities.size(); i++) {
+            if (y == renderedEntities.get(i).getVillain().getY() && x == renderedEntities.get(i).getVillain().getX()) {
+                iconLabels[y][x].remove(renderedEntities.get(i).getLabel());
+                renderedEntities.remove(i);
+                break;
+            }
+        }
+
+        frame.revalidate();
+        frame.repaint();
+
+        iconLabels[y][x].revalidate();
+        iconLabels[y][x].repaint();
     }
 
     @Override

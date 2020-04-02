@@ -10,11 +10,11 @@ public class Villain {
     private int attack;
     private int defense;
     private int hitPoints;
-    private int x;
     private int y;
+    private int x;
 
     public Villain(int id, String name, int level,
-                int attack, int defense, int hitPoints, int x, int y) {
+                int attack, int defense, int hitPoints, int y, int x) {
 
         this.id = id;
         this.name = name;
@@ -22,8 +22,9 @@ public class Villain {
         this.attack = attack;
         this.defense = defense;
         this.hitPoints = hitPoints;
-        this.x = x;
         this.y = y;
+        this.x = x;
+
     }
 
     public int getId() {
@@ -74,19 +75,19 @@ public class Villain {
         this.hitPoints = hitPoints;
     }
 
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
     public int getY() {
         return y;
     }
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
     }
 }

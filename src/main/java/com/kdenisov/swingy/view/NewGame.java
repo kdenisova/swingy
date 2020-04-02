@@ -166,13 +166,14 @@ public class NewGame {
             BufferedImage img = null;
             String imageName = null;
 
+            hitPoints = 100;
+
             if (artefactBox.getSelectedIndex() >= 0)
                 artefactBox.setSelectedIndex(-1);
             if (heroClassBox.getSelectedItem().equals(HeroClass.Elf)) {
                 imageName = "/Users/angrynimfa/projects/swingy/src/main/resources/heroes/Elf.png";
                 attack = 100;
                 defense = 50;
-                hitPoints = 15;
                 attackField.setText(String.valueOf(attack));
                 defenseField.setText(String.valueOf(defense));
                 hitField.setText(String.valueOf(hitPoints));
@@ -180,7 +181,6 @@ public class NewGame {
                 imageName = "/Users/angrynimfa/projects/swingy/src/main/resources/heroes/Dwarf.png";
                 attack = 110;
                 defense = 60;
-                hitPoints = 12;
                 attackField.setText(String.valueOf(attack));
                 defenseField.setText(String.valueOf(defense));
                 hitField.setText(String.valueOf(hitPoints));
@@ -189,7 +189,6 @@ public class NewGame {
                 imageName = "/Users/angrynimfa/projects/swingy/src/main/resources/heroes/Wizard.png";
                 attack = 90;
                 defense = 30;
-                hitPoints = 10;
                 attackField.setText(String.valueOf(attack));
                 defenseField.setText(String.valueOf(defense));
                 hitField.setText(String.valueOf(hitPoints));

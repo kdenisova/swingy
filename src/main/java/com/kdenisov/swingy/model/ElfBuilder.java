@@ -71,16 +71,16 @@ public class ElfBuilder implements Builder {
     }
 
     @Override
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    @Override
     public void setY(int y) {
         this.y = y;
     }
 
+    @Override
+    public void setX(int x) {
+        this.x = x;
+    }
+
     public Elf getResult() {
-        return new Elf(id, name, heroClass, level, experience, attack, defense, hitPoints, artifacts, heroImage, x, y);
+        return new Elf(id, name, heroClass, level, experience, attack, defense, hitPoints, artifacts, heroImage, y, x);
     }
 }

@@ -11,8 +11,8 @@ public class WizardBuilder implements Builder {
     private int attack;
     private int defense;
     private int hitPoints;
-    private int x;
     private int y;
+    private int x;
     private ArrayList<Artifact> artifacts;
     private String heroImage;
 
@@ -71,17 +71,17 @@ public class WizardBuilder implements Builder {
     }
 
     @Override
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    @Override
     public void setY(int y) {
         this.y = y;
     }
 
+    @Override
+    public void setX(int x) {
+        this.x = x;
+    }
+
     public Wizard getResult() {
-        return new Wizard(id, name, heroClass, level, experience, attack, defense, hitPoints, artifacts, heroImage, x, y);
+        return new Wizard(id, name, heroClass, level, experience, attack, defense, hitPoints, artifacts, heroImage, y, x);
     }
 
 }

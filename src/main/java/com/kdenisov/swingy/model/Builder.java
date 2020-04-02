@@ -11,6 +11,6 @@ public interface Builder {
     void setHitPoints(int hitPoints);
     void setArtefact(Artifact artifact);
     void setImage(String heroImage);
-    void setX(int x);
     void setY(int y);
+    void setX(int x);
 }
