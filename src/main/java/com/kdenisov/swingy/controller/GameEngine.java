@@ -31,6 +31,16 @@ public class GameEngine {
         playground.render();
     }
 
+    public void clear() {
+        setMapSize();
+        hero.setY(mapSize / 2);
+        hero.setX(mapSize / 2);
+        hibernateManager.updateHero(hero);
+        villains.clear();
+
+        play();
+    }
+
     public int randomGenerator(int n) {
         return (int) (Math.random() * (n));
     }
@@ -133,6 +143,7 @@ public class GameEngine {
             playground.updateExperience(hero.getExperience());
             playground.removeVillain(y, x);
             villains.remove(villain);
+            playground.updateGameAction("Earned " + experience + " experience after fight with " + villain.getName());
         }
         return result;
     }
@@ -168,24 +179,40 @@ public class GameEngine {
 
         if (isOccupied(y, x)) {
             int result = playground.chooseAction(y, x);
-            if (result == 1)
+            if (result == 1) {
                 if (!fight(y, x))
                     return;
-
-                if (checkLevel()) {
-                    playground.showMessageDialog(1, 0);
-                    hero.setLevel(hero.getLevel() + 1);
-                    status = false;
+            }
+            else {
+                if (randomGenerator(2) == 1) {
+                    playground.updateGameAction("Couldn't run from the villain");
+                    playground.showMessageDialog(3, 0);
+                    if (!fight(y, x))
+                        return;
                 }
+                else {
+                    playground.updateGameAction("Escaped from the villain");
+                    return;
+                }
+            }
         }
 
-        int oldY = hero.getY();
-        int oldX = hero.getX();
+        if (status) {
+            int oldY = hero.getY();
+            int oldX = hero.getX();
 
-        hero.setY(y);
-        hero.setX(x);
+            hero.setY(y);
+            hero.setX(x);
 
-        playground.renderHero(oldY, oldX, y, x);
+            playground.renderHero(oldY, oldX, y, x);
+
+            if (checkLevel()) {
+                playground.showMessageDialog(1, 0);
+                hero.setLevel(hero.getLevel() + 1);
+                status = false;
+                clear();
+            }
+        }
     }
 
     public Hero getHero() {

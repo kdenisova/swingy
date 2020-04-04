@@ -6,6 +6,7 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HibernateManager {
@@ -112,13 +113,38 @@ public class HibernateManager {
         }
     }
 
+    public List<Artifact> getListArtifacts(int id) {
+        Session session = null;
+
+        try {
+            session = sessionFactory.openSession();
+        String hql = "FROM ArtifactsEntity WHERE heroId = " + id;
+            Query query = session.createQuery(hql);
+            List<ArtifactsEntity> artifactsEntities = query.list();
+            List<Artifact> artifacts = new ArrayList<>();
+
+            for (ArtifactsEntity artifactsEntity : artifactsEntities) {
+                artifacts.add(artifactsEntity.getArtifact());
+            }
+
+            return artifacts;
+        } finally {
+            session.close();
+        }
+    }
+
     public void updateHero(Hero hero) {
         Session session = null;
 
         try {
             session = sessionFactory.openSession();
             Transaction transaction = session.beginTransaction();
-            String hql = "UPDATE HeroEntity SET y =" + hero.getY() + ", x = " + hero.getX() + " WHERE id =" + hero.getId();
+            String hql = "UPDATE HeroEntity SET level =" + hero.getLevel() +
+                    ", experience = " + hero.getExperience() + ", attack = " +
+                    hero.getAttack() + ", defense = " + hero.getDefense() +
+                    ", hitPoints = " + hero.getHitPoints() + ", y = " + hero.getY() + ", x = " +
+                    hero.getX() + " WHERE id =" + hero.getId();
+
             Query query = session.createQuery(hql);
             query.executeUpdate();
             transaction.commit();

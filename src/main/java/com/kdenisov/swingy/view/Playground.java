@@ -6,6 +6,7 @@ import com.kdenisov.swingy.model.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
@@ -29,6 +30,8 @@ public class Playground implements KeyListener {
     private Image heroImage;
     private HibernateManager hibernateManager;
     private List<RenderedEntity> renderedEntities;
+    private JLabel[] artifactsLabel;
+    private JTextArea actionArea;
 
     public Playground(HibernateManager hibernateManager, int mapSize, GameEngine game) {
         this.hibernateManager = hibernateManager;
@@ -76,16 +79,16 @@ public class Playground implements KeyListener {
         JPanel mapPanel = new JPanel(grid);
 
         iconLabels = new JLabel[mapSize][mapSize];
-        BufferedImage bufferedMapImage = null;
+        BufferedImage bufferedImage = null;
 
         try {
-            bufferedMapImage = ImageIO.read(getClass().getResource("/grass.png"));
+            bufferedImage = ImageIO.read(getClass().getResource("/grass.png"));
         } catch (IOException ex) {
             ex.printStackTrace();
         }
 
-        Image mapImage = bufferedMapImage.getScaledInstance(getIconSize(), getIconSize() + 10, Image.SCALE_SMOOTH);
-        ImageIcon mapIcon = new ImageIcon(mapImage);
+        Image image = bufferedImage.getScaledInstance(getIconSize(), getIconSize() + 10, Image.SCALE_SMOOTH);
+        ImageIcon mapIcon = new ImageIcon(image);
 
         for (int y = 0; y < mapSize; y++) {
             for (int x = 0; x < mapSize; x++) {
@@ -144,6 +147,44 @@ public class Playground implements KeyListener {
         infoPanel.add(defenseLabel);
         infoPanel.add(hitLabel);
 
+        JPanel artifactPanel = new JPanel(new GridLayout());
+        artifactPanel.setBorder(BorderFactory.createTitledBorder("Artifacts"));
+
+        artifactsLabel = new JLabel[5];
+
+        for (int i = 0; i < 5; i++) {
+            artifactsLabel[i] = new JLabel();
+
+            if (i >= 1 && i <= game.getHero().getArtifacts().size()) {
+                try {
+                    bufferedImage = ImageIO.read(getClass().getResource("/artifacts/" + game.getHero().getArtifacts().get(i - 1) + ".png"));
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+
+                image = bufferedImage.getScaledInstance(iconSize + 10, iconSize + 10, Image.SCALE_SMOOTH);
+                artifactsLabel[i].setIcon(new ImageIcon(image));
+            }
+            artifactPanel.add(artifactsLabel[i]);
+        }
+
+        infoPanel.add(artifactPanel);
+
+        JPanel actionPanel = new JPanel(new BorderLayout());
+        actionPanel.setBorder(BorderFactory.createTitledBorder("Game action"));
+
+        actionArea = new JTextArea();
+        actionArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+        scrollPane.setViewportView(actionArea);
+        actionArea.setText("Let the adventure begin!\n");
+        actionPanel.add(scrollPane);
+
+
+        infoPanel.add(actionPanel);
         frame.add(BorderLayout.CENTER, infoPanel);
 
         JPanel buttonPanel = new JPanel();
@@ -167,6 +208,10 @@ public class Playground implements KeyListener {
 
         System.out.println(game.getHero().getName() + " " + game.getHero().getHeroClass());
         System.out.println("Map size = " + mapSize);
+    }
+
+    public void updateGameAction(String str) {
+        actionArea.append(str + ".\n");
     }
 
     public void updateHitPoints(int hitPoints) {
@@ -196,7 +241,7 @@ public class Playground implements KeyListener {
                 JOptionPane.QUESTION_MESSAGE,
                 icon,
                 options,
-                options[0]);
+                options[1]);
         return result;
     }
 
@@ -215,7 +260,7 @@ public class Playground implements KeyListener {
             JOptionPane.showMessageDialog(null, "You are lucky!\n+" + val + " experience.",
                     "Win a fight", JOptionPane.PLAIN_MESSAGE, icon3);
         } else if (flag == 3) {
-            JOptionPane.showMessageDialog(null, "Not so fast", "Fight anyway",
+            JOptionPane.showMessageDialog(null, "Not so fast", "Fight anyway!",
                     INFORMATION_MESSAGE, icon1);
         } else if (flag == 4) {
             JOptionPane.showMessageDialog(null, "You lose!\nYour score: " + val,

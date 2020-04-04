@@ -27,7 +27,7 @@ public class Director {
         builder.setHitPoints(heroEntity.getHitPoints());
         builder.setY(heroEntity.getY());
         builder.setX(heroEntity.getX());
-        builder.setArtefact(Artifact.Weapon);
+        //builder.setArtefact(Artifact.Weapon);
         builder.setImage("/Users/angrynimfa/projects/swingy/src/main/resources/heroes/Elf.png");
     }
 
@@ -42,7 +42,7 @@ public class Director {
         builder.setHitPoints(heroEntity.getHitPoints());
         builder.setY(heroEntity.getY());
         builder.setX(heroEntity.getX());
-        builder.setArtefact(Artifact.Helm);
+        //builder.setArtefact(Artifact.Helm);
         builder.setImage("/Users/angrynimfa/projects/swingy/src/main/resources/heroes/Dwarf.png");
     }
 
@@ -57,7 +57,7 @@ public class Director {
         builder.setHitPoints(heroEntity.getHitPoints());
         builder.setY(heroEntity.getY());
         builder.setX(heroEntity.getX());
-        builder.setArtefact(Artifact.Armor);
+        //builder.setArtefact(Artifact.Armor);
         builder.setImage("/Users/angrynimfa/projects/swingy/src/main/resources/heroes/Wizard.png");
     }
 

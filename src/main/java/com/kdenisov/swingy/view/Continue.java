@@ -51,6 +51,7 @@ public class Continue implements ActionListener {
                 super.mousePressed(e);
                 if (e.getClickCount() == 2 && table.getSelectedRow() >= 0) {
                     Hero hero = HeroFactory.getInstance().buildHero(heroEntities.get(table.getSelectedRow()));
+                    hero.setArtifacts(hibernateManager.getListArtifacts(hero.getId()));
                     System.out.println(hero.getName() + " " + hero.getHeroClass());
                     GameEngine gameEngine = new GameEngine(hibernateManager, hero);
                     gameEngine.play();
@@ -94,6 +95,7 @@ public class Continue implements ActionListener {
         if (e.getSource() == continueButton) {
             if (table.getSelectedRow() >= 0) {
                 Hero hero = HeroFactory.getInstance().buildHero(heroEntities.get(table.getSelectedRow()));
+                hero.setArtifacts(hibernateManager.getListArtifacts(hero.getId()));
                 System.out.println(hero.getName() + " " + hero.getHeroClass());
                 GameEngine gameEngine = new GameEngine(hibernateManager, hero);
                 gameEngine.play();

@@ -1,5 +1,7 @@
 package com.kdenisov.swingy.model;
 
+import java.util.List;
+
 public interface Builder {
     void setId(int id);
     void setName(String name);
@@ -9,7 +11,7 @@ public interface Builder {
     void setAttack(int attack);
     void setDefense(int defense);
     void setHitPoints(int hitPoints);
-    void setArtefact(Artifact artifact);
+    //void setArtefact(List<Artifact> artifacts);
     void setImage(String heroImage);
     void setY(int y);
     void setX(int x);

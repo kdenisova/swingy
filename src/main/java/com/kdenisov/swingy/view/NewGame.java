@@ -142,6 +142,7 @@ public class NewGame {
                         Integer.parseInt(defenseField.getText()), Integer.parseInt(hitField.getText()), 9 / 2, 9 / 2);
 
                 Hero hero = HeroFactory.getInstance().buildHero(hibernateManager.getNewHero());
+                hero.setArtifacts(hibernateManager.getListArtifacts(hero.getId()));
                 GameEngine gameEngine = new GameEngine(hibernateManager, hero);
                 gameEngine.play();
 

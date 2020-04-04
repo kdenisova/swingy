@@ -1,6 +1,7 @@
 package com.kdenisov.swingy.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Hero {
     private int id;
@@ -13,11 +14,11 @@ public class Hero {
     private int hitPoints;
     private int y;
     private int x;
-    private ArrayList<Artifact> artifacts;
+    private List<Artifact> artifacts;
     private String heroImage;
 
     public Hero(int id, String name, HeroClass heroClass, int level, int experience,
-                int attack, int defense, int hitPoints, ArrayList<Artifact> artifacts,
+                int attack, int defense, int hitPoints, List<Artifact> artifacts,
                 String heroImage, int y, int x) {
 
         this.id = id;
@@ -125,5 +126,16 @@ public class Hero {
 
     public void setX(int x) {
         this.x = x;
+    }
+
+    public List<Artifact> getArtifacts() {
+        return artifacts;
+    }
+
+    public void setArtifacts(List<Artifact> artifacts) {
+        this.artifacts = artifacts;
+//        if (this.artifacts == null)
+//            this.artifacts = new ArrayList<>();
+//        this.artifacts.add(artifact);
     }
 }

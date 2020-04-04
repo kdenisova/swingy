@@ -1,6 +1,7 @@
 package com.kdenisov.swingy.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class WizardBuilder implements Builder {
     private int id;
@@ -13,7 +14,7 @@ public class WizardBuilder implements Builder {
     private int hitPoints;
     private int y;
     private int x;
-    private ArrayList<Artifact> artifacts;
+    private List<Artifact> artifacts;
     private String heroImage;
 
     @Override
@@ -56,14 +57,14 @@ public class WizardBuilder implements Builder {
         this.hitPoints = hitPoints;
     }
 
-    @Override
-    public void setArtefact(Artifact artifact) {
-        if (this.artifacts == null) {
-            this.artifacts = new ArrayList<>();
-        }
-
-        this.artifacts.add(artifact);
-    }
+//    @Override
+//    public void setArtefact(Artifact artifact) {
+//        if (this.artifacts == null) {
+//            this.artifacts = new ArrayList<>();
+//        }
+//
+//        this.artifacts.add(artifact);
+//    }
 
     @Override
     public void setImage(String heroImage) {
