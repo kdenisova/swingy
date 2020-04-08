@@ -154,6 +154,23 @@ public class HibernateManager {
         }
     }
 
+    public void updateArtifacts(Hero hero, Artifact artifact) {
+        Session session = null;
+
+        try {
+            session = sessionFactory.openSession();
+            Transaction transaction = session.beginTransaction();
+            ArtifactsEntity artifactsEntity = new ArtifactsEntity();
+            artifactsEntity.setHeroId(hero.getId());
+            artifactsEntity.setArtifact(artifact);
+            session.save(artifactsEntity);
+            transaction.commit();
+
+        } finally {
+            session.close();
+        }
+    }
+
     public void createVillains() {
         Session session = null;
 

@@ -1,9 +1,6 @@
 package com.kdenisov.swingy.controller;
 
-import com.kdenisov.swingy.model.Hero;
-import com.kdenisov.swingy.model.HibernateManager;
-import com.kdenisov.swingy.model.Villain;
-import com.kdenisov.swingy.model.VillainEntity;
+import com.kdenisov.swingy.model.*;
 import com.kdenisov.swingy.view.Playground;
 
 import java.util.ArrayList;
@@ -73,16 +70,65 @@ public class GameEngine {
     }
 
     public boolean isOccupied(int y, int x) {
-        //System.out.println("size = " + villains.size());
         for (Villain villian : villains) {
-            //System.out.println(String.format("The hero is in the [%d,%d] and the %s in in the [%d,%d]", x, y, villian.getName(), villian.getX(), villian.getY() ));
             if (y == villian.getY() && x == villian.getX()) {
-                //System.out.println("Oops");
                 return true;
             }
-            //System.out.println("Missed! Ha-ha");
         }
         return false;
+    }
+
+    public void findArtifact() {
+        int n = 0;
+        Artifact artifact = null;
+
+        while (n == 0) {
+            n = randomGenerator(3);
+
+            switch (n) {
+                case 1:
+                    artifact = Artifact.Helm;
+                    break;
+                case 2:
+                    artifact = Artifact.Weapon;
+                    break;
+                default:
+                    artifact = Artifact.Armor;
+                    break;
+            }
+
+            if (hero.getArtifacts().contains(artifact))
+                n = 0;
+            else
+                break;
+        }
+
+        hero.getArtifacts().add(artifact);
+        hibernateManager.updateArtifacts(hero, artifact);
+        playground.updateArtifacts();
+
+        String msg = null;
+        int points = 10 * hero.getLevel();
+
+        switch (artifact) {
+            case Armor:
+                hero.setDefense(hero.getDefense() + points);
+                playground.updateDefense(hero.getDefense());
+                msg = "Defense";
+                break;
+            case Helm:
+                hero.setHitPoints(hero.getHitPoints() + points);
+                playground.updateHitPoints(hero.getHitPoints());
+                msg = "Hit Points";
+                break;
+            case Weapon:
+                hero.setAttack(hero.getAttack() + points);
+                playground.updateAttack(hero.getAttack());
+                msg = "Attack";
+                break;
+        }
+
+        playground.updateGameAction("Found " + artifact + ". + " + points + " to " + msg);
     }
 
     public boolean fight(int y, int x) {
@@ -97,7 +143,6 @@ public class GameEngine {
         }
 
         int hitPoints, experience;
-
         if (hero.getAttack() < villain.getAttack()) {
             hitPoints = (hero.getHitPoints() + hero.getDefense()) - villain.getAttack();
 
@@ -105,6 +150,7 @@ public class GameEngine {
                 hero.setHitPoints(hitPoints);
                 playground.updateHitPoints(hitPoints);
                 playground.showMessageDialog(5, villain.getAttack() - hero.getDefense());
+                playground.updateGameAction(villain.getName() + " does " + (villain.getAttack() - hero.getDefense()) + " damage");
                 playground.removeVillain(y, x);
                 villains.remove(villain);
             }
@@ -112,6 +158,7 @@ public class GameEngine {
                 hero.setHitPoints(0);
                 playground.updateHitPoints(0);
                 playground.showMessageDialog(4, hero.getExperience());
+                playground.updateGameAction("Too much damage from " + villain.getName());
                 result = false;
                 status = false;
             }
@@ -125,6 +172,8 @@ public class GameEngine {
                 playground.showMessageDialog(2, experience);
                 playground.updateExperience(hero.getExperience());
                 playground.updateHitPoints(hitPoints);
+                playground.updateGameAction(villain.getName() + " does " + hitPoints + " damage");
+                playground.updateGameAction("Earned " + experience + " experience after fight with " + villain.getName());
                 playground.removeVillain(y, x);
                 villains.remove(villain);
             }
@@ -132,6 +181,7 @@ public class GameEngine {
                 hero.setHitPoints(0);
                 playground.updateHitPoints(0);
                 playground.showMessageDialog(4, hero.getExperience());
+                playground.updateGameAction("Too much damage from " + villain.getName());
                 result = false;
                 status = false;
             }
@@ -145,6 +195,12 @@ public class GameEngine {
             villains.remove(villain);
             playground.updateGameAction("Earned " + experience + " experience after fight with " + villain.getName());
         }
+
+        if (status && hero.getArtifacts().size() < 3) {
+            if (randomGenerator(100) % 7 == 0)
+                findArtifact();
+        }
+
         return result;
     }
 

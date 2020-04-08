@@ -26,6 +26,8 @@ public class Playground implements KeyListener {
     private JFrame frame;
     private JLabel[][] iconLabels;
     private JLabel experienceLabel;
+    private JLabel attackLabel;
+    private JLabel defenseLabel;
     private JLabel hitLabel;
     private Image heroImage;
     private HibernateManager hibernateManager;
@@ -129,10 +131,10 @@ public class Playground implements KeyListener {
         experienceLabel = new JLabel("Experience: " + game.getHero().getExperience());
         experienceLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         experienceLabel.setFont(font);
-        JLabel attackLabel = new JLabel("Attack: " + game.getHero().getAttack());
+        attackLabel = new JLabel("Attack: " + game.getHero().getAttack());
         attackLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         attackLabel.setFont(font);
-        JLabel defenseLabel = new JLabel("Defense: " + game.getHero().getDefense());
+        defenseLabel = new JLabel("Defense: " + game.getHero().getDefense());
         defenseLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         defenseLabel.setFont(font);
         hitLabel = new JLabel("Hit Points: " + game.getHero().getHitPoints());
@@ -214,12 +216,38 @@ public class Playground implements KeyListener {
         actionArea.append(str + ".\n");
     }
 
+    public void updateAttack(int attack) {
+        attackLabel.setText("Attack: " + attack);
+    }
+
+    public void updateDefense(int defense) {
+        defenseLabel.setText("Defense: " + defense);
+    }
+
     public void updateHitPoints(int hitPoints) {
         hitLabel.setText("Hit Points: " + hitPoints);
     }
 
     public void updateExperience(int experience) {
         experienceLabel.setText("Experience: " + experience);
+    }
+
+    public void updateArtifacts() {
+        BufferedImage bufferedImage = null;
+        int i = game.getHero().getArtifacts().size();
+        try {
+            bufferedImage = ImageIO.read(getClass().getResource("/artifacts/" +
+                    game.getHero().getArtifacts().get(i - 1) + ".png"));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+        Image image = bufferedImage.getScaledInstance(iconSize + 10, iconSize + 10, Image.SCALE_SMOOTH);
+        ImageIcon icon = new ImageIcon(image);
+        artifactsLabel[i].setIcon(icon);
+
+        JOptionPane.showMessageDialog(null, "You found artifact!\n",
+                "A New Artifact", JOptionPane.PLAIN_MESSAGE, icon);
     }
 
     public int chooseAction(int y, int x) {
@@ -270,7 +298,6 @@ public class Playground implements KeyListener {
             JOptionPane.showMessageDialog(null, "Villain wins this fight!\nDamage: " + val,
                     "Lose a fight", JOptionPane.PLAIN_MESSAGE, icon2);
         }
-
     }
 
     public void renderHero(int oldY, int oldX, int newY, int newX) {
