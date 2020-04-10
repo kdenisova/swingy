@@ -165,39 +165,30 @@ public class NewGame {
         @Override
         public void actionPerformed(ActionEvent e) {
             BufferedImage img = null;
-            String imageName = null;
 
             hitPoints = 100;
 
             if (artefactBox.getSelectedIndex() >= 0)
                 artefactBox.setSelectedIndex(-1);
+
             if (heroClassBox.getSelectedItem().equals(HeroClass.Elf)) {
-                imageName = "/Users/angrynimfa/projects/swingy/src/main/resources/heroes/Elf.png";
                 attack = 100;
                 defense = 50;
-                attackField.setText(String.valueOf(attack));
-                defenseField.setText(String.valueOf(defense));
-                hitField.setText(String.valueOf(hitPoints));
             } else if (heroClassBox.getSelectedItem().equals(HeroClass.Dwarf)) {
-                imageName = "/Users/angrynimfa/projects/swingy/src/main/resources/heroes/Dwarf.png";
                 attack = 110;
                 defense = 60;
-                attackField.setText(String.valueOf(attack));
-                defenseField.setText(String.valueOf(defense));
-                hitField.setText(String.valueOf(hitPoints));
             }
             else {
-                imageName = "/Users/angrynimfa/projects/swingy/src/main/resources/heroes/Wizard.png";
                 attack = 90;
                 defense = 30;
-                attackField.setText(String.valueOf(attack));
-                defenseField.setText(String.valueOf(defense));
-                hitField.setText(String.valueOf(hitPoints));
             }
 
+            attackField.setText(String.valueOf(attack));
+            defenseField.setText(String.valueOf(defense));
+            hitField.setText(String.valueOf(hitPoints));
+
             try {
-                assert imageName != null;
-                img = ImageIO.read(new File(imageName));
+                img = ImageIO.read(getClass().getResource("/heroes/" + heroClassBox.getSelectedItem() + ".png"));
             } catch (IOException ex) {
                 ex.printStackTrace();
             }

@@ -15,7 +15,6 @@ public class WizardBuilder implements Builder {
     private int y;
     private int x;
     private List<Artifact> artifacts;
-    private String heroImage;
 
     @Override
     public void setId(int id) {
@@ -67,11 +66,6 @@ public class WizardBuilder implements Builder {
 //    }
 
     @Override
-    public void setImage(String heroImage) {
-        this.heroImage = heroImage;
-    }
-
-    @Override
     public void setY(int y) {
         this.y = y;
     }
@@ -82,7 +76,7 @@ public class WizardBuilder implements Builder {
     }
 
     public Wizard getResult() {
-        return new Wizard(id, name, heroClass, level, experience, attack, defense, hitPoints, artifacts, heroImage, y, x);
+        return new Wizard(id, name, heroClass, level, experience, attack, defense, hitPoints, artifacts, y, x);
     }
 
 }

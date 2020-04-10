@@ -10,7 +10,10 @@ import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,7 +63,7 @@ public class Playground implements KeyListener {
             ex.printStackTrace();
         }
 
-        setIconSize(40);
+        setIconSize(45);
         heroImage = bufferedHeroImage.getScaledInstance(getIconSize(), getIconSize(), Image.SCALE_SMOOTH);
         heroLabel = new JLabel(new ImageIcon(heroImage));
 
@@ -107,6 +110,7 @@ public class Playground implements KeyListener {
         iconLabels[game.getHero().getY()][game.getHero().getX()].addKeyListener(this);
 
         renderVillians();
+        renderObstacle();
 
         frame.add(BorderLayout.WEST, mapPanel);
 
@@ -250,20 +254,21 @@ public class Playground implements KeyListener {
                 "A New Artifact", JOptionPane.PLAIN_MESSAGE, icon);
     }
 
-    public int chooseAction(int y, int x) {
+    public int chooseAction(Villain villain) {
         RenderedEntity entity = null;
 
         for (int i = 0; i < renderedEntities.size(); i++) {
-            if (y == renderedEntities.get(i).getVillain().getY() && x == renderedEntities.get(i).getVillain().getX()) {
+            if (villain.getY() == renderedEntities.get(i).getEntity().getY() && villain.getX() == renderedEntities.get(i).getEntity().getX()) {
                 entity = renderedEntities.get(i);
                 break;
             }
         }
+
         ImageIcon icon = new ImageIcon(entity.getImage());
 
         Object[] options = {"Run", "Fight"};
         int result = JOptionPane.showOptionDialog(null,
-                entity.getVillain().getName() + "\n" + "Attack: " + entity.getVillain().getAttack(),
+                villain.getVillainType() + "\n" + "Attack: " + villain.getAttack(),
                 "Fight or run?",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
@@ -316,30 +321,53 @@ public class Playground implements KeyListener {
 
     public void renderVillians() {
         BufferedImage bufferedImage = null;
-        Image villainImage;
-        JLabel villainLabel;
+        Image image;
+        JLabel label;
 
         for (int i = 0; i < game.getVillains().size(); i++) {
 
             try {
                 bufferedImage = ImageIO.read(getClass().getResource("/villains/" +
-                        game.getVillains().get(i).getName().toLowerCase() + ".png"));
+                        game.getVillains().get(i).getVillainType() + ".png"));
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
 
-            villainImage = bufferedImage.getScaledInstance(getIconSize(), getIconSize(), Image.SCALE_SMOOTH);
-            villainLabel = new JLabel(new ImageIcon(villainImage));
+            image = bufferedImage.getScaledInstance(getIconSize(), getIconSize(), Image.SCALE_SMOOTH);
+            label = new JLabel(new ImageIcon(image));
 
-            iconLabels[game.getVillains().get(i).getY()][game.getVillains().get(i).getX()].add(villainLabel);
+            iconLabels[game.getVillains().get(i).getY()][game.getVillains().get(i).getX()].add(label);
 
-            renderedEntities.add(new RenderedEntity(game.getVillains().get(i), villainLabel, villainImage));
+            renderedEntities.add(new RenderedEntity(game.getVillains().get(i), label, image));
+        }
+    }
+
+    private void renderObstacle() {
+        BufferedImage bufferedImage = null;
+        Image image;
+        JLabel label;
+
+        for (int i = 0; i < game.getObstacles().size(); i++) {
+
+            try {
+                bufferedImage = ImageIO.read(getClass().getResource("/obstacles/" +
+                        game.getObstacles().get(i).getObstacleType() + ".png"));
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+
+            image = bufferedImage.getScaledInstance(getIconSize() - 10, getIconSize() - 10, Image.SCALE_SMOOTH);
+            label = new JLabel(new ImageIcon(image));
+
+            iconLabels[game.getObstacles().get(i).getY()][game.getObstacles().get(i).getX()].add(label);
+
+            renderedEntities.add(new RenderedEntity(game.getObstacles().get(i), label, image));
         }
     }
 
     public void removeVillain(int y, int x) {
         for (int i = 0; i < renderedEntities.size(); i++) {
-            if (y == renderedEntities.get(i).getVillain().getY() && x == renderedEntities.get(i).getVillain().getX()) {
+            if (y == renderedEntities.get(i).getEntity().getY() && x == renderedEntities.get(i).getEntity().getX()) {
                 iconLabels[y][x].remove(renderedEntities.get(i).getLabel());
                 renderedEntities.remove(i);
                 break;
@@ -383,6 +411,21 @@ public class Playground implements KeyListener {
         @Override
         public void actionPerformed(ActionEvent e) {
            hibernateManager.updateHero(game.getHero());
+
+           try {
+               File file = new File(System.getProperty("user.dir") + "/src/main/resources/saved/" +
+                       game.getHero().getId() + ".ser");
+
+               FileOutputStream fileOutputStream = new FileOutputStream(file);
+               ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+               objectOutputStream.writeObject(game.getGameEntities());
+               objectOutputStream.writeObject(game.getVillains());
+               objectOutputStream.writeObject(game.getObstacles());
+               objectOutputStream.close();
+               System.out.println("Saved");
+           } catch (Exception ex) {
+               ex.printStackTrace();
+           }
         }
     }
 

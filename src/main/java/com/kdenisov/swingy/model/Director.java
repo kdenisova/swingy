@@ -28,7 +28,6 @@ public class Director {
         builder.setY(heroEntity.getY());
         builder.setX(heroEntity.getX());
         //builder.setArtefact(Artifact.Weapon);
-        builder.setImage("/Users/angrynimfa/projects/swingy/src/main/resources/heroes/Elf.png");
     }
 
     public static void constructDwarf(Builder builder, HeroEntity heroEntity) {
@@ -43,7 +42,6 @@ public class Director {
         builder.setY(heroEntity.getY());
         builder.setX(heroEntity.getX());
         //builder.setArtefact(Artifact.Helm);
-        builder.setImage("/Users/angrynimfa/projects/swingy/src/main/resources/heroes/Dwarf.png");
     }
 
     public static void constructWizard(Builder builder, HeroEntity heroEntity) {
@@ -58,7 +56,6 @@ public class Director {
         builder.setY(heroEntity.getY());
         builder.setX(heroEntity.getX());
         //builder.setArtefact(Artifact.Armor);
-        builder.setImage("/Users/angrynimfa/projects/swingy/src/main/resources/heroes/Wizard.png");
     }
 
 //    public static void constructVillain(Builder builder, VillainEntity villainEntity) {

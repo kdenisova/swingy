@@ -1,17 +1,17 @@
 package com.kdenisov.swingy.view;
 
-import com.kdenisov.swingy.model.Villain;
+import com.kdenisov.swingy.model.GameEntity;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class RenderedEntity {
-    private Villain villain;
+    private GameEntity entity;
     private JLabel label;
     private Image image;
 
-    public RenderedEntity(Villain villain, JLabel label, Image image) {
-        this.villain = villain;
+    public RenderedEntity(GameEntity entity, JLabel label, Image image) {
+        this.entity = entity;
         this.label = label;
         this.image = image;
     }
@@ -28,11 +28,11 @@ public class RenderedEntity {
         return image;
     }
 
-    public Villain getVillain() {
-        return villain;
+    public GameEntity getEntity() {
+        return entity;
     }
 
-    public void setVillain(Villain villain) {
-        this.villain = villain;
+    public void setVillain(GameEntity entity) {
+        this.entity = entity;
     }
 }

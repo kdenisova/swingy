@@ -98,7 +98,8 @@ public class Continue implements ActionListener {
                 hero.setArtifacts(hibernateManager.getListArtifacts(hero.getId()));
                 System.out.println(hero.getName() + " " + hero.getHeroClass());
                 GameEngine gameEngine = new GameEngine(hibernateManager, hero);
-                gameEngine.play();
+                gameEngine.continueGame();
+                //gameEngine.play();
                 //frame.dispose();
             } else {
                 JOptionPane.showMessageDialog(null, "Please choose a hero",

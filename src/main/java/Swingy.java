@@ -1,5 +1,7 @@
 import com.kdenisov.swingy.model.*;
 import com.kdenisov.swingy.view.GUIRenderer;
+import com.kdenisov.swingy.view.LanternaRenderer;
+import com.kdenisov.swingy.view.Renderer;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -19,11 +21,20 @@ public class Swingy {
 //        s.connectToMySQL();
         HibernateManager hibernateManager = HibernateManager.getHibernateManager();
         //hibernateManager.createVillains();
+        Renderer renderer = null;
         if (args[0].equals("gui")) {
-            GUIRenderer gui = new GUIRenderer();
-            gui.renderMenu(hibernateManager);
+            renderer = new GUIRenderer();
+            //GUIRenderer gui = new GUIRenderer();
+            //gui.renderMenu(hibernateManager);
+        } else if (args[0].equals("console")) {
+            renderer = new LanternaRenderer();
+        }
+        else {
+            System.out.println("usage: java -jar swingy.jar [console/gui]");
+            System.exit(1);
         }
 
+        renderer.renderMenu(hibernateManager);
     }
 
     public void connectToMySQL() {

@@ -15,11 +15,10 @@ public class Hero {
     private int y;
     private int x;
     private List<Artifact> artifacts;
-    private String heroImage;
 
     public Hero(int id, String name, HeroClass heroClass, int level, int experience,
                 int attack, int defense, int hitPoints, List<Artifact> artifacts,
-                String heroImage, int y, int x) {
+                int y, int x) {
 
         this.id = id;
         this.name = name;
@@ -30,7 +29,6 @@ public class Hero {
         this.defense = defense;
         this.hitPoints = hitPoints;
         this.artifacts = artifacts;
-        this.heroImage = heroImage;
         this.y = y;
         this.x = x;
 
@@ -102,14 +100,6 @@ public class Hero {
 
     public void setHeroClass(HeroClass heroClass) {
         this.heroClass = heroClass;
-    }
-
-    public String getHeroImage() {
-        return heroImage;
-    }
-
-    public void setHeroImage(String heroImage) {
-        this.heroImage = heroImage;
     }
 
     public int getY() {

@@ -15,7 +15,6 @@ public class ElfBuilder implements Builder {
     private int x;
     private int y;
     private List<Artifact> artifacts;
-    private String heroImage;
 
     @Override
     public void setId(int id) {
@@ -67,11 +66,6 @@ public class ElfBuilder implements Builder {
 //    }
 
     @Override
-    public void setImage(String heroImage) {
-        this.heroImage = heroImage;
-    }
-
-    @Override
     public void setY(int y) {
         this.y = y;
     }
@@ -82,6 +76,6 @@ public class ElfBuilder implements Builder {
     }
 
     public Elf getResult() {
-        return new Elf(id, name, heroClass, level, experience, attack, defense, hitPoints, artifacts, heroImage, y, x);
+        return new Elf(id, name, heroClass, level, experience, attack, defense, hitPoints, artifacts, y, x);
     }
 }
