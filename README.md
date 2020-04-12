@@ -41,4 +41,10 @@ You can play game in two different modes:
 ## Screenshots
 
 
-![alt text]()
+![alt text](https://github.com/kdenisova/swingy/blob/master/screenshots/Menu.jpeg)
+
+![alt text](https://github.com/kdenisova/swingy/blob/master/screenshots/NewGame.jpeg)
+
+![alt text](https://github.com/kdenisova/swingy/blob/master/screenshots/Playground.jpeg)
+
+![alt text](https://github.com/kdenisova/swingy/blob/master/screenshots/FightOrRun.jpeg)
