@@ -8,6 +8,7 @@ public enum ObstacleType {
     Reed,
     Fire,
     Flower,
+    RedFlower,
     Sunflower;
 
     public static ObstacleType getRandomObstacle() {
