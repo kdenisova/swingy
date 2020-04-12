@@ -38,11 +38,14 @@ public class GameEngine {
         setMapSize();
 
         try {
-            File file = new File(System.getProperty("user.dir") + "/src/main/resources/saved/" +
-                    hero.getId() + ".ser");
-            FileInputStream fileInputStream = new FileInputStream(file);
-            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+            InputStream inputStream = hibernateManager.loadGame(this.hero.getId());
+            if (inputStream == null) {
+                // ToDo: new game
+                System.out.println("No savegame. Starting new game.");
+                return;
+            }
 
+            ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
             entities = (List<GameEntity>) objectInputStream.readObject();
             villains = (List<Villain>) objectInputStream.readObject();
             obstacles = (List<Obstacle>) objectInputStream.readObject();

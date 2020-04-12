@@ -14,6 +14,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -410,22 +414,15 @@ public class Playground implements KeyListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-           hibernateManager.updateHero(game.getHero());
+            hibernateManager.updateHero(game.getHero());
 
-           try {
-               File file = new File(System.getProperty("user.dir") + "/src/main/resources/saved/" +
-                       game.getHero().getId() + ".ser");
+            try {
+                hibernateManager.saveGame(game);
 
-               FileOutputStream fileOutputStream = new FileOutputStream(file);
-               ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-               objectOutputStream.writeObject(game.getGameEntities());
-               objectOutputStream.writeObject(game.getVillains());
-               objectOutputStream.writeObject(game.getObstacles());
-               objectOutputStream.close();
-               System.out.println("Saved");
-           } catch (Exception ex) {
-               ex.printStackTrace();
-           }
+                System.out.println("Saved");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
     }
 

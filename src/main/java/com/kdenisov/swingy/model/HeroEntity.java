@@ -19,6 +19,7 @@ public class HeroEntity {
     private ArrayList<Artifact> artifacts;
     private int y;
     private int x;
+    private byte[] save;
 
 
     public HeroEntity(String name, HeroClass heroClass, int level, int experience, int attack, int defense, int hitPoints, ArrayList<Artifact> artifacts) {
@@ -126,6 +127,16 @@ public class HeroEntity {
 
     public void setX(Integer x) {
         this.x = x;
+    }
+
+    @Basic
+    @Column(name = "save")
+    public byte[] getSave() {
+        return save;
+    }
+
+    public void setSave(byte[] save) {
+        this.save = save;
     }
 
     @Basic

@@ -1,11 +1,13 @@
 package com.kdenisov.swingy.model;
 
+import com.kdenisov.swingy.controller.GameEngine;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -145,11 +147,61 @@ public class HibernateManager {
                     ", hitPoints = " + hero.getHitPoints() + ", y = " + hero.getY() + ", x = " +
                     hero.getX() + " WHERE id =" + hero.getId();
 
+            //session.saveOrUpdate(hero);
+
             Query query = session.createQuery(hql);
             query.executeUpdate();
             transaction.commit();
 
         } finally {
+            session.close();
+        }
+    }
+
+    public void saveGame(GameEngine game) {
+        Session session = null;
+
+        try {
+            session = sessionFactory.openSession();
+            Transaction transaction = session.beginTransaction();
+
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
+            objectOutputStream.writeObject(game.getGameEntities());
+            objectOutputStream.writeObject(game.getVillains());
+            objectOutputStream.writeObject(game.getObstacles());
+            objectOutputStream.close();
+
+            HeroEntity heroEntity = session.get(HeroEntity.class, game.getHero().getId());
+            heroEntity.setSave(byteArrayOutputStream.toByteArray());
+
+            session.saveOrUpdate(heroEntity);
+
+            transaction.commit();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            assert session != null;
+            session.close();
+        }
+    }
+
+    public InputStream loadGame(int heroId) {
+        Session session = null;
+
+        try {
+            session = sessionFactory.openSession();
+
+            HeroEntity heroEntity = session.get(HeroEntity.class, heroId);
+            if (heroEntity.getSave() == null) {
+                return null;
+            }
+
+            return new ByteArrayInputStream(heroEntity.getSave());
+
+        } finally {
+            assert session != null;
             session.close();
         }
     }

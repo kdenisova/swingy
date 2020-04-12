@@ -1,8 +1,11 @@
+package com.kdenisov.swingy;
+
 import com.kdenisov.swingy.model.*;
 import com.kdenisov.swingy.view.GUIRenderer;
 import com.kdenisov.swingy.view.LanternaRenderer;
 import com.kdenisov.swingy.view.Renderer;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -10,14 +13,14 @@ import java.sql.Statement;
 
 public class Swingy {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         if (args.length == 0) {
             System.out.println("usage: java -jar swingy.jar [console/gui]");
             System.exit(1);
         }
 
-//        Swingy s = new Swingy();
+//        com.kdenisov.swingy.Swingy s = new com.kdenisov.swingy.Swingy();
 //        s.connectToMySQL();
         HibernateManager hibernateManager = HibernateManager.getHibernateManager();
         //hibernateManager.createVillains();
