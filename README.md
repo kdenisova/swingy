@@ -26,7 +26,7 @@ You can play game in two different modes:
 
 2. Add database
 
-     `cat backup.sql | docker exec -i swingy /usr/bin/mysql -u root --password=nimfa swingy`
+     `cat swingy.sql | docker exec -i swingy /usr/bin/mysql -u root --password=nimfa swingy`
 
 3. Build
 
