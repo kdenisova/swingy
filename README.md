@@ -22,7 +22,7 @@ You can play game in two different modes:
 
      `docker pull mysql`
      
-     `docker run -d --name swingy --restart on-failure -e MYSQL_ROOT_PASSWORD=nimfa -e MYSQL_DATABASE=swingy -p 3306:3306 mysql`
+     `docker run -d --name swingy -e MYSQL_ROOT_PASSWORD=nimfa -e MYSQL_DATABASE=swingy -p 3306:3306 mysql`
 
 2. Add database
 
