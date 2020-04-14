@@ -411,7 +411,7 @@ public class Playground implements KeyListener {
 
             try {
                 hibernateManager.saveGame(game);
-
+                updateGameAction("Game saved");
                 System.out.println("Saved");
             } catch (Exception ex) {
                 ex.printStackTrace();

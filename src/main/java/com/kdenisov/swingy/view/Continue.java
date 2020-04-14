@@ -22,6 +22,12 @@ public class Continue {
 
     public void UploadHeroList(final HibernateManager hibernateManager) {
         this.hibernateManager = hibernateManager;
+        heroEntities = hibernateManager.getListHeroes();
+        if (heroEntities.size() == 0) {
+            showMessage();
+            return;
+        }
+
         frame = new JFrame("Load the Game");
         //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
@@ -34,7 +40,6 @@ public class Continue {
             }
         });
 
-        heroEntities = hibernateManager.getListHeroes();
 
         DefaultTableModel model = new DefaultTableModel() {
             public boolean isCellEditable(int row, int column) {
@@ -101,6 +106,11 @@ public class Continue {
         gameEngine.continueGame();
         //gameEngine.play();
         //frame.dispose();
+    }
+
+    public void showMessage() {
+        JOptionPane.showMessageDialog(null, "No saved games found!",
+                "Error", JOptionPane.ERROR_MESSAGE);
     }
 
     class ContinueButtonListener implements ActionListener {

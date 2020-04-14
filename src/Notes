@@ -4,10 +4,10 @@ docker pull phpmyadmin/phpmyadmin
 docker run --name myadmin -d --restart on-failure --link swingy:db -p 8080:80 phpmyadmin/phpmyadmin
 
 ## export database from docker container
-docker exec swingy /usr/bin/mysqldump -u root --password=nimfa swingy > backup.sql
+docker exec swingy /usr/bin/mysqldump -u root --password=nimfa swingy > swingy.sql
 
 ##restore
-cat backup.sql | docker exec -i swingy /usr/bin/mysql -u root --password=nimfa swingy
+cat swingy.sql | docker exec -i swingy /usr/bin/mysql -u root --password=nimfa swingy
 
 open:
 http://localhost:8080
