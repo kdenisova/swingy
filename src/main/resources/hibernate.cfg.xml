@@ -12,8 +12,6 @@
     <property name="connection.password">nimfa</property>
     <mapping class="com.kdenisov.swingy.model.HeroEntity"/>
     <mapping class="com.kdenisov.swingy.model.ArtifactsEntity"/>
-    <mapping class="com.kdenisov.swingy.model.VillainEntity"/>
-
 
       <!-- <property name="connection.password"/> -->
 

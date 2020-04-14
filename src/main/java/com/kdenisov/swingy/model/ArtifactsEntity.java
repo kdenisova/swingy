@@ -1,6 +1,7 @@
 package com.kdenisov.swingy.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "ARTIFACTS", schema = "swingy")
@@ -8,6 +9,7 @@ public class ArtifactsEntity {
     private int id;
     private int heroId;
     private Artifact artifact;
+    private HeroEntity heroEntity;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,11 +22,12 @@ public class ArtifactsEntity {
         this.id = id;
     }
 
-    @Basic
+    /*@Basic
     @Column(name = "HERO_ID")
     public int getHeroId() {
         return heroId;
     }
+    */
 
     public void setHeroId(int heroId) {
         this.heroId = heroId;
@@ -32,6 +35,7 @@ public class ArtifactsEntity {
 
     @Basic
     @Column(name = "TYPE")
+    @NotNull(message = "Artifact must not be empty")
     public Artifact getArtifact() {
         return artifact;
     }
@@ -55,5 +59,15 @@ public class ArtifactsEntity {
     @Override
     public int hashCode() {
         return id;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "HERO_ID")
+    public HeroEntity getHeroEntity() {
+        return heroEntity;
+    }
+
+    public void setHeroEntity(HeroEntity heroEntity) {
+        this.heroEntity = heroEntity;
     }
 }

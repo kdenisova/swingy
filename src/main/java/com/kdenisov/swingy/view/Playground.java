@@ -2,22 +2,15 @@ package com.kdenisov.swingy.view;
 
 import com.kdenisov.swingy.controller.GameEngine;
 import com.kdenisov.swingy.controller.HeroMove;
+import com.kdenisov.swingy.controller.HibernateManager;
 import com.kdenisov.swingy.model.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.List;
 

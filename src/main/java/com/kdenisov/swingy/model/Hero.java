@@ -1,6 +1,5 @@
 package com.kdenisov.swingy.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Hero {
@@ -31,7 +30,6 @@ public class Hero {
         this.artifacts = artifacts;
         this.y = y;
         this.x = x;
-
     }
 
     public Hero() {

@@ -1,8 +1,14 @@
 package com.kdenisov.swingy.model;
 
+import com.kdenisov.swingy.view.NewGame;
+
 import javax.persistence.*;
+import javax.swing.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "HERO", schema = "swingy")
@@ -16,13 +22,17 @@ public class HeroEntity {
     private int attack;
     private int defense;
     private int hitPoints;
-    private ArrayList<Artifact> artifacts;
+
+   // @OneToMany(cascade = CascadeType.ALL)
+   // @JoinColumn(name = "HERO_ID")
+    private Set<ArtifactsEntity> artifacts;
+
     private int y;
     private int x;
     private byte[] save;
 
 
-    public HeroEntity(String name, HeroClass heroClass, int level, int experience, int attack, int defense, int hitPoints, ArrayList<Artifact> artifacts) {
+    public HeroEntity(String name, HeroClass heroClass, int level, int experience, int attack, int defense, int hitPoints, Set<ArtifactsEntity> artifacts) {
 
         this.name = name;
         this.heroClass = heroClass;
@@ -51,6 +61,7 @@ public class HeroEntity {
 
     @Basic
     @Column(name = "Name")
+    @NotEmpty(message = "Name must not be empty")
     public String getName() {
         return name;
     }
@@ -130,7 +141,7 @@ public class HeroEntity {
     }
 
     @Basic
-    @Column(name = "save")
+    @Column(name = "Save")
     public byte[] getSave() {
         return save;
     }
@@ -141,6 +152,7 @@ public class HeroEntity {
 
     @Basic
     @Column(name = "Class")
+    @NotNull(message = "Class must not be empty")
     public HeroClass getHeroClass() {
         return heroClass;
     }
@@ -168,4 +180,34 @@ public class HeroEntity {
     public int hashCode() {
         return Objects.hash(id, name, heroClass, level, experience, attack, defense, hitPoints);
     }
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "HERO_ID")
+    public Set<ArtifactsEntity> getArtifacts() {
+        return artifacts;
+    }
+
+    public void setArtifacts(Set<ArtifactsEntity> artifacts) {
+        this.artifacts = artifacts;
+    }
+
+//    public boolean validateHero() {
+//        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+//        Validator validator = validatorFactory.getValidator();
+//
+//        Set<ConstraintViolation<HeroEntity>> constraintViolations = validator.validate(this);
+//
+//        if (constraintViolations.size() != 0) {
+//            String message = null;
+//            for (ConstraintViolation<HeroEntity> constraintViolation : constraintViolations) {
+//                message = constraintViolation.getMessage();
+//            }
+//
+//            JOptionPane.showMessageDialog(null, message,
+//                    "Error", JOptionPane.ERROR_MESSAGE);
+//            return false;
+//        }
+//
+//        return true;
+//    }
 }

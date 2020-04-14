@@ -1,6 +1,7 @@
 package com.kdenisov.swingy.view;
 
 import com.kdenisov.swingy.controller.GameEngine;
+import com.kdenisov.swingy.controller.HibernateManager;
 import com.kdenisov.swingy.model.*;
 
 import javax.imageio.ImageIO;
@@ -11,20 +12,22 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class NewGame {
+    private HibernateManager hibernateManager;
     private int attack, defense, hitPoints;
     private JFrame frame;
-    private JComboBox heroClassBox;
-    private JComboBox artefactBox;
     private JTextField nameField;
     private JTextField attackField;
     private JTextField defenseField;
     private JTextField hitField;
     private JLabel iconLabel;
-    private HibernateManager hibernateManager;
+    private JComboBox heroClassBox;
+    private JComboBox artifactBox;
+
 
     public void createHero(final HibernateManager hibernateManager) {
         this.hibernateManager = hibernateManager;
@@ -66,11 +69,11 @@ public class NewGame {
         artifactLabel.setBounds(50, 150, 100, 30);
         mainPanel.add(artifactLabel);
 
-        artefactBox = new JComboBox(Artifact.values());
-        artefactBox.setBounds(150, 150, 190, 30);
-        artefactBox.setSelectedIndex(-1);
-        artefactBox.addActionListener(new ArtefactBoxListener());
-        mainPanel.add(artefactBox);
+        artifactBox = new JComboBox(Artifact.values());
+        artifactBox.setBounds(150, 150, 190, 30);
+        artifactBox.setSelectedIndex(-1);
+        artifactBox.addActionListener(new ArtefactBoxListener());
+        mainPanel.add(artifactBox);
 
         iconLabel = new JLabel();
         mainPanel.add(iconLabel);
@@ -124,31 +127,51 @@ public class NewGame {
         frame.setVisible(true);
     }
 
+    public void showMessage() {
+        JOptionPane.showMessageDialog(null, "Please complete all fields",
+                "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
     class SaveButtonListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (nameField.getText().isEmpty() || heroClassBox.getSelectedIndex() < 0
-                    || artefactBox.getSelectedIndex() < 0)
-                JOptionPane.showMessageDialog(null, "Please complete all required fields",
-                        "Error", JOptionPane.ERROR_MESSAGE);
-            else {
-                //int mapSize = (hero.getLevel() - 1) * 5 + 10 - (hero.getLevel() % 2);
-                //default size of map for a new hero is 9
-                HeroClass heroClass = HeroClass.valueOf(heroClassBox.getSelectedItem().toString());
-                Artifact artifact = Artifact.valueOf(artefactBox.getSelectedItem().toString());
+            boolean status;
 
-                hibernateManager.saveHero(nameField.getText(), heroClass, artifact, Integer.parseInt(attackField.getText()),
-                        Integer.parseInt(defenseField.getText()), Integer.parseInt(hitField.getText()), 9 / 2, 9 / 2);
+            if (heroClassBox.getSelectedIndex() < 0 || artifactBox.getSelectedIndex() < 0) {
+                showMessage();
+                return;
+            }
 
-                Hero hero = HeroFactory.getInstance().buildHero(hibernateManager.getNewHero());
-                hero.setArtifacts(hibernateManager.getListArtifacts(hero.getId()));
+            HeroClass heroClass = HeroClass.valueOf(heroClassBox.getSelectedItem().toString());
+            Artifact artifact = Artifact.valueOf(artifactBox.getSelectedItem().toString());
+            status = hibernateManager.saveHero(
+                    nameField.getText(),
+                    heroClass,
+                    artifact,
+                    Integer.parseInt(attackField.getText()),
+                    Integer.parseInt(defenseField.getText()),
+                    Integer.parseInt(hitField.getText()),
+                    9 / 2,
+                    9 / 2);
+
+            if (status) {
+                HeroEntity heroEntity = hibernateManager.getNewHero();
+                Hero hero = HeroFactory.getInstance().buildHero(heroEntity);
+                List<Artifact> artifacts = new ArrayList<>();
+                for (ArtifactsEntity artifactEntity : heroEntity.getArtifacts()) {
+                    artifacts.add(artifactEntity.getArtifact());
+                }
+
+                hero.setArtifacts(artifacts);
                 GameEngine gameEngine = new GameEngine(hibernateManager, hero);
                 gameEngine.play();
 
                 frame.dispose();
             }
-
+            else {
+                showMessage();
+            }
         }
     }
 
@@ -168,8 +191,8 @@ public class NewGame {
 
             hitPoints = 100;
 
-            if (artefactBox.getSelectedIndex() >= 0)
-                artefactBox.setSelectedIndex(-1);
+            if (artifactBox.getSelectedIndex() >= 0)
+                artifactBox.setSelectedIndex(-1);
 
             if (heroClassBox.getSelectedItem().equals(HeroClass.Elf)) {
                 attack = 100;
@@ -205,13 +228,13 @@ public class NewGame {
         public void actionPerformed(ActionEvent e) {
             int value;
 
-            if (artefactBox.getSelectedIndex() >= 0 && heroClassBox.getSelectedIndex() >= 0) {
-                if (artefactBox.getSelectedItem().equals(Artifact.Weapon)) {
+            if (artifactBox.getSelectedIndex() >= 0 && heroClassBox.getSelectedIndex() >= 0) {
+                if (artifactBox.getSelectedItem().equals(Artifact.Weapon)) {
                     value = attack + 10;
                     attackField.setText(String.valueOf(value));
                     defenseField.setText(String.valueOf(defense));
                     hitField.setText(String.valueOf(hitPoints));
-                } else if (artefactBox.getSelectedItem().equals(Artifact.Armor)) {
+                } else if (artifactBox.getSelectedItem().equals(Artifact.Armor)) {
                     value = defense + 10;
                     attackField.setText(String.valueOf(attack));
                     defenseField.setText(String.valueOf(value));

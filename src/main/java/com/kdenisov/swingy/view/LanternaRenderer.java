@@ -1,6 +1,6 @@
 package com.kdenisov.swingy.view;
 
-import com.kdenisov.swingy.model.HibernateManager;
+import com.kdenisov.swingy.controller.HibernateManager;
 
 import java.io.IOException;
 

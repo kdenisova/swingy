@@ -1,18 +1,17 @@
 package com.kdenisov.swingy.view;
 
 import com.kdenisov.swingy.controller.GameEngine;
-import com.kdenisov.swingy.model.Hero;
-import com.kdenisov.swingy.model.HeroEntity;
-import com.kdenisov.swingy.model.HeroFactory;
-import com.kdenisov.swingy.model.HibernateManager;
+import com.kdenisov.swingy.controller.HibernateManager;
+import com.kdenisov.swingy.model.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.List;
 
-public class Continue implements ActionListener {
+public class Continue {
     private JFrame frame;
     private String[] columnName = {"Name", "Hero Class", "Level", "Experience"};
     private JTable table;
@@ -50,15 +49,11 @@ public class Continue implements ActionListener {
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);
                 if (e.getClickCount() == 2 && table.getSelectedRow() >= 0) {
-                    Hero hero = HeroFactory.getInstance().buildHero(heroEntities.get(table.getSelectedRow()));
-                    hero.setArtifacts(hibernateManager.getListArtifacts(hero.getId()));
-                    System.out.println(hero.getName() + " " + hero.getHeroClass());
-                    GameEngine gameEngine = new GameEngine(hibernateManager, hero);
-                    gameEngine.play();
-                    //frame.dispose();
+                    startGame();
                 }
             }
         });
+
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -72,11 +67,11 @@ public class Continue implements ActionListener {
         JPanel buttonPanel = new JPanel();
 
         continueButton = new JButton("Continue");
-        continueButton.addActionListener(this);
+        continueButton.addActionListener(new ContinueButtonListener());
         buttonPanel.add(continueButton);
 
         cancelButton = new JButton("Cancel");
-        cancelButton.addActionListener(this);
+        cancelButton.addActionListener(new CancelButtonListener());
         buttonPanel.add(cancelButton);
 
         frame.add(BorderLayout.SOUTH, buttonPanel);
@@ -90,32 +85,34 @@ public class Continue implements ActionListener {
 
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == continueButton) {
-            if (table.getSelectedRow() >= 0) {
-                Hero hero = HeroFactory.getInstance().buildHero(heroEntities.get(table.getSelectedRow()));
-                hero.setArtifacts(hibernateManager.getListArtifacts(hero.getId()));
-                System.out.println(hero.getName() + " " + hero.getHeroClass());
-                GameEngine gameEngine = new GameEngine(hibernateManager, hero);
-                gameEngine.continueGame();
-                //gameEngine.play();
-                //frame.dispose();
-            } else {
-                JOptionPane.showMessageDialog(null, "Please choose a hero",
-                        "Choose a hero", JOptionPane.INFORMATION_MESSAGE);
-            }
-        } else if (e.getSource() == cancelButton) {
-            frame.dispose();
+    public void startGame() {
+        HeroEntity heroEntity = heroEntities.get(table.getSelectedRow());
+        Hero hero = HeroFactory.getInstance().buildHero(heroEntity);
+
+        List<Artifact> artifacts = new ArrayList<>();
+        for (ArtifactsEntity artifactEntity : heroEntity.getArtifacts()) {
+            artifacts.add(artifactEntity.getArtifact());
         }
+
+        hero.setArtifacts(artifacts);
+
+        System.out.println(hero.getName() + " " + hero.getHeroClass());
+        GameEngine gameEngine = new GameEngine(hibernateManager, hero);
+        gameEngine.continueGame();
+        //gameEngine.play();
+        //frame.dispose();
     }
 
-    /*
     class ContinueButtonListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-
+            if (table.getSelectedRow() >= 0) {
+                startGame();
+            } else {
+                JOptionPane.showMessageDialog(null, "Please choose a hero",
+                        "Choose a hero", JOptionPane.INFORMATION_MESSAGE);
+            }
         }
     }
 
@@ -126,5 +123,4 @@ public class Continue implements ActionListener {
             frame.dispose();
         }
     }
-     */
 }

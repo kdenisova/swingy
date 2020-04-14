@@ -74,13 +74,11 @@ public class GameEngine {
     }
 
     public void setVillains() {
-        //List<VillainEntity> villainEntities = hibernateManager.getListVillains();
         this.villains = new ArrayList<>();
 
-        int y, x, id;
+        int y, x;
         int attackRange = hero.getAttack() - 30;
         for (int i = 0; i < mapSize * 2; i++) {
-            //id = randomGenerator(villainEntities.size());
             y = randomGenerator(mapSize);
             x = randomGenerator(mapSize);
 
@@ -90,9 +88,6 @@ public class GameEngine {
             }
 
             Villain villain = new Villain(VillainType.getRandomVillain(), randomGenerator(attackRange) + 40, y, x);
-//            Villain villain = new Villain(villainEntities.get(id).getId(), villainEntities.get(id).getName(),
-//                    villainEntities.get(id).getLevel(), villainEntities.get(id).getAttack(),
-//                    villainEntities.get(id).getDefense(), villainEntities.get(id).getHitPoints(), y, x);
             this.villains.add(villain);
             entities.add(villain);
         }
@@ -368,84 +363,4 @@ public class GameEngine {
     public void setStatus(boolean status) {
         this.status = status;
     }
-
-
-//    public boolean fight(int y, int x) {
-//        boolean result = true;
-//        Villain villain = null;
-//
-//        for (Villain v : villains) {
-//            if (y == v.getY() && x == v.getX()) {
-//                villain = v;
-//                break;
-//            }
-//        }
-//
-//        int hitPoints, experience;
-//        if (hero.getAttack() < villain.getAttack()) {
-//            hitPoints = (hero.getHitPoints() + hero.getDefense()) - villain.getAttack();
-//
-//            if (hitPoints > 0) {
-//                hero.setHitPoints(hitPoints);
-//                playground.updateHitPoints(hitPoints);
-//                playground.showMessageDialog(5, villain.getAttack() - hero.getDefense());
-//                playground.updateGameAction(villain.getVillainType() + " does " + (villain.getAttack() - hero.getDefense()) + " damage");
-////                playground.removeVillain(y, x);
-////                entities.remove(villain);
-////                villains.remove(villain);
-//                removeEntity(villain, y, x);
-//            }
-//            else {
-//                hero.setHitPoints(0);
-//                playground.updateHitPoints(0);
-//                playground.showMessageDialog(4, hero.getExperience());
-//                playground.updateGameAction("Too much damage from " + villain.getVillainType());
-//                result = false;
-//                status = false;
-//            }
-//        } else if (hero.getAttack() == villain.getAttack()) {
-//            hitPoints = ((hero.getHitPoints() + hero.getDefense()) - villain.getAttack()) / 2;
-//
-//            if (hitPoints > 0) {
-//                experience = (int) (villain.getAttack() * 1.7);
-//                hero.setExperience(hero.getExperience() + experience);
-//                hero.setHitPoints(hitPoints);
-//                playground.showMessageDialog(2, experience);
-//                playground.updateExperience(hero.getExperience());
-//                playground.updateHitPoints(hitPoints);
-//                playground.updateGameAction(villain.getVillainType() + " does " + hitPoints + " damage");
-//                playground.updateGameAction("Earned " + experience + " experience after fight with " + villain.getVillainType());
-////                playground.removeVillain(y, x);
-////                entities.remove(villain);
-////                villains.remove(villain);
-//                removeEntity(villain, y, x);
-//            }
-//            else {
-//                hero.setHitPoints(0);
-//                playground.updateHitPoints(0);
-//                playground.showMessageDialog(4, hero.getExperience());
-//                playground.updateGameAction("Too much damage from " + villain.getVillainType());
-//                result = false;
-//                status = false;
-//            }
-//        }
-//        else {
-//            experience = (int) (villain.getAttack() * 1.7);
-//            playground.showMessageDialog(2, experience);
-//            hero.setExperience(hero.getExperience() + experience);
-//            playground.updateExperience(hero.getExperience());
-////            entities.remove(villain);
-////            playground.removeVillain(y, x);
-////            villains.remove(villain);
-//            removeEntity(villain, y, x);
-//            playground.updateGameAction("Earned " + experience + " experience after fight with " + villain.getVillainType());
-//        }
-//
-//        if (status && hero.getArtifacts().size() < 3) {
-//            if (randomGenerator(100) % 7 == 0)
-//                findArtifact();
-//        }
-//
-//        return result;
-//    }
 }

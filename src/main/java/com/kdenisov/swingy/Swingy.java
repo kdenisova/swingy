@@ -1,6 +1,6 @@
 package com.kdenisov.swingy;
 
-import com.kdenisov.swingy.model.*;
+import com.kdenisov.swingy.controller.HibernateManager;
 import com.kdenisov.swingy.view.GUIRenderer;
 import com.kdenisov.swingy.view.LanternaRenderer;
 import com.kdenisov.swingy.view.Renderer;
@@ -23,7 +23,6 @@ public class Swingy {
 //        com.kdenisov.swingy.Swingy s = new com.kdenisov.swingy.Swingy();
 //        s.connectToMySQL();
         HibernateManager hibernateManager = HibernateManager.getHibernateManager();
-        //hibernateManager.createVillains();
         Renderer renderer = null;
         if (args[0].equals("gui")) {
             renderer = new GUIRenderer();
