@@ -6,6 +6,4 @@ import java.io.IOException;
 
 public interface Renderer {
     void renderMenu(HibernateManager hibernateManager) throws IOException;
-    void renderHero();
-    void renderVillain();
 }

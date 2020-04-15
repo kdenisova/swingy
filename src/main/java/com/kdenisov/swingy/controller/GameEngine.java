@@ -41,7 +41,7 @@ public class GameEngine {
             InputStream inputStream = hibernateManager.loadGame(this.hero.getId());
             if (inputStream == null) {
                 // ToDo: new game
-                System.out.println("No savegame. Starting new game.");
+                System.out.println("No saved game. Starting new game.");
                 return;
             }
 

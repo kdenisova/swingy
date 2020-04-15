@@ -111,14 +111,4 @@ public class GUIRenderer implements Renderer {
             hibernateManager.tearDown();
         }
     }
-
-    @Override
-    public void renderHero() {
-
-    }
-
-    @Override
-    public void renderVillain() {
-
-    }
 }

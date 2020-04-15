@@ -1,6 +1,7 @@
 package com.kdenisov.swingy.view;
 
 import com.kdenisov.swingy.controller.GameEngine;
+import com.kdenisov.swingy.controller.Helper;
 import com.kdenisov.swingy.controller.HibernateManager;
 import com.kdenisov.swingy.model.*;
 
@@ -18,6 +19,7 @@ import java.util.List;
 
 public class NewGame {
     private HibernateManager hibernateManager;
+    private Helper helper;
     private int attack, defense, hitPoints;
     private JFrame frame;
     private JTextField nameField;
@@ -31,6 +33,7 @@ public class NewGame {
 
     public void createHero(final HibernateManager hibernateManager) {
         this.hibernateManager = hibernateManager;
+        helper = new Helper();
 
         frame = new JFrame("Create a new Hero");
         //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -194,17 +197,20 @@ public class NewGame {
             if (artifactBox.getSelectedIndex() >= 0)
                 artifactBox.setSelectedIndex(-1);
 
-            if (heroClassBox.getSelectedItem().equals(HeroClass.Elf)) {
-                attack = 100;
-                defense = 50;
-            } else if (heroClassBox.getSelectedItem().equals(HeroClass.Dwarf)) {
-                attack = 110;
-                defense = 60;
-            }
-            else {
-                attack = 90;
-                defense = 30;
-            }
+            HeroClass heroClass = HeroClass.valueOf(heroClassBox.getSelectedItem().toString());
+            attack = helper.getAttack(heroClass);
+            defense = helper.getDefense(heroClass);
+//            if (heroClassBox.getSelectedItem().equals(HeroClass.Elf)) {
+//                attack = 100;
+//                defense = 50;
+//            } else if (heroClassBox.getSelectedItem().equals(HeroClass.Dwarf)) {
+//                attack = 110;
+//                defense = 60;
+//            }
+//            else {
+//                attack = 100;
+//                defense = 65;
+//            }
 
             attackField.setText(String.valueOf(attack));
             defenseField.setText(String.valueOf(defense));

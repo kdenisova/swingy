@@ -3,6 +3,7 @@ package com.kdenisov.swingy;
 import com.kdenisov.swingy.controller.HibernateManager;
 import com.kdenisov.swingy.view.GUIRenderer;
 import com.kdenisov.swingy.view.Renderer;
+import com.kdenisov.swingy.view.CRenderer;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -28,7 +29,7 @@ public class Swingy {
             //GUIRenderer gui = new GUIRenderer();
             //gui.renderMenu(hibernateManager);
         } else if (args[0].equals("console")) {
-            //console mode
+            renderer = new CRenderer();
         }
         else {
             System.out.println("usage: java -jar swingy.jar [console/gui]");
