@@ -1,6 +1,7 @@
 package com.kdenisov.swingy;
 
 import com.kdenisov.swingy.controller.HibernateManager;
+import com.kdenisov.swingy.view.GUIMenu;
 import com.kdenisov.swingy.view.GUIRenderer;
 import com.kdenisov.swingy.view.Renderer;
 import com.kdenisov.swingy.view.CRenderer;
@@ -20,23 +21,19 @@ public class Swingy {
             System.exit(1);
         }
 
-//        com.kdenisov.swingy.Swingy s = new com.kdenisov.swingy.Swingy();
-//        s.connectToMySQL();
         HibernateManager hibernateManager = HibernateManager.getHibernateManager();
         Renderer renderer = null;
         if (args[0].equals("gui")) {
-            renderer = new GUIRenderer();
-            //GUIRenderer gui = new GUIRenderer();
-            //gui.renderMenu(hibernateManager);
+            renderer = new GUIRenderer(hibernateManager);
         } else if (args[0].equals("console")) {
-            renderer = new CRenderer();
+            renderer = new CRenderer(hibernateManager);
         }
         else {
             System.out.println("usage: java -jar swingy.jar [console/gui]");
             System.exit(1);
         }
 
-        renderer.renderMenu(hibernateManager);
+        renderer.renderMenu();
     }
 
     public void connectToMySQL() {

@@ -17,8 +17,8 @@ import java.util.Scanner;
 public class CNewGame {
     private HibernateManager hibernateManager;
     private Renderer renderer;
-    Scanner scanner;
-    Helper helper;
+    private Scanner scanner;
+    private Helper helper;
 
     @NotNull
     private String name;
@@ -72,7 +72,7 @@ public class CNewGame {
             }
 
             hero.setArtifacts(artifacts);
-            GameEngine gameEngine = new GameEngine(hibernateManager, hero);
+            GameEngine gameEngine = new GameEngine(hibernateManager, renderer, hero);
             gameEngine.play();
         }
         else

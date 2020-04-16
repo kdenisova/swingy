@@ -1,12 +1,8 @@
 package com.kdenisov.swingy.model;
 
-import com.kdenisov.swingy.view.NewGame;
-
 import javax.persistence.*;
-import javax.swing.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Set;
 

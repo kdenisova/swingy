@@ -17,8 +17,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewGame {
+public class GUINewGame {
     private HibernateManager hibernateManager;
+    private Renderer renderer;
     private Helper helper;
     private int attack, defense, hitPoints;
     private JFrame frame;
@@ -31,8 +32,9 @@ public class NewGame {
     private JComboBox artifactBox;
 
 
-    public void createHero(final HibernateManager hibernateManager) {
+    public void createHero(final HibernateManager hibernateManager, Renderer renderer) {
         this.hibernateManager = hibernateManager;
+        this.renderer = renderer;
         helper = new Helper();
 
         frame = new JFrame("Create a new Hero");
@@ -167,7 +169,7 @@ public class NewGame {
                 }
 
                 hero.setArtifacts(artifacts);
-                GameEngine gameEngine = new GameEngine(hibernateManager, hero);
+                GameEngine gameEngine = new GameEngine(hibernateManager, renderer, hero);
                 gameEngine.play();
 
                 frame.dispose();

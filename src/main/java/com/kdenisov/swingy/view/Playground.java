@@ -18,8 +18,8 @@ import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import static javax.swing.JOptionPane.PLAIN_MESSAGE;
 
 public class Playground implements KeyListener {
+    private HibernateManager hibernateManager;
     private JLabel heroLabel;
-
     private int iconSize;
     private int mapSize;
     private GameEngine game;
@@ -30,7 +30,6 @@ public class Playground implements KeyListener {
     private JLabel defenseLabel;
     private JLabel hitLabel;
     private Image heroImage;
-    private HibernateManager hibernateManager;
     private List<RenderedEntity> renderedEntities;
     private JLabel[] artifactsLabel;
     private JTextArea actionArea;
@@ -41,16 +40,7 @@ public class Playground implements KeyListener {
         this.game = game;
     }
 
-    public int getIconSize() {
-        return iconSize;
-    }
-
-    public void setIconSize(int iconSize) {
-        this.iconSize = iconSize;
-    }
-
-
-    public void render() {
+    public void renderPlayground() {
         renderedEntities = new ArrayList<>();
 
         BufferedImage bufferedHeroImage = null;
@@ -61,7 +51,7 @@ public class Playground implements KeyListener {
         }
 
         setIconSize(45);
-        heroImage = bufferedHeroImage.getScaledInstance(getIconSize(), getIconSize(), Image.SCALE_SMOOTH);
+        heroImage = bufferedHeroImage.getScaledInstance(iconSize, iconSize, Image.SCALE_SMOOTH);
         heroLabel = new JLabel(new ImageIcon(heroImage));
 
         frame = new JFrame("Swingy");
@@ -89,13 +79,13 @@ public class Playground implements KeyListener {
             ex.printStackTrace();
         }
 
-        Image image = bufferedImage.getScaledInstance(getIconSize(), getIconSize() + 10, Image.SCALE_SMOOTH);
+        Image image = bufferedImage.getScaledInstance(iconSize, iconSize + 10, Image.SCALE_SMOOTH);
         ImageIcon mapIcon = new ImageIcon(image);
 
         for (int y = 0; y < mapSize; y++) {
             for (int x = 0; x < mapSize; x++) {
                 iconLabels[y][x] = new JLabel();
-                iconLabels[y][x].setSize(getIconSize(),getIconSize());
+                iconLabels[y][x].setSize(iconSize, iconSize);
                 iconLabels[y][x].setLayout(new BorderLayout());
                 iconLabels[y][x].setIcon(mapIcon);
                 mapPanel.add(iconLabels[y][x]);
@@ -202,7 +192,7 @@ public class Playground implements KeyListener {
         buttonPanel.add(backButton);
         frame.add(BorderLayout.SOUTH, buttonPanel);
 
-        frame.setBounds(50, 50, mapSize * getIconSize() * 2, mapSize * getIconSize() + 50);
+        frame.setBounds(50, 50, mapSize * iconSize * 2, mapSize * iconSize + 50);
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize(); //Set a window on center of screen
         int x = (int) ((dimension.getWidth() - frame.getWidth()) / 2);
         int y = (int) ((dimension.getHeight() - frame.getHeight()) / 2);
@@ -330,7 +320,7 @@ public class Playground implements KeyListener {
                 ex.printStackTrace();
             }
 
-            image = bufferedImage.getScaledInstance(getIconSize(), getIconSize(), Image.SCALE_SMOOTH);
+            image = bufferedImage.getScaledInstance(iconSize, iconSize, Image.SCALE_SMOOTH);
             label = new JLabel(new ImageIcon(image));
 
             iconLabels[game.getVillains().get(i).getY()][game.getVillains().get(i).getX()].add(label);
@@ -339,7 +329,7 @@ public class Playground implements KeyListener {
         }
     }
 
-    private void renderObstacle() {
+    public void renderObstacle() {
         BufferedImage bufferedImage = null;
         Image image;
         JLabel label;
@@ -353,7 +343,7 @@ public class Playground implements KeyListener {
                 ex.printStackTrace();
             }
 
-            image = bufferedImage.getScaledInstance(getIconSize() - 10, getIconSize() - 10, Image.SCALE_SMOOTH);
+            image = bufferedImage.getScaledInstance(iconSize - 10, iconSize - 10, Image.SCALE_SMOOTH);
             label = new JLabel(new ImageIcon(image));
 
             iconLabels[game.getObstacles().get(i).getY()][game.getObstacles().get(i).getX()].add(label);
@@ -376,6 +366,14 @@ public class Playground implements KeyListener {
 
         iconLabels[y][x].revalidate();
         iconLabels[y][x].repaint();
+    }
+
+    public int getIconSize() {
+        return iconSize;
+    }
+
+    public void setIconSize(int iconSize) {
+        this.iconSize = iconSize;
     }
 
     @Override
