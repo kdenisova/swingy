@@ -5,10 +5,7 @@ import com.kdenisov.swingy.controller.Helper;
 import com.kdenisov.swingy.controller.HibernateManager;
 import com.kdenisov.swingy.model.*;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +42,7 @@ public class CNewGame {
         //heroClass = null;
         saveHero();
 
-        scanner.close();
+        //scanner.close();
     }
 
     public void saveHero() {
