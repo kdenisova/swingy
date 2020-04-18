@@ -7,7 +7,7 @@ import com.kdenisov.swingy.model.Villain;
 import java.io.IOException;
 
 public interface Renderer {
-    void renderMenu() throws IOException;
+    void renderMenu();
     void renderPlayground(GameEngine gameEngine, int mapSize);
     void updateGameAction(String str);
     void updateAttack(int attack);

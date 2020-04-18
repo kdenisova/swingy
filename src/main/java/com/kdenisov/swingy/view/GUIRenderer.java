@@ -39,7 +39,7 @@ public class GUIRenderer implements Renderer, KeyListener {
     }
 
     @Override
-    public void renderMenu() throws IOException {
+    public void renderMenu() {
         GUIMenu menu = new GUIMenu();
         menu.showMenu(hibernateManager, this);
     }

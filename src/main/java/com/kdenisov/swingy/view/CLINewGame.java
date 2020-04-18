@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class CNewGame {
+public class CLINewGame {
     private HibernateManager hibernateManager;
     private Renderer renderer;
     private Scanner scanner;
@@ -25,13 +25,15 @@ public class CNewGame {
     private int defense;
     private int hitPoints;
 
-    public void createHero(final HibernateManager hibernateManager, Renderer renderer) throws IOException {
+    public void createHero(final HibernateManager hibernateManager, Renderer renderer) {
         scanner = new Scanner(System.in);
         helper = new Helper();
 
         this.hibernateManager = hibernateManager;
         this.renderer = renderer;
 
+        System.out.print("\033\143");
+        System.out.println("Starting a new game...");
         System.out.println("Let's create a new hero:");
         System.out.print("Name: ");
         name = scanner.next();

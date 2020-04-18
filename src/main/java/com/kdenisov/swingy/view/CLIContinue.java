@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class CContinue {
+public class CLIContinue {
     private HibernateManager hibernateManager;
     private Renderer renderer;
     private Scanner scanner;
@@ -21,13 +21,15 @@ public class CContinue {
 
         scanner = new Scanner(System.in);
 
+        System.out.print("\033\143");
+        System.out.println("Loading the list of Hero...");
+
         if (heroEntities.size() == 0) {
             showMessage();
             return;
         }
 
         showHeroList();
-
     }
 
     public void showMessage() {
@@ -50,8 +52,14 @@ public class CContinue {
                         ", Experience: " + heroEntities.get(i).getExperience() + ")");
             }
 
+            System.out.println("\nEnter number of hero or: (B) to Main menu, (G) to GUI view, (X) to Exit\n");
             System.out.print("> ");
             scan = scanner.next();
+
+            if (scan.toLowerCase().equals("b") || scan.toLowerCase().equals("g") || scan.toLowerCase().equals("x")) {
+                chooseDefaultOption(scan);
+                return;
+            }
 
             try {
                 id = Integer.parseInt(scan);
@@ -78,5 +86,23 @@ public class CContinue {
         hero.setArtifacts(artifacts);
         GameEngine gameEngine = new GameEngine(hibernateManager, renderer, hero);
         gameEngine.continueGame();
+    }
+
+    public void chooseDefaultOption(String option) {
+        switch (option) {
+            case "b":
+                renderer.renderMenu();
+                break;
+            case "g":
+                renderer = new GUIRenderer(hibernateManager);
+                GUIContinue guiContinue = new GUIContinue();
+                guiContinue.uploadHeroList(hibernateManager, renderer);
+                break;
+            case "x":
+                hibernateManager.tearDown();
+                scanner.close();
+                System.exit(0);
+                break;
+        }
     }
 }

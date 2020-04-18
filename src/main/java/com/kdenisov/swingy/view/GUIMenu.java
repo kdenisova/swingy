@@ -65,20 +65,6 @@ public class GUIMenu {
         frame.setVisible(true);
     }
 
-//    private void setDimension() {
-//        Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize(); //Set a window on center of screen
-//        x = (int) ((dimension.getWidth() - frame.getWidth()) / 2);
-//        y = (int) ((dimension.getHeight() - frame.getHeight()) / 2);
-//    }
-//
-//    public int getX() {
-//        return x;
-//    }
-//
-//    public int getY() {
-//        return y;
-//    }
-//
     class NewGameButtonListener implements ActionListener {
 
         @Override

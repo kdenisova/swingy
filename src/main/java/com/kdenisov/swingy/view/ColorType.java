@@ -7,9 +7,9 @@ public enum ColorType {
     GREEN("\033[0;32m"),
     YELLOW("\033[0;33m"),
     BLUE("\033[1;94m"),
-    MAGENTA("\033[0;35m"),
+    MAGENTA("\033[1;35m"),
     CYAN("\033[0;36m"),
-    WHITE("\033[0;37m");
+    WHITE("\033[0;97m");
 
     private final String code;
 

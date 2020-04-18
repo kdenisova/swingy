@@ -3,18 +3,12 @@ package com.kdenisov.swingy.view;
 import com.kdenisov.swingy.controller.GameEngine;
 import com.kdenisov.swingy.controller.HeroMove;
 import com.kdenisov.swingy.controller.HibernateManager;
-import com.kdenisov.swingy.model.Artifact;
 import com.kdenisov.swingy.model.Obstacle;
 import com.kdenisov.swingy.model.Villain;
 
-import javax.swing.*;
-import java.io.IOException;
 import java.util.*;
 
-import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
-import static javax.swing.JOptionPane.PLAIN_MESSAGE;
-
-public class CRenderer implements Renderer {
+public class CLIRenderer implements Renderer {
     private final HibernateManager hibernateManager;
     private GameEngine game;
     private Scanner scanner;
@@ -24,12 +18,12 @@ public class CRenderer implements Renderer {
     private int mapSize;
 
 
-    public CRenderer(HibernateManager hibernateManager) {
+    public CLIRenderer(HibernateManager hibernateManager) {
         this.hibernateManager = hibernateManager;
     }
 
     @Override
-    public void renderMenu() throws IOException {
+    public void renderMenu() {
         scanner = new Scanner(System.in);
         String option;
         boolean selected = false;
@@ -60,20 +54,20 @@ public class CRenderer implements Renderer {
                 System.out.println("\n*** Unknown option! ***");
         } while (!selected);
 
-        System.out.print("\033\143");
         switch (option) {
             case "1" :
-                System.out.println("Starting a new game...");
-                CNewGame newGame = new CNewGame();
+                CLINewGame newGame = new CLINewGame();
                 newGame.createHero(hibernateManager, this);
-
+                break;
             case "2" :
-                System.out.println("Loading the list of Hero...");
-                CContinue cContinue = new CContinue();
+                CLIContinue cContinue = new CLIContinue();
                 cContinue.uploadHeroList(hibernateManager, this);
+                break;
             case "3" :
                 hibernateManager.tearDown();
+                scanner.close();
                 System.exit(0);
+                break;
         }
 
         //scanner.close();
@@ -87,6 +81,7 @@ public class CRenderer implements Renderer {
         gameAction = new ArrayList<>();
 
         System.out.print("\033\143");
+        gameAction.add("Level " + game.getHero().getLevel() + ".");
         gameAction.add("Let the adventure begin!");
 
         map = new String[mapSize][mapSize];
@@ -130,10 +125,13 @@ public class CRenderer implements Renderer {
                 renderedEntities.get("[V]") + "[V]" + ColorType.RESET + " Villain, " +
                 renderedEntities.get("[*]") + "[*]" + ColorType.RESET + " Obstacle");
 
+        System.out.println(ColorType.WHITE + "\n(C) to Save, (B) to List of Heroes, (G) to GUI view, (X) to Exit");
         System.out.println(ColorType.RESET);
 
         renderHistory();
 
+//        if (game.isStatus())
+//            chooseDirection();
         //chooseDirection();
     }
 
@@ -187,10 +185,15 @@ public class CRenderer implements Renderer {
     }
 
     public void chooseDirection() {
+        if (!game.isStatus())
+            return;
+
         boolean selected = false;
-        String option = null;
+        String option;
+
         do {
-            System.out.println("\nChoose a direction:");
+            System.out.println(ColorType.WHITE);
+            System.out.println("Choose a direction:");
             System.out.println("(N) North");
             System.out.println("(E) East");
             System.out.println("(S) South");
@@ -202,11 +205,15 @@ public class CRenderer implements Renderer {
             if (option.toLowerCase().equals("n") ||
                     option.toLowerCase().equals("e") ||
                     option.toLowerCase().equals("s") ||
-                    option.toLowerCase().equals("w")
+                    option.toLowerCase().equals("w") ||
+                    option.toLowerCase().equals("c") ||
+                    option.toLowerCase().equals("b") ||
+                    option.toLowerCase().equals("g") ||
+                    option.toLowerCase().equals("x")
             )
                 selected = true;
             else
-                System.out.println("\n*** Unknown option! ***");
+                System.out.println(ColorType.RESET + "*** Unknown option! ***");
         } while (!selected);
 
         switch (option) {
@@ -226,10 +233,42 @@ public class CRenderer implements Renderer {
                 if (game.getHero().getX() != 0)
                     game.heroMoved(HeroMove.LEFT);
                 break;
+            case "c":
+                saveGame();
+                break;
+            case "b":
+                saveGame();
+                CLIContinue cContinue = new CLIContinue();
+                cContinue.uploadHeroList(hibernateManager, this);
+                break;
+            case "g":
+                saveGame();
+                Renderer renderer = new GUIRenderer(hibernateManager);
+                game = new GameEngine(hibernateManager, renderer, game.getHero());
+                game.continueGame();
+                break;
+            case "x":
+                saveGame();
+                hibernateManager.tearDown();
+                scanner.close();
+                System.exit(0);
+                break;
         }
-
+        
+        System.out.println(ColorType.RESET);
         renderMap();
         chooseDirection();
+    }
+
+    public void saveGame() {
+        hibernateManager.updateHero(game.getHero());
+
+        try {
+            hibernateManager.saveGame(game);
+            updateGameAction("Game saved");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override
@@ -270,7 +309,7 @@ public class CRenderer implements Renderer {
     @Override
     public int chooseAction(Villain villain) {
         boolean selected = false;
-        String option = null;
+        String option;
 
         System.out.println("\nYou meet with " + villain.getVillainType() +
                 " (Attack: " + villain.getAttack() + "). Fight or Run?");
@@ -302,7 +341,7 @@ public class CRenderer implements Renderer {
             gameAction.add("Level " + game.getHero().getLevel() + 1);
         } else if (flag == 4) {
             gameAction.add("You lose! Your score: " + val);
-            gameAction.add("\n*** GAME OVER! ***");
+            gameAction.add("\nGAME OVER!");
             renderMap();
         }
         else if (flag == 5) {

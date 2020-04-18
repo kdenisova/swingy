@@ -250,8 +250,8 @@ public class GameEngine {
             else {
                 hero.setHitPoints(0);
                 renderer.updateHitPoints(0);
-                renderer.showMessageDialog(4, hero.getExperience());
                 renderer.updateGameAction("Too much damage from " + villain.getVillainType());
+                renderer.showMessageDialog(4, hero.getExperience());
                 result = false;
                 status = false;
             }
@@ -272,8 +272,8 @@ public class GameEngine {
             else {
                 hero.setHitPoints(0);
                 renderer.updateHitPoints(0);
-                renderer.showMessageDialog(4, hero.getExperience());
                 renderer.updateGameAction("Too much damage from " + villain.getVillainType());
+                renderer.showMessageDialog(4, hero.getExperience());
                 result = false;
                 status = false;
             }
@@ -336,14 +336,13 @@ public class GameEngine {
             hero.setY(y);
             hero.setX(x);
 
-            renderer.renderHero(oldY, oldX, y, x);
-
             if (checkLevel()) {
                 renderer.showMessageDialog(1, 0);
                 hero.setLevel(hero.getLevel() + 1);
                 status = false;
                 clear();
             }
+            renderer.renderHero(oldY, oldX, y, x);
         }
     }
 

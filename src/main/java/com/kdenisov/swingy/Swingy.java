@@ -1,10 +1,9 @@
 package com.kdenisov.swingy;
 
 import com.kdenisov.swingy.controller.HibernateManager;
-import com.kdenisov.swingy.view.GUIMenu;
 import com.kdenisov.swingy.view.GUIRenderer;
 import com.kdenisov.swingy.view.Renderer;
-import com.kdenisov.swingy.view.CRenderer;
+import com.kdenisov.swingy.view.CLIRenderer;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -26,7 +25,7 @@ public class Swingy {
         if (args[0].equals("gui")) {
             renderer = new GUIRenderer(hibernateManager);
         } else if (args[0].equals("console")) {
-            renderer = new CRenderer(hibernateManager);
+            renderer = new CLIRenderer(hibernateManager);
         }
         else {
             System.out.println("usage: java -jar swingy.jar [console/gui]");
