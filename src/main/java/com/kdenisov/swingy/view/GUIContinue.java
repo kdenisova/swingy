@@ -134,6 +134,7 @@ public class GUIContinue {
         @Override
         public void actionPerformed(ActionEvent e) {
             frame.dispose();
+            renderer.renderMenu();
         }
     }
 }

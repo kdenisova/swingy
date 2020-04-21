@@ -71,6 +71,7 @@ public class GUIMenu {
         public void actionPerformed(ActionEvent e) {
             GUINewGame newGame = new GUINewGame();
             newGame.createHero(hibernateManager, renderer);
+            frame.dispose();
         }
     }
 
@@ -79,7 +80,8 @@ public class GUIMenu {
         @Override
         public void actionPerformed(ActionEvent e) {
             GUIContinue aContinue = new GUIContinue();
-            aContinue.uploadHeroList(hibernateManager, renderer);;
+            aContinue.uploadHeroList(hibernateManager, renderer);
+            frame.dispose();
         }
     }
 

@@ -4,9 +4,6 @@ import com.kdenisov.swingy.controller.GameEngine;
 import com.kdenisov.swingy.controller.Helper;
 import com.kdenisov.swingy.controller.HibernateManager;
 import com.kdenisov.swingy.model.*;
-
-import javax.validation.constraints.NotNull;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -17,7 +14,6 @@ public class CLINewGame {
     private Scanner scanner;
     private Helper helper;
 
-    @NotNull
     private String name;
     private HeroClass heroClass;
     private Artifact artifact;

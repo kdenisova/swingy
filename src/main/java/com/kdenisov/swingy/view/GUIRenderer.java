@@ -191,11 +191,15 @@ public class GUIRenderer implements Renderer, KeyListener {
         JButton saveButton = new JButton("Save");
         saveButton.setFocusable(false);
         saveButton.addActionListener(new SaveButtonListener());
+        JButton toCLIButton = new JButton("Change view");
+        toCLIButton.setFocusable(false);
+        toCLIButton.addActionListener(new ToCLIButtonListener());
         JButton backButton = new JButton("Back");
         backButton.setFocusable(false);
         backButton.addActionListener(new BackButtonListener());
 
         buttonPanel.add(saveButton);
+        buttonPanel.add(toCLIButton);
         buttonPanel.add(backButton);
         frame.add(BorderLayout.SOUTH, buttonPanel);
 
@@ -411,6 +415,22 @@ public class GUIRenderer implements Renderer, KeyListener {
                 game.heroMoved(HeroMove.LEFT);
             } else if (e.getKeyCode() == KeyEvent.VK_RIGHT && game.getHero().getX() < mapSize - 1) {
                 game.heroMoved(HeroMove.RIGHT);
+            } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                hibernateManager.updateHero(game.getHero());
+
+                try {
+                    hibernateManager.saveGame(game);
+                    updateGameAction("Game saved");
+                    System.out.println("Saved");
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+                renderedEntities.clear();
+                frame.dispose();
+                Renderer renderer = new CLIRenderer(hibernateManager);
+                game = new GameEngine(hibernateManager, renderer, game.getHero());
+                game.continueGame();
             }
         }
     }
@@ -436,10 +456,33 @@ public class GUIRenderer implements Renderer, KeyListener {
         }
     }
 
+    class ToCLIButtonListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            hibernateManager.updateHero(game.getHero());
+
+            try {
+                hibernateManager.saveGame(game);
+                updateGameAction("Game saved");
+                System.out.println("Saved");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+            renderedEntities.clear();
+            frame.dispose();
+            Renderer renderer = new CLIRenderer(hibernateManager);
+            game = new GameEngine(hibernateManager, renderer, game.getHero());
+            game.continueGame();
+        }
+    }
+
     class BackButtonListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            //hibernateManager.deleteHero(game);
             frame.dispose();
         }
     }

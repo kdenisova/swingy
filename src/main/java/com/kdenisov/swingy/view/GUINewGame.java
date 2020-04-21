@@ -185,6 +185,7 @@ public class GUINewGame {
         @Override
         public void actionPerformed(ActionEvent e) {
             frame.dispose();
+            renderer.renderMenu();
         }
     }
 

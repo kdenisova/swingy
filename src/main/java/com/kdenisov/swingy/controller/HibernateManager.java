@@ -86,6 +86,22 @@ public class HibernateManager {
         return true;
     }
 
+    public void deleteHero(GameEngine game) {
+        Session session = null;
+
+        try {
+            session = sessionFactory.openSession();
+            Transaction transaction = session.beginTransaction();
+            HeroEntity heroEntity = session.get(HeroEntity.class, game.getHero().getId());
+
+            session.delete(heroEntity);
+            transaction.commit();
+        } finally {
+            assert session != null;
+            session.close();
+        }
+    }
+
     public HeroEntity getNewHero() {
         Session session = null;
 

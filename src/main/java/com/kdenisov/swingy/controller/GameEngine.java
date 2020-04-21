@@ -1,7 +1,6 @@
 package com.kdenisov.swingy.controller;
 
 import com.kdenisov.swingy.model.*;
-import com.kdenisov.swingy.view.Playground;
 import com.kdenisov.swingy.view.Renderer;
 
 import java.io.*;
@@ -16,8 +15,8 @@ public class GameEngine {
     private List<Obstacle> obstacles;
     private List<GameEntity> entities;
     private int mapSize;
+    private int wins = 0;
     private boolean status;
-    //private Playground playground;
 
     public GameEngine(HibernateManager hibernateManager, Renderer renderer, Hero hero) {
         this.hibernateManager = hibernateManager;
@@ -32,8 +31,6 @@ public class GameEngine {
         setVillains();
         setObstacles();
         renderer.renderPlayground(this, mapSize);
-        //playground = new Playground(hibernateManager, mapSize, this);
-        //playground.renderPlayground();
     }
 
     public void continueGame() {
@@ -44,8 +41,8 @@ public class GameEngine {
         try {
             InputStream inputStream = hibernateManager.loadGame(this.hero.getId());
             if (inputStream == null) {
-                // ToDo: new game
                 System.out.println("No saved game. Starting new game.");
+                play();
                 return;
             }
 
@@ -59,7 +56,6 @@ public class GameEngine {
             e.printStackTrace();
         }
 
-        //renderer = new Playground(hibernateManager, mapSize, this);
         renderer.renderPlayground(this, mapSize);
     }
 
@@ -141,15 +137,13 @@ public class GameEngine {
     public boolean checkEntity(int y, int x) {
         for (GameEntity entity : entities) {
             if (entity.getY() == y && entity.getX() == x) {
-                switch (entity.getEntityType()) {
-                    case Villain:
-                        return interact((Villain)entity);
-                    case Obstacle:
-                        //interact((Sanitizer)entity);
-                        return false;
-                }
+                if (entity.getEntityType().equals(EntityType.Villain))
+                    return interact((Villain)entity);
+                else
+                    return false;
             }
         }
+
         return true;
     }
 
@@ -215,21 +209,26 @@ public class GameEngine {
     public boolean interact(Villain villain) {
         int result = renderer.chooseAction(villain);
         if (result == 1) {
-            if (!fight(villain))
+            if (!fight(villain)) {
+                wins = 0;
                 return false;
+            }
         }
         else {
             if (randomGenerator(2) == 1) {
                 renderer.updateGameAction("Couldn't run from the villain");
                 renderer.showMessageDialog(3, 0);
-                if (!fight(villain))
+                if (!fight(villain)){
+                    wins = 0;
                     return false;
+                }
             }
             else {
                 renderer.updateGameAction("Escaped from the villain");
                 return false;
             }
         }
+        wins++;
         return true;
     }
 
@@ -295,8 +294,16 @@ public class GameEngine {
         return result;
     }
 
-    public boolean checkLevel() {
+
+    public boolean checkWin() {
         int level = hero.getLevel();
+
+        if (wins == 5) {
+            wins = 0;
+            hero.setHitPoints(hero.getHitPoints() + 10);
+            renderer.updateHitPoints(hero.getHitPoints());
+            renderer.updateGameAction("Earned 10 Hit Points after good fights");
+        }
 
         if (hero.getExperience() >= (level * 1000 + Math.pow(level - 1, 2) * 450))
             return true;
@@ -336,7 +343,7 @@ public class GameEngine {
             hero.setY(y);
             hero.setX(x);
 
-            if (checkLevel()) {
+            if (checkWin()) {
                 renderer.showMessageDialog(1, 0);
                 hero.setLevel(hero.getLevel() + 1);
                 status = false;

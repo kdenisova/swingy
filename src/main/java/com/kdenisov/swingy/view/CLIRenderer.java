@@ -17,7 +17,6 @@ public class CLIRenderer implements Renderer {
     private List<String> gameAction;
     private int mapSize;
 
-
     public CLIRenderer(HibernateManager hibernateManager) {
         this.hibernateManager = hibernateManager;
     }
@@ -77,6 +76,9 @@ public class CLIRenderer implements Renderer {
     public void renderPlayground(GameEngine game, int mapSize) {
         this.game = game;
         this.mapSize = mapSize;
+
+        if (scanner == null)
+            scanner = new Scanner(System.in);
 
         gameAction = new ArrayList<>();
 
@@ -246,7 +248,7 @@ public class CLIRenderer implements Renderer {
                 Renderer renderer = new GUIRenderer(hibernateManager);
                 game = new GameEngine(hibernateManager, renderer, game.getHero());
                 game.continueGame();
-                break;
+                return;//doesn't work
             case "x":
                 saveGame();
                 hibernateManager.tearDown();
