@@ -31,6 +31,7 @@ public class GUIRenderer implements Renderer, KeyListener {
     private JLabel hitLabel;
     private Image heroImage;
     private List<RenderedEntity> renderedEntities;
+    private List<String> gameAction = null;
     private JLabel[] artifactsLabel;
     private JTextArea actionArea;
 
@@ -45,7 +46,7 @@ public class GUIRenderer implements Renderer, KeyListener {
     }
 
     @Override
-    public void renderPlayground(GameEngine game, int mapSize) {
+    public void renderPlayground(GameEngine game, int mapSize, List<String> gameAction) {
         this.game = game;
         this.mapSize = mapSize;
         renderedEntities = new ArrayList<>();
@@ -180,9 +181,22 @@ public class GUIRenderer implements Renderer, KeyListener {
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
         scrollPane.setViewportView(actionArea);
-        actionArea.setText("Let the adventure begin!\n");
-        actionPanel.add(scrollPane);
 
+        if (gameAction == null) {
+            this.gameAction = new ArrayList<>();
+            this.gameAction.add("Level " + game.getHero().getLevel() + ".");
+            this.gameAction.add("Let the adventure begin!");
+        }
+        else {
+            this.gameAction = gameAction;
+        }
+
+        for (int i = 0; i < this.gameAction.size(); i++) {
+            actionArea.append(this.gameAction.get(i) + "\n");
+        }
+
+        //actionArea.setText("Let the adventure begin!\n");
+        actionPanel.add(scrollPane);
 
         infoPanel.add(actionPanel);
         frame.add(BorderLayout.CENTER, infoPanel);
@@ -216,7 +230,9 @@ public class GUIRenderer implements Renderer, KeyListener {
 
     @Override
     public void updateGameAction(String str) {
-        actionArea.append(str + ".\n");
+        gameAction.add(str);
+        //actionArea.append(str);
+        actionArea.append(str + "\n");
     }
 
     @Override
@@ -391,6 +407,19 @@ public class GUIRenderer implements Renderer, KeyListener {
         iconLabels[y][x].repaint();
     }
 
+    @Override
+    public void saveGame() {
+        hibernateManager.updateHero(game.getHero());
+
+        try {
+            hibernateManager.saveGame(game, gameAction);
+            updateGameAction("Game saved.");
+            System.out.println("Saved");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
     public int getIconSize() {
         return iconSize;
     }
@@ -416,16 +445,7 @@ public class GUIRenderer implements Renderer, KeyListener {
             } else if (e.getKeyCode() == KeyEvent.VK_RIGHT && game.getHero().getX() < mapSize - 1) {
                 game.heroMoved(HeroMove.RIGHT);
             } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                hibernateManager.updateHero(game.getHero());
-
-                try {
-                    hibernateManager.saveGame(game);
-                    updateGameAction("Game saved");
-                    System.out.println("Saved");
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-
+                saveGame();
                 renderedEntities.clear();
                 frame.dispose();
                 Renderer renderer = new CLIRenderer(hibernateManager);
@@ -444,15 +464,7 @@ public class GUIRenderer implements Renderer, KeyListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            hibernateManager.updateHero(game.getHero());
-
-            try {
-                hibernateManager.saveGame(game);
-                updateGameAction("Game saved");
-                System.out.println("Saved");
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+            saveGame();
         }
     }
 
@@ -460,16 +472,7 @@ public class GUIRenderer implements Renderer, KeyListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            hibernateManager.updateHero(game.getHero());
-
-            try {
-                hibernateManager.saveGame(game);
-                updateGameAction("Game saved");
-                System.out.println("Saved");
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-
+            saveGame();
             renderedEntities.clear();
             frame.dispose();
             Renderer renderer = new CLIRenderer(hibernateManager);
@@ -484,6 +487,7 @@ public class GUIRenderer implements Renderer, KeyListener {
         public void actionPerformed(ActionEvent e) {
             //hibernateManager.deleteHero(game);
             frame.dispose();
+            renderMenu();
         }
     }
 }

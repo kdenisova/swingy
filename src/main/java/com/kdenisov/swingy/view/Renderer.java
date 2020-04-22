@@ -5,10 +5,11 @@ import com.kdenisov.swingy.controller.HibernateManager;
 import com.kdenisov.swingy.model.Villain;
 
 import java.io.IOException;
+import java.util.List;
 
 public interface Renderer {
     void renderMenu();
-    void renderPlayground(GameEngine gameEngine, int mapSize);
+    void renderPlayground(GameEngine gameEngine, int mapSize, List<String> gameAction);
     void updateGameAction(String str);
     void updateAttack(int attack);
     void updateDefense(int defense);
@@ -21,4 +22,5 @@ public interface Renderer {
     void renderVillians();
     void renderObstacle();
     void removeVillain(int y, int x);
+    void saveGame();
 }

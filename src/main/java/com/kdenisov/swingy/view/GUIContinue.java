@@ -108,7 +108,7 @@ public class GUIContinue {
         GameEngine gameEngine = new GameEngine(hibernateManager, renderer, hero);
         gameEngine.continueGame();
         //gameEngine.play();
-        //frame.dispose();
+        frame.dispose();
     }
 
     public void showMessage() {

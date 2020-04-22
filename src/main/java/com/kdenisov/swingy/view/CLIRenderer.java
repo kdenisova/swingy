@@ -3,6 +3,7 @@ package com.kdenisov.swingy.view;
 import com.kdenisov.swingy.controller.GameEngine;
 import com.kdenisov.swingy.controller.HeroMove;
 import com.kdenisov.swingy.controller.HibernateManager;
+import com.kdenisov.swingy.model.HeroEntity;
 import com.kdenisov.swingy.model.Obstacle;
 import com.kdenisov.swingy.model.Villain;
 
@@ -42,12 +43,13 @@ public class CLIRenderer implements Renderer {
             System.out.println("Choose an option:");
             System.out.println("(1) New Game");
             System.out.println("(2) Continue");
-            System.out.println("(3) Exit");
+            System.out.println("(3) Leaderboard");
+            System.out.println("(4) Exit");
             System.out.print("> ");
 
             option = scanner.next();
 
-            if (option.equals("1") || option.equals("2") || option.equals("3"))
+            if (option.equals("1") || option.equals("2") || option.equals("3") || option.equals("4"))
                 selected = true;
             else
                 System.out.println("\n*** Unknown option! ***");
@@ -63,6 +65,9 @@ public class CLIRenderer implements Renderer {
                 cContinue.uploadHeroList(hibernateManager, this);
                 break;
             case "3" :
+                showLeaderboard();
+                break;
+            case "4" :
                 hibernateManager.tearDown();
                 scanner.close();
                 System.exit(0);
@@ -72,20 +77,53 @@ public class CLIRenderer implements Renderer {
         //scanner.close();
     }
 
+    public void showLeaderboard() {
+        List<HeroEntity> heroEntities = hibernateManager.getLeaderboard();
+
+        if (heroEntities.size() == 0) {
+            System.out.println("No finished games found!");
+            return;
+        }
+
+        Collections.sort(heroEntities, new Comparator<HeroEntity>() {
+            @Override
+            public int compare(HeroEntity o1, HeroEntity o2) {
+                return Integer.compare(o2.getExperience(), o1.getExperience());
+            }
+        });
+
+        System.out.print("\033\143");
+        System.out.println("Leaderboard:");
+
+        for (int i = 0; i < heroEntities.size(); i++) {
+            System.out.println(String.format("%d. %s (Hero Class: %s, Level: %d, Experience: %d", +
+                    i + 1, heroEntities.get(i).getName(), heroEntities.get(i).getHeroClass().toString(), +
+                    heroEntities.get(i).getLevel(), heroEntities.get(i).getExperience()));
+        }
+
+        System.out.println("\nPress any key to return to Main Menu.");
+
+        scanner.next();
+        renderMenu();
+    }
+
     @Override
-    public void renderPlayground(GameEngine game, int mapSize) {
+    public void renderPlayground(GameEngine game, int mapSize, List<String> gameAction) {
         this.game = game;
         this.mapSize = mapSize;
 
         if (scanner == null)
             scanner = new Scanner(System.in);
 
-        gameAction = new ArrayList<>();
+        if (gameAction == null) {
+            this.gameAction = new ArrayList<>();
+            this.gameAction.add("Level " + game.getHero().getLevel() + ".");
+            this.gameAction.add("Let the adventure begin!");
+        }
+        else
+            this.gameAction = gameAction;
 
         System.out.print("\033\143");
-        gameAction.add("Level " + game.getHero().getLevel() + ".");
-        gameAction.add("Let the adventure begin!");
-
         map = new String[mapSize][mapSize];
 
         for (int y = 0; y < mapSize; y++) {
@@ -237,6 +275,7 @@ public class CLIRenderer implements Renderer {
                 break;
             case "c":
                 saveGame();
+                renderMap();
                 break;
             case "b":
                 saveGame();
@@ -245,6 +284,7 @@ public class CLIRenderer implements Renderer {
                 break;
             case "g":
                 saveGame();
+                System.out.print("\033\143");
                 Renderer renderer = new GUIRenderer(hibernateManager);
                 game = new GameEngine(hibernateManager, renderer, game.getHero());
                 game.continueGame();
@@ -258,16 +298,17 @@ public class CLIRenderer implements Renderer {
         }
         
         System.out.println(ColorType.RESET);
-        renderMap();
-        chooseDirection();
+        //renderMap();
+        //chooseDirection();
     }
 
+    @Override
     public void saveGame() {
         hibernateManager.updateHero(game.getHero());
 
         try {
-            hibernateManager.saveGame(game);
-            updateGameAction("Game saved");
+            hibernateManager.saveGame(game, gameAction);
+            updateGameAction("Game saved.");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -275,7 +316,7 @@ public class CLIRenderer implements Renderer {
 
     @Override
     public void updateGameAction(String str) {
-        str += ".";
+        //str += ".";
         gameAction.add(str);
         renderMap();
 

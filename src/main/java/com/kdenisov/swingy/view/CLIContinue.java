@@ -94,6 +94,7 @@ public class CLIContinue {
                 renderer.renderMenu();
                 break;
             case "g":
+                System.out.print("\033\143");
                 renderer = new GUIRenderer(hibernateManager);
                 GUIContinue guiContinue = new GUIContinue();
                 guiContinue.uploadHeroList(hibernateManager, renderer);

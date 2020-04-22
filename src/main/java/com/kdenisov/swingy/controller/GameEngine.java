@@ -30,13 +30,14 @@ public class GameEngine {
         setMapSize();
         setVillains();
         setObstacles();
-        renderer.renderPlayground(this, mapSize);
+        renderer.renderPlayground(this, mapSize, null);
     }
 
     public void continueGame() {
         entities = new ArrayList<>();
         setStatus(true);
         setMapSize();
+        List<String> gameAction = null;
 
         try {
             InputStream inputStream = hibernateManager.loadGame(this.hero.getId());
@@ -50,19 +51,22 @@ public class GameEngine {
             entities = (List<GameEntity>) objectInputStream.readObject();
             villains = (List<Villain>) objectInputStream.readObject();
             obstacles = (List<Obstacle>) objectInputStream.readObject();
+            gameAction = (List<String>) objectInputStream.readObject();
+
             objectInputStream.close();
             System.out.println("Loaded");
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        renderer.renderPlayground(this, mapSize);
+        renderer.renderPlayground(this, mapSize, gameAction);
     }
 
     public void clear() {
         setMapSize();
         hero.setY(mapSize / 2);
         hero.setX(mapSize / 2);
+        hero.setAttack(hero.getAttack() + 10);
         hibernateManager.updateHero(hero);
         villains.clear();
 
@@ -87,7 +91,10 @@ public class GameEngine {
                 x = randomGenerator(mapSize);
             }
 
-            Villain villain = new Villain(VillainType.getRandomVillain(), randomGenerator(attackRange) + 40, y, x);
+            Villain villain = new Villain(VillainType.getRandomVillain(),
+                    randomGenerator(attackRange) + 40 + hero.getLevel() * 10,
+                    y, x);
+
             this.villains.add(villain);
             entities.add(villain);
         }
@@ -183,17 +190,17 @@ public class GameEngine {
             case Armor:
                 hero.setDefense(hero.getDefense() + points);
                 renderer.updateDefense(hero.getDefense());
-                msg = "Defense";
+                msg = "Defense.";
                 break;
             case Helm:
                 hero.setHitPoints(hero.getHitPoints() + points);
                 renderer.updateHitPoints(hero.getHitPoints());
-                msg = "Hit Points";
+                msg = "Hit Points.";
                 break;
             case Weapon:
                 hero.setAttack(hero.getAttack() + points);
                 renderer.updateAttack(hero.getAttack());
-                msg = "Attack";
+                msg = "Attack.";
                 break;
         }
 
@@ -216,7 +223,7 @@ public class GameEngine {
         }
         else {
             if (randomGenerator(2) == 1) {
-                renderer.updateGameAction("Couldn't run from the villain");
+                renderer.updateGameAction("Couldn't run from the villain.");
                 renderer.showMessageDialog(3, 0);
                 if (!fight(villain)){
                     wins = 0;
@@ -224,7 +231,7 @@ public class GameEngine {
                 }
             }
             else {
-                renderer.updateGameAction("Escaped from the villain");
+                renderer.updateGameAction("Escaped from the villain.");
                 return false;
             }
         }
@@ -243,13 +250,13 @@ public class GameEngine {
                 hero.setHitPoints(hitPoints);
                 renderer.updateHitPoints(hitPoints);
                 renderer.showMessageDialog(5, villain.getAttack() - hero.getDefense());
-                renderer.updateGameAction(villain.getVillainType() + " does " + (villain.getAttack() - hero.getDefense()) + " damage");
+                renderer.updateGameAction(villain.getVillainType() + " does " + (villain.getAttack() - hero.getDefense()) + " damage.");
                 removeEntity(villain);
             }
             else {
                 hero.setHitPoints(0);
                 renderer.updateHitPoints(0);
-                renderer.updateGameAction("Too much damage from " + villain.getVillainType());
+                renderer.updateGameAction("Too much damage from " + villain.getVillainType() + ".");
                 renderer.showMessageDialog(4, hero.getExperience());
                 result = false;
                 status = false;
@@ -264,14 +271,14 @@ public class GameEngine {
                 renderer.showMessageDialog(2, experience);
                 renderer.updateExperience(hero.getExperience());
                 renderer.updateHitPoints(hitPoints);
-                renderer.updateGameAction(villain.getVillainType() + " does " + hitPoints + " damage");
-                renderer.updateGameAction("Earned " + experience + " experience after fight with " + villain.getVillainType());
+                renderer.updateGameAction(villain.getVillainType() + " does " + hitPoints + " damage.");
+                renderer.updateGameAction("Earned " + experience + " experience after fight with " + villain.getVillainType() + ".");
                 removeEntity(villain);
             }
             else {
                 hero.setHitPoints(0);
                 renderer.updateHitPoints(0);
-                renderer.updateGameAction("Too much damage from " + villain.getVillainType());
+                renderer.updateGameAction("Too much damage from " + villain.getVillainType() + ".");
                 renderer.showMessageDialog(4, hero.getExperience());
                 result = false;
                 status = false;
@@ -283,7 +290,7 @@ public class GameEngine {
             hero.setExperience(hero.getExperience() + experience);
             renderer.updateExperience(hero.getExperience());
             removeEntity(villain);
-            renderer.updateGameAction("Earned " + experience + " experience after fight with " + villain.getVillainType());
+            renderer.updateGameAction("Earned " + experience + " experience after fight with " + villain.getVillainType() + ".");
         }
 
         if (status && hero.getArtifacts().size() < 3) {
@@ -302,7 +309,7 @@ public class GameEngine {
             wins = 0;
             hero.setHitPoints(hero.getHitPoints() + 10);
             renderer.updateHitPoints(hero.getHitPoints());
-            renderer.updateGameAction("Earned 10 Hit Points after good fights");
+            renderer.updateGameAction("Earned 10 Hit Points after good fights.");
         }
 
         if (hero.getExperience() >= (level * 1000 + Math.pow(level - 1, 2) * 450))

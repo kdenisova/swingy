@@ -44,8 +44,8 @@ public class GUIMenu {
         JButton continueButton = new JButton("Continue");
         continueButton.addActionListener(new ContinueButtonListener());
 
-        JButton aboutButton = new JButton("About");
-        aboutButton.addActionListener(new AboutButtonListener());
+        JButton aboutButton = new JButton("Leaderboard");
+        aboutButton.addActionListener(new LeaderboardButtonListener());
 
         JButton exitButton = new JButton("Exit");
         exitButton.addActionListener(new ExitButtonListener());
@@ -85,11 +85,12 @@ public class GUIMenu {
         }
     }
 
-    class AboutButtonListener implements ActionListener {
+    class LeaderboardButtonListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-
+            GUILeaderboard leaderboard = new GUILeaderboard();
+            leaderboard.uploadHeroList(hibernateManager);
         }
     }
 
