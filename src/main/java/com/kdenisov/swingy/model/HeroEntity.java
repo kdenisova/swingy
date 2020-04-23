@@ -1,12 +1,9 @@
 package com.kdenisov.swingy.model;
 
-import com.kdenisov.swingy.view.NewGame;
-
 import javax.persistence.*;
-import javax.swing.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 import java.util.Set;
 
@@ -61,7 +58,8 @@ public class HeroEntity {
 
     @Basic
     @Column(name = "Name")
-    @NotEmpty(message = "Name must not be empty")
+    @NotEmpty(message = "Name must not be empty.")
+    @Size(max = 15, message = "Length of name is too big.")
     public String getName() {
         return name;
     }
@@ -152,7 +150,7 @@ public class HeroEntity {
 
     @Basic
     @Column(name = "Class")
-    @NotNull(message = "Class must not be empty")
+    @NotNull(message = "Unknown Hero Class.")
     public HeroClass getHeroClass() {
         return heroClass;
     }
@@ -183,6 +181,8 @@ public class HeroEntity {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "HERO_ID")
+    //@NotEmpty(message = "Unknown type of Artifact.")
+    //@NotNull(message = "Unknown type of Artifact.")
     public Set<ArtifactsEntity> getArtifacts() {
         return artifacts;
     }

@@ -1,6 +1,7 @@
 package com.kdenisov.swingy.view;
 
 import com.kdenisov.swingy.controller.GameEngine;
+import com.kdenisov.swingy.controller.Helper;
 import com.kdenisov.swingy.controller.HibernateManager;
 import com.kdenisov.swingy.model.*;
 
@@ -16,8 +17,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewGame {
+public class GUINewGame {
     private HibernateManager hibernateManager;
+    private Renderer renderer;
+    private Helper helper;
     private int attack, defense, hitPoints;
     private JFrame frame;
     private JTextField nameField;
@@ -29,8 +32,10 @@ public class NewGame {
     private JComboBox artifactBox;
 
 
-    public void createHero(final HibernateManager hibernateManager) {
+    public void createHero(final HibernateManager hibernateManager, Renderer renderer) {
         this.hibernateManager = hibernateManager;
+        this.renderer = renderer;
+        helper = new Helper();
 
         frame = new JFrame("Create a new Hero");
         //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -128,7 +133,8 @@ public class NewGame {
     }
 
     public void showMessage() {
-        JOptionPane.showMessageDialog(null, "Please complete all fields",
+        JOptionPane.showMessageDialog(null, "Validation failed.\nPlease make sure that you complete " +
+                        "all fields\nand length of name no more than 15 characters.",
                 "Error", JOptionPane.ERROR_MESSAGE);
     }
 
@@ -164,7 +170,7 @@ public class NewGame {
                 }
 
                 hero.setArtifacts(artifacts);
-                GameEngine gameEngine = new GameEngine(hibernateManager, hero);
+                GameEngine gameEngine = new GameEngine(hibernateManager, renderer, hero);
                 gameEngine.play();
 
                 frame.dispose();
@@ -180,6 +186,7 @@ public class NewGame {
         @Override
         public void actionPerformed(ActionEvent e) {
             frame.dispose();
+            renderer.renderMenu();
         }
     }
 
@@ -194,17 +201,9 @@ public class NewGame {
             if (artifactBox.getSelectedIndex() >= 0)
                 artifactBox.setSelectedIndex(-1);
 
-            if (heroClassBox.getSelectedItem().equals(HeroClass.Elf)) {
-                attack = 100;
-                defense = 50;
-            } else if (heroClassBox.getSelectedItem().equals(HeroClass.Dwarf)) {
-                attack = 110;
-                defense = 60;
-            }
-            else {
-                attack = 90;
-                defense = 30;
-            }
+            HeroClass heroClass = HeroClass.valueOf(heroClassBox.getSelectedItem().toString());
+            attack = helper.getAttack(heroClass);
+            defense = helper.getDefense(heroClass);
 
             attackField.setText(String.valueOf(attack));
             defenseField.setText(String.valueOf(defense));

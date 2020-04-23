@@ -9,7 +9,6 @@ import org.hibernate.query.Query;
 
 import javax.validation.*;
 import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -30,7 +29,7 @@ public class HibernateManager {
 
     public void setUp() {
         Configuration configuration = new Configuration();
-        sessionFactory =  configuration.configure().buildSessionFactory();
+        sessionFactory = configuration.configure().buildSessionFactory();
     }
 
     public void tearDown() {
@@ -63,7 +62,7 @@ public class HibernateManager {
 
             Set<ConstraintViolation<HeroEntity>> constraintViolations = validator.validate(hero);
             if (constraintViolations.size() != 0) {
-                System.out.println("List of constraint violations:");
+                System.out.println("\nList of constraint violations:");
                 for (ConstraintViolation<HeroEntity> constraintViolation : constraintViolations) {
                     System.out.println("Constraint Violation: " + constraintViolation.getMessage());
                 }
@@ -102,15 +101,13 @@ public class HibernateManager {
         }
     }
 
-    @SuppressWarnings({"rawtypes", "TryFinallyCanBeTryWithResources"})
     public List<HeroEntity> getListHeroes() {
         Session session = null;
 
         try {
             session = sessionFactory.openSession();
-            String hql = "FROM HeroEntity";
-            Query query = session.createQuery(hql);
-            List<HeroEntity> heroEntities = query.list();
+            List<HeroEntity> heroEntities = session.createQuery(
+                    "FROM HeroEntity where hitPoints > 0", HeroEntity.class).list();
 
             return heroEntities;
         } finally {
@@ -118,50 +115,44 @@ public class HibernateManager {
         }
     }
 
-    public List<Artifact> getListArtifacts(int id) {
+    public List<HeroEntity> getLeaderboard() {
         Session session = null;
 
         try {
             session = sessionFactory.openSession();
-        String hql = "FROM ArtifactsEntity WHERE heroId = " + id;
-            Query query = session.createQuery(hql);
-            List<ArtifactsEntity> artifactsEntities = query.list();
-            List<Artifact> artifacts = new ArrayList<>();
+            List<HeroEntity> heroEntities = session.createQuery(
+                    "FROM HeroEntity where hitPoints = 0", HeroEntity.class).list();
 
-            for (ArtifactsEntity artifactsEntity : artifactsEntities) {
-                artifacts.add(artifactsEntity.getArtifact());
-            }
-
-            return artifacts;
+            return heroEntities;
         } finally {
             session.close();
         }
     }
 
-    public void updateHero(Hero hero) {
+    public void updateHero(GameEngine game) {
         Session session = null;
 
         try {
             session = sessionFactory.openSession();
             Transaction transaction = session.beginTransaction();
-            String hql = "UPDATE HeroEntity SET level =" + hero.getLevel() +
-                    ", experience = " + hero.getExperience() + ", attack = " +
-                    hero.getAttack() + ", defense = " + hero.getDefense() +
-                    ", hitPoints = " + hero.getHitPoints() + ", y = " + hero.getY() + ", x = " +
-                    hero.getX() + " WHERE id =" + hero.getId();
 
-            //session.saveOrUpdate(hero);
+            HeroEntity heroEntity = session.get(HeroEntity.class, game.getHero().getId());
+            heroEntity.setLevel(game.getHero().getLevel());
+            heroEntity.setExperience(game.getHero().getExperience());
+            heroEntity.setAttack(game.getHero().getAttack());
+            heroEntity.setDefense(game.getHero().getDefense());
+            heroEntity.setHitPoints(game.getHero().getHitPoints());
+            heroEntity.setY(game.getHero().getY());
+            heroEntity.setX(game.getHero().getX());
 
-            Query query = session.createQuery(hql);
-            query.executeUpdate();
+            session.update(heroEntity);
             transaction.commit();
-
         } finally {
             session.close();
         }
     }
 
-    public void saveGame(GameEngine game) {
+    public void saveGame(GameEngine game, List<String> gameAction) {
         Session session = null;
 
         try {
@@ -173,6 +164,7 @@ public class HibernateManager {
             objectOutputStream.writeObject(game.getGameEntities());
             objectOutputStream.writeObject(game.getVillains());
             objectOutputStream.writeObject(game.getObstacles());
+            objectOutputStream.writeObject(gameAction);
             objectOutputStream.close();
 
             HeroEntity heroEntity = session.get(HeroEntity.class, game.getHero().getId());

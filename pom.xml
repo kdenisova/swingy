@@ -48,7 +48,7 @@
                     <manifest>
                         <addClasspath>true</addClasspath>
                         <classpathPrefix>lib/</classpathPrefix>
-                        <mainClass>com.kdenisov.swingy.Swingy</mainClass>
+                        <mainClass>com.kdenisov.swingy.controller.Swingy</mainClass>
                     </manifest>
                 </archive>
                 <finalName>swingy</finalName>

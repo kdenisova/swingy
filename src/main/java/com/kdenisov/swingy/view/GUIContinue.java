@@ -11,20 +11,24 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Continue {
+public class GUIContinue {
+    private HibernateManager hibernateManager;
+    private Renderer renderer;
     private JFrame frame;
     private String[] columnName = {"Name", "Hero Class", "Level", "Experience"};
     private JTable table;
     private JButton continueButton;
     private JButton cancelButton;
     private List<HeroEntity> heroEntities;
-    private HibernateManager hibernateManager;
 
-    public void UploadHeroList(final HibernateManager hibernateManager) {
+    public void uploadHeroList(final HibernateManager hibernateManager, Renderer renderer) {
         this.hibernateManager = hibernateManager;
+        this.renderer = renderer;
         heroEntities = hibernateManager.getListHeroes();
+
         if (heroEntities.size() == 0) {
             showMessage();
+            renderer.renderMenu();
             return;
         }
 
@@ -102,15 +106,15 @@ public class Continue {
         hero.setArtifacts(artifacts);
 
         System.out.println(hero.getName() + " " + hero.getHeroClass());
-        GameEngine gameEngine = new GameEngine(hibernateManager, hero);
+        GameEngine gameEngine = new GameEngine(hibernateManager, renderer, hero);
         gameEngine.continueGame();
         //gameEngine.play();
-        //frame.dispose();
+        frame.dispose();
     }
 
     public void showMessage() {
         JOptionPane.showMessageDialog(null, "No saved games found!",
-                "Error", JOptionPane.ERROR_MESSAGE);
+                "Error", JOptionPane.INFORMATION_MESSAGE);
     }
 
     class ContinueButtonListener implements ActionListener {
@@ -131,6 +135,7 @@ public class Continue {
         @Override
         public void actionPerformed(ActionEvent e) {
             frame.dispose();
+            renderer.renderMenu();
         }
     }
 }

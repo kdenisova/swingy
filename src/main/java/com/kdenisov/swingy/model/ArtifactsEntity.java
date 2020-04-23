@@ -1,6 +1,7 @@
 package com.kdenisov.swingy.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -35,7 +36,8 @@ public class ArtifactsEntity {
 
     @Basic
     @Column(name = "TYPE")
-    @NotNull(message = "Artifact must not be empty")
+    //@NotNull(message = "Unknown type of Artifact.")
+    //@NotEmpty(message = "Unknown type of Artifact not empty.")
     public Artifact getArtifact() {
         return artifact;
     }
