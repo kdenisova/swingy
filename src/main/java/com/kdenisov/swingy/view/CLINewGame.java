@@ -37,10 +37,7 @@ public class CLINewGame {
         heroClass = chooseHeroClass();
         artifact = chooseArtifact();
         calculateValues();
-        //heroClass = null;
         saveHero();
-
-        //scanner.close();
     }
 
     public void saveHero() {
@@ -128,32 +125,24 @@ public class CLINewGame {
     }
 
     public Artifact chooseArtifact() {
-        Artifact artifact;
+        Artifact artifact = null;
         String option;
-        //boolean selected = false;
+        boolean selected = false;
 
-        System.out.println("\nChoose an Artifact:");
-        System.out.println("(1) Weapon     +10 to Attack");
-        System.out.println("(2) Armor      +10 to Defence");
-        System.out.println("(3) Helm       +10 to Hit Points");
-        System.out.print("> ");
+        do {
+            System.out.println("\nChoose an Artifact:");
+            System.out.println("(1) Weapon     +10 to Attack");
+            System.out.println("(2) Armor      +10 to Defence");
+            System.out.println("(3) Helm       +10 to Hit Points");
+            System.out.print("> ");
 
-        option = scanner.next();
+            option = scanner.next();
 
-//        do {
-//            System.out.println("\nChoose an Artifact:");
-//            System.out.println("(1) Weapon     +10 to Attack");
-//            System.out.println("(2) Armor      +10 to Defence");
-//            System.out.println("(3) Helm       +10 to Hit Points");
-//            System.out.print("> ");
-//
-//            option = scanner.next();
-//
-//            if (option.equals("1") || option.equals("2") || option.equals("3"))
-//                selected = true;
-//            else
-//                System.out.println("\n*** Unknown option! ***");
-//        } while (!selected);
+            if (option.equals("1") || option.equals("2") || option.equals("3"))
+                selected = true;
+            else
+                System.out.println("\n*** Unknown option! ***");
+        } while (!selected);
 
         switch (option) {
             case "1":
@@ -165,9 +154,6 @@ public class CLINewGame {
             case "3":
                 artifact = Artifact.Helm;
                 break;
-            default:
-                artifact = null;
-                break;
         }
 
         return artifact;
@@ -177,9 +163,6 @@ public class CLINewGame {
         attack = helper.getAttack(heroClass);
         defense = helper.getDefense(heroClass);
         hitPoints = 100;
-
-        if (artifact == null)
-            return;
 
         switch (artifact) {
             case Weapon:

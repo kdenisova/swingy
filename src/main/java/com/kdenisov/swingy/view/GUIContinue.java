@@ -28,6 +28,7 @@ public class GUIContinue {
 
         if (heroEntities.size() == 0) {
             showMessage();
+            renderer.renderMenu();
             return;
         }
 
@@ -113,7 +114,7 @@ public class GUIContinue {
 
     public void showMessage() {
         JOptionPane.showMessageDialog(null, "No saved games found!",
-                "Error", JOptionPane.ERROR_MESSAGE);
+                "Error", JOptionPane.INFORMATION_MESSAGE);
     }
 
     class ContinueButtonListener implements ActionListener {

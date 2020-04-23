@@ -26,14 +26,17 @@ public class CLIContinue {
 
         if (heroEntities.size() == 0) {
             showMessage();
-            return;
-        }
+            System.out.println("\nPress any key to return to Main Menu.");
 
-        showHeroList();
+            scanner.next();
+            renderer.renderMenu();
+        }
+        else
+            showHeroList();
     }
 
     public void showMessage() {
-        System.out.println("No saved games found!");
+        System.out.println("\nNo saved games found!");
     }
 
     public void showHeroList() {

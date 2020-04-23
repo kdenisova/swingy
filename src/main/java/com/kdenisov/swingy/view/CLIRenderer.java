@@ -82,23 +82,23 @@ public class CLIRenderer implements Renderer {
 
         if (heroEntities.size() == 0) {
             System.out.println("No finished games found!");
-            return;
         }
+        else {
+            Collections.sort(heroEntities, new Comparator<HeroEntity>() {
+                @Override
+                public int compare(HeroEntity o1, HeroEntity o2) {
+                    return Integer.compare(o2.getExperience(), o1.getExperience());
+                }
+            });
 
-        Collections.sort(heroEntities, new Comparator<HeroEntity>() {
-            @Override
-            public int compare(HeroEntity o1, HeroEntity o2) {
-                return Integer.compare(o2.getExperience(), o1.getExperience());
+            System.out.print("\033\143");
+            System.out.println("Leaderboard:");
+
+            for (int i = 0; i < heroEntities.size(); i++) {
+                System.out.println(String.format("%d. %s (Hero Class: %s, Level: %d, Experience: %d", +
+                        i + 1, heroEntities.get(i).getName(), heroEntities.get(i).getHeroClass().toString(), +
+                        heroEntities.get(i).getLevel(), heroEntities.get(i).getExperience()));
             }
-        });
-
-        System.out.print("\033\143");
-        System.out.println("Leaderboard:");
-
-        for (int i = 0; i < heroEntities.size(); i++) {
-            System.out.println(String.format("%d. %s (Hero Class: %s, Level: %d, Experience: %d", +
-                    i + 1, heroEntities.get(i).getName(), heroEntities.get(i).getHeroClass().toString(), +
-                    heroEntities.get(i).getLevel(), heroEntities.get(i).getExperience()));
         }
 
         System.out.println("\nPress any key to return to Main Menu.");
@@ -289,7 +289,7 @@ public class CLIRenderer implements Renderer {
                 Renderer renderer = new GUIRenderer(hibernateManager);
                 game = new GameEngine(hibernateManager, renderer, game.getHero());
                 game.continueGame();
-                return;//doesn't work
+                return;
             case "x":
                 saveGame();
                 hibernateManager.tearDown();

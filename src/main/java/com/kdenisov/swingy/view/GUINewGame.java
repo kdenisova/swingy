@@ -133,7 +133,8 @@ public class GUINewGame {
     }
 
     public void showMessage() {
-        JOptionPane.showMessageDialog(null, "Please complete all fields",
+        JOptionPane.showMessageDialog(null, "Validation failed.\nPlease make sure that you complete " +
+                        "all fields\nand length of name no more than 15 characters.",
                 "Error", JOptionPane.ERROR_MESSAGE);
     }
 
@@ -203,17 +204,6 @@ public class GUINewGame {
             HeroClass heroClass = HeroClass.valueOf(heroClassBox.getSelectedItem().toString());
             attack = helper.getAttack(heroClass);
             defense = helper.getDefense(heroClass);
-//            if (heroClassBox.getSelectedItem().equals(HeroClass.Elf)) {
-//                attack = 100;
-//                defense = 50;
-//            } else if (heroClassBox.getSelectedItem().equals(HeroClass.Dwarf)) {
-//                attack = 110;
-//                defense = 60;
-//            }
-//            else {
-//                attack = 100;
-//                defense = 65;
-//            }
 
             attackField.setText(String.valueOf(attack));
             defenseField.setText(String.valueOf(defense));

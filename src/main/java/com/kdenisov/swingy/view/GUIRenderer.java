@@ -63,11 +63,11 @@ public class GUIRenderer implements Renderer, KeyListener {
         heroLabel = new JLabel(new ImageIcon(heroImage));
 
         frame = new JFrame("Swingy");
-        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
+                saveGame();
                 hibernateManager.tearDown();
                 frame.dispose();
                 System.exit(0);
@@ -339,7 +339,6 @@ public class GUIRenderer implements Renderer, KeyListener {
 
         heroLabel = new JLabel(new ImageIcon(heroImage));
         iconLabels[newY][newX].add(heroLabel);
-        //System.out.println(String.format("I'm here [%d; %d]", newX, newY));
     }
 
     @Override

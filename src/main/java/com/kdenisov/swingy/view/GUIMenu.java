@@ -79,9 +79,9 @@ public class GUIMenu {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            frame.dispose();
             GUIContinue aContinue = new GUIContinue();
             aContinue.uploadHeroList(hibernateManager, renderer);
-            frame.dispose();
         }
     }
 
@@ -89,8 +89,9 @@ public class GUIMenu {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            frame.dispose();
             GUILeaderboard leaderboard = new GUILeaderboard();
-            leaderboard.uploadHeroList(hibernateManager);
+            leaderboard.uploadHeroList(hibernateManager, renderer);
         }
     }
 

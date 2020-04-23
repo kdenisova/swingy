@@ -21,12 +21,15 @@ public class GUILeaderboard {
     private String[] columnName = {"Rank", "Name", "Hero Class", "Level", "Experience"};
     private JTable table;
     private List<HeroEntity> heroEntities;
+    private Renderer renderer;
 
-    public void uploadHeroList(final HibernateManager hibernateManager) {
+    public void uploadHeroList(final HibernateManager hibernateManager, Renderer renderer) {
         heroEntities = hibernateManager.getLeaderboard();
+        this.renderer = renderer;
 
         if (heroEntities.size() == 0) {
             showMessage();
+            renderer.renderMenu();
             return;
         }
 
