@@ -7,6 +7,9 @@ public class Helper {
     private int defense;
 
     public int getAttack(HeroClass heroClass) {
+        if (heroClass == null)
+            return 0;
+
         switch (heroClass) {
             case Elf:
                 attack = 105;
@@ -27,6 +30,9 @@ public class Helper {
     }
 
     public int getDefense(HeroClass heroClass) {
+        if (heroClass == null)
+            return 0;
+
         switch (heroClass) {
             case Elf:
                 defense = 50;

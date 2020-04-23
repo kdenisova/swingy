@@ -409,7 +409,7 @@ public class GUIRenderer implements Renderer, KeyListener {
 
     @Override
     public void saveGame() {
-        hibernateManager.updateHero(game.getHero());
+        hibernateManager.updateHero(game);
 
         try {
             hibernateManager.saveGame(game, gameAction);

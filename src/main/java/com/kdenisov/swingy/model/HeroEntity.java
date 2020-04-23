@@ -57,7 +57,7 @@ public class HeroEntity {
 
     @Basic
     @Column(name = "Name")
-    @NotEmpty(message = "Name must not be empty")
+    @NotEmpty(message = "Name must not be empty.")
     public String getName() {
         return name;
     }
@@ -148,7 +148,7 @@ public class HeroEntity {
 
     @Basic
     @Column(name = "Class")
-    @NotNull(message = "Class must not be empty")
+    @NotNull(message = "Unknown Hero Class.")
     public HeroClass getHeroClass() {
         return heroClass;
     }
@@ -179,6 +179,7 @@ public class HeroEntity {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "HERO_ID")
+    @NotNull(message = "Unknown type of Artifact.")
     public Set<ArtifactsEntity> getArtifacts() {
         return artifacts;
     }

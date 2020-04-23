@@ -67,7 +67,7 @@ public class GameEngine {
         hero.setY(mapSize / 2);
         hero.setX(mapSize / 2);
         hero.setAttack(hero.getAttack() + 10);
-        hibernateManager.updateHero(hero);
+        hibernateManager.updateHero(this);
         villains.clear();
 
         play();

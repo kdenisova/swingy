@@ -35,7 +35,7 @@ public class ArtifactsEntity {
 
     @Basic
     @Column(name = "TYPE")
-    @NotNull(message = "Artifact must not be empty")
+    @NotNull(message = "Unknown type of Artifact.")
     public Artifact getArtifact() {
         return artifact;
     }

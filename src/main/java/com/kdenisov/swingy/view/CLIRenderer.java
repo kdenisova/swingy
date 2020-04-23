@@ -165,7 +165,7 @@ public class CLIRenderer implements Renderer {
                 renderedEntities.get("[V]") + "[V]" + ColorType.RESET + " Villain, " +
                 renderedEntities.get("[*]") + "[*]" + ColorType.RESET + " Obstacle");
 
-        System.out.println(ColorType.WHITE + "\n(C) to Save, (B) to List of Heroes, (G) to GUI view, (X) to Exit");
+        System.out.println(ColorType.WHITE + "\n(C) to Save, (B) to Main Menu, (G) to GUI view, (X) to Exit");
         System.out.println(ColorType.RESET);
 
         renderHistory();
@@ -279,8 +279,9 @@ public class CLIRenderer implements Renderer {
                 break;
             case "b":
                 saveGame();
-                CLIContinue cContinue = new CLIContinue();
-                cContinue.uploadHeroList(hibernateManager, this);
+                renderMenu();
+                //CLIContinue cContinue = new CLIContinue();
+                //cContinue.uploadHeroList(hibernateManager, this);
                 break;
             case "g":
                 saveGame();
@@ -304,7 +305,7 @@ public class CLIRenderer implements Renderer {
 
     @Override
     public void saveGame() {
-        hibernateManager.updateHero(game.getHero());
+        hibernateManager.updateHero(game);
 
         try {
             hibernateManager.saveGame(game, gameAction);

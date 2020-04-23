@@ -70,32 +70,44 @@ public class CLINewGame {
             GameEngine gameEngine = new GameEngine(hibernateManager, renderer, hero);
             gameEngine.play();
         }
-        else
-        {
-            System.out.println("Validation failed. See trace above.");
+        else {
+            System.out.println("\nValidation failed. See trace above.");
+            System.out.println("\nPress any key to return to Main Menu.");
+
+            scanner.next();
+            renderer.renderMenu();
         }
     }
 
     public HeroClass chooseHeroClass() {
-        HeroClass heroClass = null;
-        String option = null;
-        boolean selected = false;
+        HeroClass heroClass;
+        String option;
+        //boolean selected = false;
 
-        do {
-            System.out.println("\nChoose a Hero Class:");
-            System.out.println("             Attack   Defence");
-            System.out.println("(1) Elf      " + helper.getAttack(HeroClass.Elf) + "      " + helper.getDefense(HeroClass.Elf));
-            System.out.println("(2) Dwarf    " + helper.getAttack(HeroClass.Dwarf) + "      " + helper.getDefense(HeroClass.Dwarf));
-            System.out.println("(3) Wizard   " + helper.getAttack(HeroClass.Wizard) + "      " + helper.getDefense(HeroClass.Wizard));
-            System.out.print("> ");
+        System.out.println("\nChoose a Hero Class:");
+        System.out.println("             Attack   Defence");
+        System.out.println("(1) Elf      " + helper.getAttack(HeroClass.Elf) + "      " + helper.getDefense(HeroClass.Elf));
+        System.out.println("(2) Dwarf    " + helper.getAttack(HeroClass.Dwarf) + "      " + helper.getDefense(HeroClass.Dwarf));
+        System.out.println("(3) Wizard   " + helper.getAttack(HeroClass.Wizard) + "      " + helper.getDefense(HeroClass.Wizard));
+        System.out.print("> ");
 
-            option = scanner.next();
+        option = scanner.next();
 
-            if (option.equals("1") || option.equals("2") || option.equals("3"))
-                selected = true;
-            else
-                System.out.println("\n*** Unknown option! ***");
-        } while (!selected);
+//        do {
+//            System.out.println("\nChoose a Hero Class:");
+//            System.out.println("             Attack   Defence");
+//            System.out.println("(1) Elf      " + helper.getAttack(HeroClass.Elf) + "      " + helper.getDefense(HeroClass.Elf));
+//            System.out.println("(2) Dwarf    " + helper.getAttack(HeroClass.Dwarf) + "      " + helper.getDefense(HeroClass.Dwarf));
+//            System.out.println("(3) Wizard   " + helper.getAttack(HeroClass.Wizard) + "      " + helper.getDefense(HeroClass.Wizard));
+//            System.out.print("> ");
+//
+//            option = scanner.next();
+//
+//            if (option.equals("1") || option.equals("2") || option.equals("3"))
+//                selected = true;
+//            else
+//                System.out.println("\n*** Unknown option! ***");
+//        } while (!selected);
 
         switch (option) {
             case "1":
@@ -107,30 +119,41 @@ public class CLINewGame {
             case "3":
                 heroClass = HeroClass.Wizard;
                 break;
+            default:
+                heroClass = null;
+                break;
         }
 
         return heroClass;
     }
 
     public Artifact chooseArtifact() {
-        Artifact artifact = null;
-        String option = null;
-        boolean selected = false;
+        Artifact artifact;
+        String option;
+        //boolean selected = false;
 
-        do {
-            System.out.println("\nChoose an Artifact:");
-            System.out.println("(1) Weapon     +10 to Attack");
-            System.out.println("(2) Armor      +10 to Defence");
-            System.out.println("(3) Helm       +10 to Hit Points");
-            System.out.print("> ");
+        System.out.println("\nChoose an Artifact:");
+        System.out.println("(1) Weapon     +10 to Attack");
+        System.out.println("(2) Armor      +10 to Defence");
+        System.out.println("(3) Helm       +10 to Hit Points");
+        System.out.print("> ");
 
-            option = scanner.next();
+        option = scanner.next();
 
-            if (option.equals("1") || option.equals("2") || option.equals("3"))
-                selected = true;
-            else
-                System.out.println("\n*** Unknown option! ***");
-        } while (!selected);
+//        do {
+//            System.out.println("\nChoose an Artifact:");
+//            System.out.println("(1) Weapon     +10 to Attack");
+//            System.out.println("(2) Armor      +10 to Defence");
+//            System.out.println("(3) Helm       +10 to Hit Points");
+//            System.out.print("> ");
+//
+//            option = scanner.next();
+//
+//            if (option.equals("1") || option.equals("2") || option.equals("3"))
+//                selected = true;
+//            else
+//                System.out.println("\n*** Unknown option! ***");
+//        } while (!selected);
 
         switch (option) {
             case "1":
@@ -142,6 +165,9 @@ public class CLINewGame {
             case "3":
                 artifact = Artifact.Helm;
                 break;
+            default:
+                artifact = null;
+                break;
         }
 
         return artifact;
@@ -151,6 +177,9 @@ public class CLINewGame {
         attack = helper.getAttack(heroClass);
         defense = helper.getDefense(heroClass);
         hitPoints = 100;
+
+        if (artifact == null)
+            return;
 
         switch (artifact) {
             case Weapon:
@@ -162,8 +191,6 @@ public class CLINewGame {
             case Helm:
                 hitPoints += 10;
                 break;
-            default:
-                throw new IllegalStateException("Unexpected value of artifact: " + artifact);
         }
     }
 }
