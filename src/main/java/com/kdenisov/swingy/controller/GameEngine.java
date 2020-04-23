@@ -356,7 +356,8 @@ public class GameEngine {
                 status = false;
                 clear();
             }
-            renderer.renderHero(oldY, oldX, y, x);
+            else
+                renderer.renderHero(oldY, oldX, y, x);
         }
     }
 
