@@ -323,10 +323,12 @@ public class Playground implements KeyListener {
 
         for (int i = 0; i < game.getVillains().size(); i++) {
 
+            String resourcePath = null;
             try {
-                bufferedImage = ImageIO.read(getClass().getResource("/villains/" +
-                        game.getVillains().get(i).getVillainType() + ".png"));
+                resourcePath = "/villains/" + game.getVillains().get(i).getVillainType() + ".png";
+                bufferedImage = ImageIO.read(getClass().getResource(resourcePath));
             } catch (IOException ex) {
+                System.out.println("resourcePath = " + resourcePath);
                 ex.printStackTrace();
             }
 
