@@ -29,8 +29,19 @@ public class CLINewGame {
         this.renderer = renderer;
 
         System.out.print("\033\143");
-        System.out.println("Starting a new game...\n");
-        System.out.println(ColorType.WHITE + "Let's create a new hero:");
+
+        System.out.println(ColorType.WHITE + "* * * * * * * * * * * * * * * * * * * * * * * * * *");
+        System.out.println("*                                                 *");
+        System.out.println("*                                                 *");
+        System.out.print("*                    ");
+        System.out.print(ColorType.CYAN + "New Game");
+        System.out.println(ColorType.WHITE + "                     *");
+        System.out.println("*                                                 *");
+        System.out.println("*                                                 *");
+        System.out.println("* * * * * * * * * * * * * * * * * * * * * * * * * *");
+        System.out.println();
+
+        System.out.println("Let's create a new hero:\n");
         System.out.print("Name: ");
         name = scanner.next();
 

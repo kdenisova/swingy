@@ -80,7 +80,20 @@ public class CLIRenderer implements Renderer {
     }
 
     public void showLeaderboard() {
+        System.out.print("\033\143");
+        System.out.println(ColorType.WHITE + "* * * * * * * * * * * * * * * * * * * * * * * * * *");
+        System.out.println("*                                                 *");
+        System.out.println("*                                                 *");
+        System.out.print("*                   ");
+        System.out.print(ColorType.CYAN + "Leaderboard");
+        System.out.println(ColorType.WHITE + "                   *");
+        System.out.println("*                                                 *");
+        System.out.println("*                                                 *");
+        System.out.println("* * * * * * * * * * * * * * * * * * * * * * * * * *");
+        System.out.println(ColorType.RESET);
+
         List<HeroEntity> heroEntities = hibernateManager.getLeaderboard();
+
 
         if (heroEntities.size() == 0) {
             System.out.println("Leaderboard is empty!");
@@ -92,10 +105,6 @@ public class CLIRenderer implements Renderer {
                     return Integer.compare(o2.getExperience(), o1.getExperience());
                 }
             });
-
-            System.out.print("\033\143");
-            System.out.println(ColorType.WHITE + "Leaderboard:");
-            System.out.print(ColorType.RESET);
 
             for (int i = 0; i < heroEntities.size(); i++) {
                 System.out.println(String.format("%d. %s (Hero Class: %s, Level: %d, Experience: %d)", +

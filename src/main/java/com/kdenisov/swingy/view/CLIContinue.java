@@ -22,11 +22,21 @@ public class CLIContinue {
         scanner = new Scanner(System.in);
 
         System.out.print("\033\143");
-        System.out.println("Loading the list of Hero...");
+
+        System.out.println(ColorType.WHITE + "* * * * * * * * * * * * * * * * * * * * * * * * * *");
+        System.out.println("*                                                 *");
+        System.out.println("*                                                 *");
+        System.out.print("*                  ");
+        System.out.print(ColorType.CYAN + "Continue Game");
+        System.out.println(ColorType.WHITE + "                  *");
+        System.out.println("*                                                 *");
+        System.out.println("*                                                 *");
+        System.out.println("* * * * * * * * * * * * * * * * * * * * * * * * * *");
+        System.out.println(ColorType.RESET);
 
         if (heroEntities.size() == 0) {
             showMessage();
-            System.out.println("\nPress any key to return to Main Menu.");
+            System.out.println(ColorType.WHITE + "\nPress any key to return to Main Menu.");
 
             scanner.next();
             renderer.renderMenu();
@@ -45,7 +55,6 @@ public class CLIContinue {
         int id = -1;
 
         do {
-            System.out.print("\033\143");
             System.out.println(ColorType.WHITE + "Choose a hero: ");
             System.out.print(ColorType.RESET);
 
