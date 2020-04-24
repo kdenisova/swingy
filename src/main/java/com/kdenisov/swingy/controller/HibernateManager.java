@@ -80,6 +80,7 @@ public class HibernateManager {
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {
+            assert session != null;
             session.close();
         }
         return true;
@@ -90,13 +91,11 @@ public class HibernateManager {
 
         try {
             session = sessionFactory.openSession();
-            String hql = "FROM HeroEntity order by id DESC";
-            Query query = session.createQuery(hql);
-            query.setMaxResults(1);
-            HeroEntity heroEntity = (HeroEntity)query.uniqueResult();
+            HeroEntity heroEntity = session.createQuery("FROM HeroEntity order by id DESC", HeroEntity.class).setMaxResults(1).uniqueResult();
 
             return heroEntity;
         } finally {
+            assert session != null;
             session.close();
         }
     }
@@ -111,6 +110,7 @@ public class HibernateManager {
 
             return heroEntities;
         } finally {
+            assert session != null;
             session.close();
         }
     }
@@ -125,6 +125,7 @@ public class HibernateManager {
 
             return heroEntities;
         } finally {
+            assert session != null;
             session.close();
         }
     }
@@ -148,6 +149,7 @@ public class HibernateManager {
             session.update(heroEntity);
             transaction.commit();
         } finally {
+            assert session != null;
             session.close();
         }
     }
@@ -218,6 +220,7 @@ public class HibernateManager {
             transaction.commit();
 
         } finally {
+            assert session != null;
             session.close();
         }
     }

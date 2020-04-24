@@ -1,10 +1,10 @@
 package com.kdenisov.swingy.model;
 
 public final class HeroFactory {
-    private static final HeroFactory _instance = new HeroFactory();
+    private static final HeroFactory factory = new HeroFactory();
 
     public static HeroFactory getInstance() {
-        return _instance;
+        return factory;
     }
 
     public Hero buildHero(HeroEntity heroEntity) {
@@ -27,8 +27,6 @@ public final class HeroFactory {
                 hero = hb.getResult();
                 break;
         }
-
-        //System.out.println("Hero " + hero.getHeroClass() + " " + hero.getName() + " created");
 
         return hero;
     }

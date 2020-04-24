@@ -56,15 +56,6 @@ public class WizardBuilder implements Builder {
         this.hitPoints = hitPoints;
     }
 
-//    @Override
-//    public void setArtefact(Artifact artifact) {
-//        if (this.artifacts == null) {
-//            this.artifacts = new ArrayList<>();
-//        }
-//
-//        this.artifacts.add(artifact);
-//    }
-
     @Override
     public void setY(int y) {
         this.y = y;

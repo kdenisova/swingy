@@ -1,14 +1,11 @@
 package com.kdenisov.swingy.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "ARTIFACTS", schema = "swingy")
 public class ArtifactsEntity {
     private int id;
-    private int heroId;
     private Artifact artifact;
     private HeroEntity heroEntity;
 
@@ -23,21 +20,8 @@ public class ArtifactsEntity {
         this.id = id;
     }
 
-    /*@Basic
-    @Column(name = "HERO_ID")
-    public int getHeroId() {
-        return heroId;
-    }
-    */
-
-    public void setHeroId(int heroId) {
-        this.heroId = heroId;
-    }
-
     @Basic
     @Column(name = "TYPE")
-    //@NotNull(message = "Unknown type of Artifact.")
-    //@NotEmpty(message = "Unknown type of Artifact not empty.")
     public Artifact getArtifact() {
         return artifact;
     }

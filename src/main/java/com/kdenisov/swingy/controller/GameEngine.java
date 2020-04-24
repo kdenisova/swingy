@@ -54,7 +54,6 @@ public class GameEngine {
             gameAction = (List<String>) objectInputStream.readObject();
 
             objectInputStream.close();
-            System.out.println("Loaded");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -67,6 +66,7 @@ public class GameEngine {
         hero.setY(mapSize / 2);
         hero.setX(mapSize / 2);
         hero.setAttack(hero.getAttack() + 10);
+        hero.setHitPoints(hero.getHitPoints() + 10);
         hibernateManager.updateHero(this);
         villains.clear();
 
@@ -109,7 +109,7 @@ public class GameEngine {
 
         int y, x;
 
-        for (int i = 0; i < mapSize; i++) {
+        for (int i = 0; i < mapSize + hero.getLevel(); i++) {
             y = randomGenerator(mapSize);
             x = randomGenerator(mapSize);
 
@@ -301,7 +301,6 @@ public class GameEngine {
         return result;
     }
 
-
     public boolean checkWin() {
         int level = hero.getLevel();
 
@@ -372,7 +371,6 @@ public class GameEngine {
     public void setMapSize() {
         this.mapSize = (hero.getLevel() - 1) * 5 + 10 - (hero.getLevel() % 2);;
     }
-
 
     public boolean isStatus() {
         return status;

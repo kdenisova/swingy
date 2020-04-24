@@ -20,7 +20,6 @@ public class GUIMenu {
         this.renderer = renderer;
 
         frame = new JFrame("Swingy");
-        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
         frame.addWindowListener(new WindowAdapter() {
             @Override
@@ -32,7 +31,6 @@ public class GUIMenu {
         });
 
         JPanel panel = new JPanel(new GridBagLayout());
-       // panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.fill = GridBagConstraints.HORIZONTAL;

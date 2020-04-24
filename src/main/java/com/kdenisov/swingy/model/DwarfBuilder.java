@@ -1,6 +1,5 @@
 package com.kdenisov.swingy.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DwarfBuilder implements Builder {
@@ -55,15 +54,6 @@ public class DwarfBuilder implements Builder {
     public void setHitPoints(int hitPoints) {
         this.hitPoints = hitPoints;
     }
-
-//    @Override
-//    public void setArtefact(List<Artifact> artifacts) {
-//        if (this.artifacts == null) {
-//            this.artifacts = new ArrayList<>();
-//        }
-//
-//        this.artifacts.add(artifact);
-//    }
 
     @Override
     public void setY(int y) {

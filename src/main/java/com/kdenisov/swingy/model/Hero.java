@@ -122,8 +122,5 @@ public class Hero {
 
     public void setArtifacts(List<Artifact> artifacts) {
         this.artifacts = artifacts;
-//        if (this.artifacts == null)
-//            this.artifacts = new ArrayList<>();
-//        this.artifacts.add(artifact);
     }
 }

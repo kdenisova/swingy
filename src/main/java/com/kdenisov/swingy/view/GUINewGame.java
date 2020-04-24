@@ -38,7 +38,6 @@ public class GUINewGame {
         helper = new Helper();
 
         frame = new JFrame("Create a new Hero");
-        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
         frame.addWindowListener(new WindowAdapter() {
             @Override

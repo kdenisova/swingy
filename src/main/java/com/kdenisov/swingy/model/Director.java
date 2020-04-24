@@ -27,7 +27,6 @@ public class Director {
         builder.setHitPoints(heroEntity.getHitPoints());
         builder.setY(heroEntity.getY());
         builder.setX(heroEntity.getX());
-        //builder.setArtefact(Artifact.Weapon);
     }
 
     public static void constructDwarf(Builder builder, HeroEntity heroEntity) {
@@ -41,7 +40,6 @@ public class Director {
         builder.setHitPoints(heroEntity.getHitPoints());
         builder.setY(heroEntity.getY());
         builder.setX(heroEntity.getX());
-        //builder.setArtefact(Artifact.Helm);
     }
 
     public static void constructWizard(Builder builder, HeroEntity heroEntity) {
@@ -55,18 +53,5 @@ public class Director {
         builder.setHitPoints(heroEntity.getHitPoints());
         builder.setY(heroEntity.getY());
         builder.setX(heroEntity.getX());
-        //builder.setArtefact(Artifact.Armor);
     }
-
-//    public static void constructVillain(Builder builder, VillainEntity villainEntity) {
-//        builder.setId(villainEntity.getId());
-//        builder.setName(villainEntity.getName());
-//        builder.setLevel(villainEntity.getLevel());
-//        builder.setAttack(villainEntity.getAttack());
-//        builder.setDefense(villainEntity.getDefense());
-//        builder.setHitPoints(villainEntity.getHitPoints());
-//        //builder.setX(villainEntity.getX());
-//        //builder.setY(villainEntity.getY());
-//        builder.setImage("/Users/angrynimfa/projects/swingy/src/main/resources/villains/" + villainEntity.getPicture());
-//    }
 }

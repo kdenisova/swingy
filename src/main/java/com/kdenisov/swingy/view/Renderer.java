@@ -19,7 +19,7 @@ public interface Renderer {
     int chooseAction(Villain villain);
     void showMessageDialog(int flag, int val);
     void renderHero(int oldY, int oldX, int newY, int newX);
-    void renderVillians();
+    void renderVillains();
     void renderObstacle();
     void removeVillain(int y, int x);
     void saveGame();

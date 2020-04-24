@@ -30,17 +30,19 @@ public class CLIRenderer implements Renderer {
 
         System.out.print("\033\143");
 
-        System.out.println("* * * * * * * * * * * * * * * * * * * * * * * * * *");
+        System.out.println(ColorType.WHITE + "* * * * * * * * * * * * * * * * * * * * * * * * * *");
         System.out.println("*                                                 *");
         System.out.println("*                                                 *");
-        System.out.println("*                Welcome to Swingy                *");
+        System.out.print("*                ");
+        System.out.print(ColorType.CYAN + "Welcome to Swingy");
+        System.out.println(ColorType.WHITE + "                *");
         System.out.println("*                                                 *");
         System.out.println("*                                                 *");
         System.out.println("* * * * * * * * * * * * * * * * * * * * * * * * * *");
         System.out.println();
 
         do {
-            System.out.println("Choose an option:");
+            System.out.println(ColorType.WHITE + "Choose an option:");
             System.out.println("(1) New Game");
             System.out.println("(2) Continue");
             System.out.println("(3) Leaderboard");
@@ -52,8 +54,10 @@ public class CLIRenderer implements Renderer {
             if (option.equals("1") || option.equals("2") || option.equals("3") || option.equals("4"))
                 selected = true;
             else
-                System.out.println("\n*** Unknown option! ***");
+                System.out.println(ColorType.RESET + "\n*** Unknown option! ***\n");
         } while (!selected);
+
+        System.out.print(ColorType.RESET);
 
         switch (option) {
             case "1" :
@@ -73,15 +77,13 @@ public class CLIRenderer implements Renderer {
                 System.exit(0);
                 break;
         }
-
-        //scanner.close();
     }
 
     public void showLeaderboard() {
         List<HeroEntity> heroEntities = hibernateManager.getLeaderboard();
 
         if (heroEntities.size() == 0) {
-            System.out.println("No finished games found!");
+            System.out.println("Leaderboard is empty!");
         }
         else {
             Collections.sort(heroEntities, new Comparator<HeroEntity>() {
@@ -92,18 +94,21 @@ public class CLIRenderer implements Renderer {
             });
 
             System.out.print("\033\143");
-            System.out.println("Leaderboard:");
+            System.out.println(ColorType.WHITE + "Leaderboard:");
+            System.out.print(ColorType.RESET);
 
             for (int i = 0; i < heroEntities.size(); i++) {
-                System.out.println(String.format("%d. %s (Hero Class: %s, Level: %d, Experience: %d", +
+                System.out.println(String.format("%d. %s (Hero Class: %s, Level: %d, Experience: %d)", +
                         i + 1, heroEntities.get(i).getName(), heroEntities.get(i).getHeroClass().toString(), +
                         heroEntities.get(i).getLevel(), heroEntities.get(i).getExperience()));
             }
         }
 
-        System.out.println("\nPress any key to return to Main Menu.");
-
+        System.out.println(ColorType.WHITE + "\nPress any key to return to Main Menu.");
         scanner.next();
+
+        System.out.print(ColorType.RESET);
+
         renderMenu();
     }
 
@@ -139,7 +144,7 @@ public class CLIRenderer implements Renderer {
         renderedEntities.put("[*]", ColorType.BLUE);
 
         map[game.getHero().getY()][game.getHero().getX()] = "[H]";
-        renderVillians();
+        renderVillains();
         renderObstacle();
         renderMap();
         chooseDirection();
@@ -169,10 +174,6 @@ public class CLIRenderer implements Renderer {
         System.out.println(ColorType.RESET);
 
         renderHistory();
-
-//        if (game.isStatus())
-//            chooseDirection();
-        //chooseDirection();
     }
 
     public void renderInfo(int y) {
@@ -276,12 +277,11 @@ public class CLIRenderer implements Renderer {
             case "c":
                 saveGame();
                 renderMap();
+                chooseDirection();
                 break;
             case "b":
                 saveGame();
                 renderMenu();
-                //CLIContinue cContinue = new CLIContinue();
-                //cContinue.uploadHeroList(hibernateManager, this);
                 break;
             case "g":
                 saveGame();
@@ -299,8 +299,6 @@ public class CLIRenderer implements Renderer {
         }
         
         System.out.println(ColorType.RESET);
-        //renderMap();
-        //chooseDirection();
     }
 
     @Override
@@ -317,7 +315,6 @@ public class CLIRenderer implements Renderer {
 
     @Override
     public void updateGameAction(String str) {
-        //str += ".";
         gameAction.add(str);
         renderMap();
 
@@ -371,12 +368,10 @@ public class CLIRenderer implements Renderer {
                 System.out.println("\n*** Unknown option! ***");
         } while (!selected);
 
-        switch (option) {
-            case "1":
-                return 1;
-            default:
-                return 0;
+        if ("1".equals(option)) {
+            return 1;
         }
+        return 0;
     }
 
     @Override
@@ -402,7 +397,7 @@ public class CLIRenderer implements Renderer {
     }
 
     @Override
-    public void renderVillians() {
+    public void renderVillains() {
         for (Villain villain : game.getVillains()) {
             map[villain.getY()][villain.getX()] = "[V]";
         }

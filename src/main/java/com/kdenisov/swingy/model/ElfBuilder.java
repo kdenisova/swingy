@@ -1,6 +1,5 @@
 package com.kdenisov.swingy.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ElfBuilder implements Builder {
@@ -55,15 +54,6 @@ public class ElfBuilder implements Builder {
     public void setHitPoints(int hitPoints) {
         this.hitPoints = hitPoints;
     }
-
-//    @Override
-//    public void setArtefact(Artifact artifact) {
-//        if (this.artifacts == null) {
-//            this.artifacts = new ArrayList<Artifact>();
-//        }
-//
-//        this.artifacts.add(artifact);
-//    }
 
     @Override
     public void setY(int y) {

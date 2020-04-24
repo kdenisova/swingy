@@ -1,16 +1,12 @@
 package com.kdenisov.swingy.view;
 
 import com.kdenisov.swingy.controller.HibernateManager;
-import com.kdenisov.swingy.model.Hero;
 import com.kdenisov.swingy.model.HeroEntity;
-import jdk.tools.jlink.internal.Jlink;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.*;
@@ -21,11 +17,9 @@ public class GUILeaderboard {
     private String[] columnName = {"Rank", "Name", "Hero Class", "Level", "Experience"};
     private JTable table;
     private List<HeroEntity> heroEntities;
-    private Renderer renderer;
 
-    public void uploadHeroList(final HibernateManager hibernateManager, Renderer renderer) {
+    public void uploadHeroList(final HibernateManager hibernateManager, final Renderer renderer) {
         heroEntities = hibernateManager.getLeaderboard();
-        this.renderer = renderer;
 
         if (heroEntities.size() == 0) {
             showMessage();
@@ -46,6 +40,8 @@ public class GUILeaderboard {
             @Override
             public void windowClosing(WindowEvent e) {
                 frame.dispose();
+                renderer.renderMenu();
+                return;
             }
         });
 
@@ -82,11 +78,4 @@ public class GUILeaderboard {
         JOptionPane.showMessageDialog(null, "No finished games found!",
                 "Leaderboard", JOptionPane.INFORMATION_MESSAGE);
     }
-
-//    Comparator<HeroEntity> compareByExperience = new Comparator<HeroEntity>() {
-//        @Override
-//        public int compare(HeroEntity o1, HeroEntity o2) {
-//            return o1.getExperience().;
-//        }
-//    };
 }

@@ -33,7 +33,6 @@ public class GUIContinue {
         }
 
         frame = new JFrame("Load the Game");
-        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
         frame.addWindowListener(new WindowAdapter() {
             @Override
@@ -91,7 +90,6 @@ public class GUIContinue {
         int y = (int) ((dimension.getHeight() - frame.getHeight()) / 2);
         frame.setLocation(x, y);
         frame.setVisible(true);
-
     }
 
     public void startGame() {
@@ -105,10 +103,8 @@ public class GUIContinue {
 
         hero.setArtifacts(artifacts);
 
-        System.out.println(hero.getName() + " " + hero.getHeroClass());
         GameEngine gameEngine = new GameEngine(hibernateManager, renderer, hero);
         gameEngine.continueGame();
-        //gameEngine.play();
         frame.dispose();
     }
 

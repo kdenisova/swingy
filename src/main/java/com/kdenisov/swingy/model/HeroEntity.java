@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -20,16 +21,14 @@ public class HeroEntity {
     private int defense;
     private int hitPoints;
 
-   // @OneToMany(cascade = CascadeType.ALL)
-   // @JoinColumn(name = "HERO_ID")
-    private Set<ArtifactsEntity> artifacts;
+    private List<ArtifactsEntity> artifacts;
 
     private int y;
     private int x;
     private byte[] save;
 
 
-    public HeroEntity(String name, HeroClass heroClass, int level, int experience, int attack, int defense, int hitPoints, Set<ArtifactsEntity> artifacts) {
+    public HeroEntity(String name, HeroClass heroClass, int level, int experience, int attack, int defense, int hitPoints, List<ArtifactsEntity> artifacts) {
 
         this.name = name;
         this.heroClass = heroClass;
@@ -181,33 +180,11 @@ public class HeroEntity {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "HERO_ID")
-    //@NotEmpty(message = "Unknown type of Artifact.")
-    //@NotNull(message = "Unknown type of Artifact.")
-    public Set<ArtifactsEntity> getArtifacts() {
+    public List<ArtifactsEntity> getArtifacts() {
         return artifacts;
     }
 
-    public void setArtifacts(Set<ArtifactsEntity> artifacts) {
+    public void setArtifacts(List<ArtifactsEntity> artifacts) {
         this.artifacts = artifacts;
     }
-
-//    public boolean validateHero() {
-//        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
-//        Validator validator = validatorFactory.getValidator();
-//
-//        Set<ConstraintViolation<HeroEntity>> constraintViolations = validator.validate(this);
-//
-//        if (constraintViolations.size() != 0) {
-//            String message = null;
-//            for (ConstraintViolation<HeroEntity> constraintViolation : constraintViolations) {
-//                message = constraintViolation.getMessage();
-//            }
-//
-//            JOptionPane.showMessageDialog(null, message,
-//                    "Error", JOptionPane.ERROR_MESSAGE);
-//            return false;
-//        }
-//
-//        return true;
-//    }
 }

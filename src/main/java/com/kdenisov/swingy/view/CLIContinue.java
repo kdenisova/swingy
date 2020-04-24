@@ -46,7 +46,8 @@ public class CLIContinue {
 
         do {
             System.out.print("\033\143");
-            System.out.println("Choose a hero: ");
+            System.out.println(ColorType.WHITE + "Choose a hero: ");
+            System.out.print(ColorType.RESET);
 
             for (int i = 0; i < heroEntities.size(); i++) {
                 System.out.println("(" + i + ") " + heroEntities.get(i).getName() +
@@ -55,9 +56,11 @@ public class CLIContinue {
                         ", Experience: " + heroEntities.get(i).getExperience() + ")");
             }
 
-            System.out.println("\nEnter number of hero or: (B) to Main menu, (G) to GUI view, (X) to Exit\n");
+            System.out.println(ColorType.WHITE + "\nEnter number of hero or: (B) to Main menu, (G) to GUI view, (X) to Exit\n");
             System.out.print("> ");
+
             scan = scanner.next();
+            System.out.print(ColorType.RESET);
 
             if (scan.toLowerCase().equals("b") || scan.toLowerCase().equals("g") || scan.toLowerCase().equals("x")) {
                 chooseDefaultOption(scan);
@@ -67,7 +70,7 @@ public class CLIContinue {
             try {
                 id = Integer.parseInt(scan);
             } catch (NumberFormatException e) {
-                System.out.println("\n*** Unknown option! ***");
+                System.out.println("\n*** Unknown option! ***\n");
             }
 
             if (id >=0 && id < heroEntities.size())

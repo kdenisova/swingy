@@ -58,7 +58,8 @@ public class GUIRenderer implements Renderer, KeyListener {
             ex.printStackTrace();
         }
 
-        setIconSize(45);
+        iconSize = 45;
+        assert bufferedHeroImage != null;
         heroImage = bufferedHeroImage.getScaledInstance(iconSize, iconSize, Image.SCALE_SMOOTH);
         heroLabel = new JLabel(new ImageIcon(heroImage));
 
@@ -87,6 +88,7 @@ public class GUIRenderer implements Renderer, KeyListener {
             ex.printStackTrace();
         }
 
+        assert bufferedImage != null;
         Image image = bufferedImage.getScaledInstance(iconSize, iconSize + 10, Image.SCALE_SMOOTH);
         ImageIcon mapIcon = new ImageIcon(image);
 
@@ -104,7 +106,7 @@ public class GUIRenderer implements Renderer, KeyListener {
         iconLabels[game.getHero().getY()][game.getHero().getX()].setFocusable(true);
         iconLabels[game.getHero().getY()][game.getHero().getX()].addKeyListener(this);
 
-        renderVillians();
+        renderVillains();
         renderObstacle();
 
         frame.add(BorderLayout.WEST, mapPanel);
@@ -195,7 +197,6 @@ public class GUIRenderer implements Renderer, KeyListener {
             actionArea.append(this.gameAction.get(i) + "\n");
         }
 
-        //actionArea.setText("Let the adventure begin!\n");
         actionPanel.add(scrollPane);
 
         infoPanel.add(actionPanel);
@@ -223,15 +224,11 @@ public class GUIRenderer implements Renderer, KeyListener {
         int y = (int) ((dimension.getHeight() - frame.getHeight()) / 2);
         frame.setLocation(x, y);
         frame.setVisible(true);
-
-        System.out.println(game.getHero().getName() + " " + game.getHero().getHeroClass());
-        System.out.println("Map size = " + mapSize);
     }
 
     @Override
     public void updateGameAction(String str) {
         gameAction.add(str);
-        //actionArea.append(str);
         actionArea.append(str + "\n");
     }
 
@@ -266,6 +263,7 @@ public class GUIRenderer implements Renderer, KeyListener {
             ex.printStackTrace();
         }
 
+        assert bufferedImage != null;
         Image image = bufferedImage.getScaledInstance(iconSize + 10, iconSize + 10, Image.SCALE_SMOOTH);
         ImageIcon icon = new ImageIcon(image);
         artifactsLabel[i].setIcon(icon);
@@ -285,6 +283,7 @@ public class GUIRenderer implements Renderer, KeyListener {
             }
         }
 
+        assert entity != null;
         ImageIcon icon = new ImageIcon(entity.getImage());
 
         Object[] options = {"Run", "Fight"};
@@ -296,34 +295,35 @@ public class GUIRenderer implements Renderer, KeyListener {
                 icon,
                 options,
                 options[1]);
+
         return result;
     }
 
     @Override
     public void showMessageDialog(int flag, int val) {
         ImageIcon icon1 = new ImageIcon(getClass().getResource("/message/battle.png"));
-        ImageIcon icon2 = new ImageIcon(getClass().getResource("/message/battle.png"));
-        ImageIcon icon3 = new ImageIcon(getClass().getResource("/message/award.png"));
+        ImageIcon icon2 = new ImageIcon(getClass().getResource("/message/award.png"));
+        ImageIcon icon3 = new ImageIcon(getClass().getResource("/message/battle.png"));
         ImageIcon icon4 = new ImageIcon(getClass().getResource("/message/swords.png"));
 
         if (flag == 1) {
             JOptionPane.showInternalMessageDialog(null, "Level " + (game.getHero().getLevel() + 1),
-                    "Level Up", PLAIN_MESSAGE, icon2);
+                    "Level Up", PLAIN_MESSAGE, icon1);
             renderedEntities.clear();
             frame.dispose();
         } else if (flag == 2) {
             JOptionPane.showMessageDialog(null, "You are lucky!\n+" + val + " experience.",
-                    "Win a fight", JOptionPane.PLAIN_MESSAGE, icon3);
+                    "Win a fight", JOptionPane.PLAIN_MESSAGE, icon2);
         } else if (flag == 3) {
             JOptionPane.showMessageDialog(null, "Not so fast", "Fight anyway!",
-                    INFORMATION_MESSAGE, icon1);
+                    INFORMATION_MESSAGE, icon3);
         } else if (flag == 4) {
             JOptionPane.showMessageDialog(null, "You lose!\nYour score: " + val,
                     "GAME OVER", JOptionPane.PLAIN_MESSAGE, icon4);
         }
         else if (flag == 5) {
             JOptionPane.showMessageDialog(null, "Villain wins this fight!\nDamage: " + val,
-                    "Lose a fight", JOptionPane.PLAIN_MESSAGE, icon2);
+                    "Lose a fight", JOptionPane.PLAIN_MESSAGE, icon1);
         }
     }
 
@@ -342,7 +342,7 @@ public class GUIRenderer implements Renderer, KeyListener {
     }
 
     @Override
-    public void renderVillians() {
+    public void renderVillains() {
         BufferedImage bufferedImage = null;
         Image image;
         JLabel label;
@@ -356,6 +356,7 @@ public class GUIRenderer implements Renderer, KeyListener {
                 ex.printStackTrace();
             }
 
+            assert bufferedImage != null;
             image = bufferedImage.getScaledInstance(iconSize, iconSize, Image.SCALE_SMOOTH);
             label = new JLabel(new ImageIcon(image));
 
@@ -380,6 +381,7 @@ public class GUIRenderer implements Renderer, KeyListener {
                 ex.printStackTrace();
             }
 
+            assert bufferedImage != null;
             image = bufferedImage.getScaledInstance(iconSize - 10, iconSize - 10, Image.SCALE_SMOOTH);
             label = new JLabel(new ImageIcon(image));
 
@@ -413,18 +415,9 @@ public class GUIRenderer implements Renderer, KeyListener {
         try {
             hibernateManager.saveGame(game, gameAction);
             updateGameAction("Game saved.");
-            System.out.println("Saved");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-    }
-
-    public int getIconSize() {
-        return iconSize;
-    }
-
-    public void setIconSize(int iconSize) {
-        this.iconSize = iconSize;
     }
 
     @Override
@@ -484,7 +477,7 @@ public class GUIRenderer implements Renderer, KeyListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            //hibernateManager.deleteHero(game);
+            saveGame();
             frame.dispose();
             renderMenu();
         }

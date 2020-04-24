@@ -29,14 +29,15 @@ public class CLINewGame {
         this.renderer = renderer;
 
         System.out.print("\033\143");
-        System.out.println("Starting a new game...");
-        System.out.println("Let's create a new hero:");
+        System.out.println("Starting a new game...\n");
+        System.out.println(ColorType.WHITE + "Let's create a new hero:");
         System.out.print("Name: ");
         name = scanner.next();
 
         heroClass = chooseHeroClass();
         artifact = chooseArtifact();
         calculateValues();
+        System.out.print(ColorType.RESET);
         saveHero();
     }
 
@@ -79,7 +80,6 @@ public class CLINewGame {
     public HeroClass chooseHeroClass() {
         HeroClass heroClass;
         String option;
-        //boolean selected = false;
 
         System.out.println("\nChoose a Hero Class:");
         System.out.println("             Attack   Defence");
@@ -89,22 +89,6 @@ public class CLINewGame {
         System.out.print("> ");
 
         option = scanner.next();
-
-//        do {
-//            System.out.println("\nChoose a Hero Class:");
-//            System.out.println("             Attack   Defence");
-//            System.out.println("(1) Elf      " + helper.getAttack(HeroClass.Elf) + "      " + helper.getDefense(HeroClass.Elf));
-//            System.out.println("(2) Dwarf    " + helper.getAttack(HeroClass.Dwarf) + "      " + helper.getDefense(HeroClass.Dwarf));
-//            System.out.println("(3) Wizard   " + helper.getAttack(HeroClass.Wizard) + "      " + helper.getDefense(HeroClass.Wizard));
-//            System.out.print("> ");
-//
-//            option = scanner.next();
-//
-//            if (option.equals("1") || option.equals("2") || option.equals("3"))
-//                selected = true;
-//            else
-//                System.out.println("\n*** Unknown option! ***");
-//        } while (!selected);
 
         switch (option) {
             case "1":
@@ -130,7 +114,7 @@ public class CLINewGame {
         boolean selected = false;
 
         do {
-            System.out.println("\nChoose an Artifact:");
+            System.out.println(ColorType.WHITE + "\nChoose an Artifact:");
             System.out.println("(1) Weapon     +10 to Attack");
             System.out.println("(2) Armor      +10 to Defence");
             System.out.println("(3) Helm       +10 to Hit Points");
@@ -141,7 +125,7 @@ public class CLINewGame {
             if (option.equals("1") || option.equals("2") || option.equals("3"))
                 selected = true;
             else
-                System.out.println("\n*** Unknown option! ***");
+                System.out.println(ColorType.RESET + "\n*** Unknown option! ***");
         } while (!selected);
 
         switch (option) {
