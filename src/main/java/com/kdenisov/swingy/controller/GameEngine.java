@@ -62,6 +62,7 @@ public class GameEngine {
     }
 
     public void clear() {
+        //renderer.setRunning();
         setMapSize();
         hero.setY(mapSize / 2);
         hero.setX(mapSize / 2);
@@ -338,8 +339,9 @@ public class GameEngine {
         }
 
         if (isOccupied(y, x)) {
-            if (!checkEntity(y, x))
+            if (!checkEntity(y, x)) {
                 return;
+            }
         }
 
         if (status) {
@@ -353,6 +355,7 @@ public class GameEngine {
                 renderer.showMessageDialog(1, 0);
                 hero.setLevel(hero.getLevel() + 1);
                 status = false;
+
                 clear();
             }
             else
@@ -378,5 +381,11 @@ public class GameEngine {
 
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    public void start() throws InterruptedException {
+        while (!isStatus()) {
+            renderer.renderMenu();
+        }
     }
 }

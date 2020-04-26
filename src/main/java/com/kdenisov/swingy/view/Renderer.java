@@ -1,10 +1,8 @@
 package com.kdenisov.swingy.view;
 
 import com.kdenisov.swingy.controller.GameEngine;
-import com.kdenisov.swingy.controller.HibernateManager;
 import com.kdenisov.swingy.model.Villain;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface Renderer {

@@ -80,10 +80,13 @@ public class CLIContinue {
                 id = Integer.parseInt(scan);
             } catch (NumberFormatException e) {
                 System.out.println("\n*** Unknown option! ***\n");
+                continue;
             }
 
             if (id >=0 && id < heroEntities.size())
                 selected = true;
+            else
+                System.out.println("\n*** Unknown option! ***\n");
         } while (!selected);
 
         startGame(heroEntities.get(id));

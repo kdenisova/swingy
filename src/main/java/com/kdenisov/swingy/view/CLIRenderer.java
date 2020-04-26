@@ -17,6 +17,7 @@ public class CLIRenderer implements Renderer {
     private Map<String, ColorType> renderedEntities;
     private List<String> gameAction;
     private int mapSize;
+    private boolean isRunning = false;
 
     public CLIRenderer(HibernateManager hibernateManager) {
         this.hibernateManager = hibernateManager;
@@ -46,7 +47,7 @@ public class CLIRenderer implements Renderer {
             System.out.println("(1) New Game");
             System.out.println("(2) Continue");
             System.out.println("(3) Leaderboard");
-            System.out.println("(4) Exit");
+            System.out.println("(4) Exit\n");
             System.out.print("> ");
 
             option = scanner.next();
@@ -155,8 +156,9 @@ public class CLIRenderer implements Renderer {
         map[game.getHero().getY()][game.getHero().getX()] = "[H]";
         renderVillains();
         renderObstacle();
-        renderMap();
-        chooseDirection();
+
+        if (!isRunning)
+            gameLoop();
     }
 
     public void renderMap() {
@@ -234,80 +236,99 @@ public class CLIRenderer implements Renderer {
         }
     }
 
-    public void chooseDirection() {
-        if (!game.isStatus())
-            return;
+    public boolean gameLoop() {
+        String option = null;
 
-        boolean selected = false;
-        String option;
+        isRunning = true;
+        while (game.isStatus()) {
+            renderMap();
 
-        do {
-            System.out.println(ColorType.WHITE);
-            System.out.println("Choose a direction:");
-            System.out.println("(N) North");
-            System.out.println("(E) East");
-            System.out.println("(S) South");
-            System.out.println("(W) West");
-            System.out.print("> ");
+            boolean selected = false;
 
-            option = scanner.next();
+            do {
+                System.out.println(ColorType.WHITE + "\nChoose a direction:");
+                System.out.println("(N) North");
+                System.out.println("(E) East");
+                System.out.println("(S) South");
+                System.out.println("(W) West");
+                System.out.print("> ");
 
-            if (option.toLowerCase().equals("n") ||
-                    option.toLowerCase().equals("e") ||
-                    option.toLowerCase().equals("s") ||
-                    option.toLowerCase().equals("w") ||
-                    option.toLowerCase().equals("c") ||
-                    option.toLowerCase().equals("b") ||
-                    option.toLowerCase().equals("g") ||
-                    option.toLowerCase().equals("x")
-            )
-                selected = true;
-            else
-                System.out.println(ColorType.RESET + "*** Unknown option! ***");
-        } while (!selected);
+                option = scanner.next();
 
-        switch (option) {
-            case "n":
-                if (game.getHero().getY() != 0)
-                    game.heroMoved(HeroMove.UP);
+                if (option.toLowerCase().equals("n") ||
+                        option.toLowerCase().equals("e") ||
+                        option.toLowerCase().equals("s") ||
+                        option.toLowerCase().equals("w") ||
+                        option.toLowerCase().equals("c") ||
+                        option.toLowerCase().equals("b") ||
+                        option.toLowerCase().equals("g") ||
+                        option.toLowerCase().equals("x")
+                )
+                    selected = true;
+                else
+                    System.out.println(ColorType.RESET + "*** Unknown option! ***");
+            } while (!selected);
+
+            switch (option) {
+                case "n":
+                    if (game.getHero().getY() != 0)
+                        game.heroMoved(HeroMove.UP);
+                    break;
+                case "e":
+                    if (game.getHero().getX() < mapSize - 1)
+                        game.heroMoved(HeroMove.RIGHT);
+                    break;
+                case "s":
+                    if (game.getHero().getY() < mapSize - 1)
+                        game.heroMoved(HeroMove.DOWN);
+                    break;
+                case "w":
+                    if (game.getHero().getX() != 0)
+                        game.heroMoved(HeroMove.LEFT);
+                    break;
+                case "c":
+                    saveGame();
+                    break;
+                case "b":
+                    saveGame();
+                    game.setStatus(false);
+                    renderMenu();
+                    break;
+                case "x":
+                    saveGame();
+                    game.setStatus(false);
+                    break;
+            }
+
+            if (option.equals("g")) {
                 break;
-            case "e":
-                if (game.getHero().getX() < mapSize - 1)
-                    game.heroMoved(HeroMove.RIGHT);
-                break;
-            case "s":
-                if (game.getHero().getY() < mapSize - 1)
-                    game.heroMoved(HeroMove.DOWN);
-                break;
-            case "w":
-                if (game.getHero().getX() != 0)
-                    game.heroMoved(HeroMove.LEFT);
-                break;
-            case "c":
-                saveGame();
-                renderMap();
-                chooseDirection();
-                break;
-            case "b":
-                saveGame();
-                renderMenu();
-                break;
-            case "g":
-                saveGame();
-                System.out.print("\033\143");
-                Renderer renderer = new GUIRenderer(hibernateManager);
-                game = new GameEngine(hibernateManager, renderer, game.getHero());
-                game.continueGame();
-                return;
-            case "x":
-                saveGame();
-                hibernateManager.tearDown();
-                scanner.close();
-                System.exit(0);
-                break;
+            }
+
+            System.out.println(ColorType.RESET);
         }
-        
-        System.out.println(ColorType.RESET);
+
+        saveGame();
+
+        assert option != null;
+        if (option.equals("g")) {
+            return changeView();
+        }
+        else {
+            hibernateManager.tearDown();
+            scanner.close();
+            System.exit(0);
+        }
+        return true;
+    }
+
+    public boolean changeView() {
+        isRunning = false;
+        System.out.print(ColorType.RESET);
+        System.out.print("\033\143");
+        Renderer renderer = new GUIRenderer(hibernateManager);
+        game = new GameEngine(hibernateManager, renderer, game.getHero());
+        game.continueGame();
+        return true;
     }
 
     @Override
@@ -325,10 +346,6 @@ public class CLIRenderer implements Renderer {
     @Override
     public void updateGameAction(String str) {
         gameAction.add(str);
-        renderMap();
-
-        if (str.equals("Escaped from the villain."))
-            chooseDirection();
     }
 
     @Override
@@ -365,7 +382,7 @@ public class CLIRenderer implements Renderer {
                 " (Attack: " + villain.getAttack() + "). Fight or Run?");
 
         do {
-            System.out.println("(1) Fight");
+            System.out.println(ColorType.WHITE + "(1) Fight");
             System.out.println("(2) Run");
             System.out.print("> ");
 
@@ -374,7 +391,7 @@ public class CLIRenderer implements Renderer {
             if (option.equals("1") || option.equals("2"))
                 selected = true;
             else
-                System.out.println("\n*** Unknown option! ***");
+                System.out.println(ColorType.RESET + "\n*** Unknown option! ***\n");
         } while (!selected);
 
         if ("1".equals(option)) {
@@ -389,7 +406,8 @@ public class CLIRenderer implements Renderer {
             gameAction.add("Level " + game.getHero().getLevel() + 1);
         } else if (flag == 4) {
             gameAction.add("You lose! Your score: " + val);
-            gameAction.add("\nGAME OVER!");
+            gameAction.add(ColorType.WHITE + "\nGAME OVER!");
+            System.out.println(ColorType.RESET);
             renderMap();
         }
         else if (flag == 5) {
@@ -401,8 +419,6 @@ public class CLIRenderer implements Renderer {
     public void renderHero(int oldY, int oldX, int newY, int newX) {
         map[oldY][oldX] = "[ ]";
         map[newY][newX] = "[H]";
-        renderMap();
-        chooseDirection();
     }
 
     @Override

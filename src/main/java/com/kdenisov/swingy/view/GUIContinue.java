@@ -78,6 +78,10 @@ public class GUIContinue {
         continueButton.addActionListener(new ContinueButtonListener());
         buttonPanel.add(continueButton);
 
+        JButton toCLIButton = new JButton("Change view");
+        toCLIButton.addActionListener(new ToCLIButtonListener());
+        buttonPanel.add(toCLIButton);
+
         cancelButton = new JButton("Cancel");
         cancelButton.addActionListener(new CancelButtonListener());
         buttonPanel.add(cancelButton);
@@ -123,6 +127,17 @@ public class GUIContinue {
                 JOptionPane.showMessageDialog(null, "Please choose a hero",
                         "Choose a hero", JOptionPane.INFORMATION_MESSAGE);
             }
+        }
+    }
+
+    class ToCLIButtonListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            frame.dispose();
+            Renderer renderer = new CLIRenderer(hibernateManager);
+            CLIContinue cliContinue = new CLIContinue();
+            cliContinue.uploadHeroList(hibernateManager, renderer);
         }
     }
 

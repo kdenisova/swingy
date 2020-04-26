@@ -81,8 +81,8 @@ public class CLINewGame {
         }
         else {
             System.out.println("\nValidation failed. See trace above.");
-            System.out.println("\nPress any key to return to Main Menu.");
-
+            System.out.println(ColorType.WHITE + "\nPress any key to return to Main Menu.");
+            System.out.print(ColorType.RESET);
             scanner.next();
             renderer.renderMenu();
         }
