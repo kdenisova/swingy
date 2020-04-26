@@ -1,6 +1,5 @@
 package com.kdenisov.swingy.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class WizardBuilder implements Builder {

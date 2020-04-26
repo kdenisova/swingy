@@ -1,0 +1,1 @@
+cat swingy.sql | docker exec -i swingy /usr/bin/mysql -u root --password=nimfa swingy

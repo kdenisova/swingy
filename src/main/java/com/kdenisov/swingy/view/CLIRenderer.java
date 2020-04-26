@@ -7,6 +7,7 @@ import com.kdenisov.swingy.model.HeroEntity;
 import com.kdenisov.swingy.model.Obstacle;
 import com.kdenisov.swingy.model.Villain;
 
+import javax.swing.*;
 import java.util.*;
 
 public class CLIRenderer implements Renderer {
@@ -403,7 +404,7 @@ public class CLIRenderer implements Renderer {
     @Override
     public void showMessageDialog(int flag, int val) {
         if (flag == 1) {
-            gameAction.add("Level " + game.getHero().getLevel() + 1);
+            gameAction.add("Level " + game.getHero().getLevel());
         } else if (flag == 4) {
             gameAction.add("You lose! Your score: " + val);
             gameAction.add(ColorType.WHITE + "\nGAME OVER!");
@@ -412,6 +413,13 @@ public class CLIRenderer implements Renderer {
         }
         else if (flag == 5) {
             gameAction.add("Villain wins this fight!");
+        }
+        else if (flag == 0) {
+            saveGame();
+            gameAction.add(ColorType.WHITE + "\nCongratulation! You win the game! Your score: " + val);
+            hibernateManager.tearDown();
+            scanner.close();
+            System.exit(0);
         }
     }
 

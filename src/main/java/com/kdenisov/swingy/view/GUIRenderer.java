@@ -145,6 +145,7 @@ public class GUIRenderer implements Renderer, KeyListener {
         infoPanel.add(pictureLabel);
         infoPanel.add(nameLabel);
         infoPanel.add(classLabel);
+        infoPanel.add(levelLabel);
         infoPanel.add(experienceLabel);
         infoPanel.add(attackLabel);
         infoPanel.add(defenseLabel);
@@ -301,13 +302,14 @@ public class GUIRenderer implements Renderer, KeyListener {
 
     @Override
     public void showMessageDialog(int flag, int val) {
+        ImageIcon icon0 = new ImageIcon(getClass().getResource("/message/medal.png"));
         ImageIcon icon1 = new ImageIcon(getClass().getResource("/message/battle.png"));
         ImageIcon icon2 = new ImageIcon(getClass().getResource("/message/award.png"));
-        ImageIcon icon3 = new ImageIcon(getClass().getResource("/message/battle.png"));
+        ImageIcon icon3 = new ImageIcon(getClass().getResource("/message/run.png"));
         ImageIcon icon4 = new ImageIcon(getClass().getResource("/message/swords.png"));
 
         if (flag == 1) {
-            JOptionPane.showInternalMessageDialog(null, "Level " + (game.getHero().getLevel() + 1),
+            JOptionPane.showInternalMessageDialog(null, "Level " + (game.getHero().getLevel()),
                     "Level Up", PLAIN_MESSAGE, icon1);
             renderedEntities.clear();
             frame.dispose();
@@ -324,6 +326,12 @@ public class GUIRenderer implements Renderer, KeyListener {
         else if (flag == 5) {
             JOptionPane.showMessageDialog(null, "Villain wins this fight!\nDamage: " + val,
                     "Lose a fight", JOptionPane.PLAIN_MESSAGE, icon1);
+        }
+        else if (flag == 0) {
+            JOptionPane.showMessageDialog(null, "Congratulation! You win the game!\nYour score: " + val,
+                    "WIN", JOptionPane.PLAIN_MESSAGE, icon0);
+
+            saveGame();
         }
     }
 
@@ -436,7 +444,7 @@ public class GUIRenderer implements Renderer, KeyListener {
                 game.heroMoved(HeroMove.LEFT);
             } else if (e.getKeyCode() == KeyEvent.VK_RIGHT && game.getHero().getX() < mapSize - 1) {
                 game.heroMoved(HeroMove.RIGHT);
-            } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE && game.isStatus()) {
                 saveGame();
                 renderedEntities.clear();
                 frame.dispose();
@@ -464,12 +472,14 @@ public class GUIRenderer implements Renderer, KeyListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            saveGame();
-            renderedEntities.clear();
-            frame.dispose();
-            Renderer renderer = new CLIRenderer(hibernateManager);
-            game = new GameEngine(hibernateManager, renderer, game.getHero());
-            game.continueGame();
+            if (game.isStatus()) {
+                saveGame();
+                renderedEntities.clear();
+                frame.dispose();
+                Renderer renderer = new CLIRenderer(hibernateManager);
+                game = new GameEngine(hibernateManager, renderer, game.getHero());
+                game.continueGame();
+            }
         }
     }
 

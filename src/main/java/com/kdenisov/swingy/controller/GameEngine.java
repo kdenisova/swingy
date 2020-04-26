@@ -62,7 +62,6 @@ public class GameEngine {
     }
 
     public void clear() {
-        //renderer.setRunning();
         setMapSize();
         hero.setY(mapSize / 2);
         hero.setX(mapSize / 2);
@@ -292,11 +291,11 @@ public class GameEngine {
             renderer.updateExperience(hero.getExperience());
             removeEntity(villain);
             renderer.updateGameAction("Earned " + experience + " experience after fight with " + villain.getVillainType() + ".");
-        }
 
-        if (status && hero.getArtifacts().size() < 3) {
-            if (randomGenerator(100) % 7 == 0)
-                findArtifact();
+            if (hero.getArtifacts().size() < 3) {
+                if (randomGenerator(100) % 11 == 0)
+                    findArtifact();
+            }
         }
 
         return result;
@@ -352,11 +351,17 @@ public class GameEngine {
             hero.setX(x);
 
             if (checkWin()) {
-                renderer.showMessageDialog(1, 0);
                 hero.setLevel(hero.getLevel() + 1);
                 status = false;
 
-                clear();
+                if (hero.getLevel() > 5) {
+                    renderer.showMessageDialog(0, hero.getExperience());
+                    hero.setHitPoints(0);
+                }
+                else {
+                    renderer.showMessageDialog(1, 0);
+                    clear();
+                }
             }
             else
                 renderer.renderHero(oldY, oldX, y, x);
@@ -381,11 +386,5 @@ public class GameEngine {
 
     public void setStatus(boolean status) {
         this.status = status;
-    }
-
-    public void start() throws InterruptedException {
-        while (!isStatus()) {
-            renderer.renderMenu();
-        }
     }
 }

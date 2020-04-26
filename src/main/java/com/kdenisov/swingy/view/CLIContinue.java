@@ -51,7 +51,7 @@ public class CLIContinue {
 
     public void showHeroList() {
         boolean selected = false;
-        String scan;
+        String option;
         int id = -1;
 
         do {
@@ -68,16 +68,16 @@ public class CLIContinue {
             System.out.println(ColorType.WHITE + "\nEnter number of hero or: (B) to Main menu, (G) to GUI view, (X) to Exit\n");
             System.out.print("> ");
 
-            scan = scanner.next();
+            option = scanner.next();
             System.out.print(ColorType.RESET);
 
-            if (scan.toLowerCase().equals("b") || scan.toLowerCase().equals("g") || scan.toLowerCase().equals("x")) {
-                chooseDefaultOption(scan);
-                return;
+            if (option.toLowerCase().equals("b") || option.toLowerCase().equals("g") || option.toLowerCase().equals("x")) {
+                chooseDefaultOption(option);
+                break;
             }
 
             try {
-                id = Integer.parseInt(scan);
+                id = Integer.parseInt(option);
             } catch (NumberFormatException e) {
                 System.out.println("\n*** Unknown option! ***\n");
                 continue;
@@ -89,7 +89,8 @@ public class CLIContinue {
                 System.out.println("\n*** Unknown option! ***\n");
         } while (!selected);
 
-        startGame(heroEntities.get(id));
+        if (!option.equals("g"))
+            startGame(heroEntities.get(id));
     }
 
     public void startGame(HeroEntity heroEntity) {
