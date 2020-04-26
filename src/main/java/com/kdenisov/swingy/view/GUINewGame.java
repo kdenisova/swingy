@@ -195,7 +195,7 @@ public class GUINewGame {
         public void actionPerformed(ActionEvent e) {
             BufferedImage img = null;
 
-            hitPoints = 130;
+            hitPoints = 120;
 
             if (artifactBox.getSelectedIndex() >= 0)
                 artifactBox.setSelectedIndex(-1);

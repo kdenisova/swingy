@@ -157,7 +157,7 @@ public class CLINewGame {
     public void calculateValues() {
         attack = helper.getAttack(heroClass);
         defense = helper.getDefense(heroClass);
-        hitPoints = 130;
+        hitPoints = 120;
 
         switch (artifact) {
             case Weapon:
