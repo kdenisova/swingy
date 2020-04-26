@@ -48,3 +48,5 @@ You can play game in two different modes:
 ![alt text](https://github.com/kdenisova/swingy/blob/master/screenshots/Playground.jpeg)
 
 ![alt text](https://github.com/kdenisova/swingy/blob/master/screenshots/FightOrRun.jpeg)
+
+![alt text](https://github.com/kdenisova/swingy/blob/master/screenshots/Console.jpeg)
