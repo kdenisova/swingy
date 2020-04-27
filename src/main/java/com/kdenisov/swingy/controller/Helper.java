@@ -5,6 +5,7 @@ import com.kdenisov.swingy.model.*;
 public class Helper {
     private int attack;
     private int defense;
+    private int hitPoints = 120;
 
     public int getAttack(HeroClass heroClass) {
         if (heroClass == null)
@@ -52,4 +53,7 @@ public class Helper {
         this.defense = defense;
     }
 
+    public int getHitPoints() {
+        return hitPoints;
+    }
 }
